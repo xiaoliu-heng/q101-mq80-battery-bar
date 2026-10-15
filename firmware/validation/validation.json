@@ -1,0 +1,506 @@
+{
+  "status": "PASS_OFFLINE_ONLY_NOT_FLASHED",
+  "modified_sha256": "f3e86554be1ed5faf11750fceea85980c9ccd080912be4552e8317fb09ef7719",
+  "emulator": "Unicorn 2.1.4 RV32 with stock Andes instruction adapter",
+  "scope": "Actual Fn+B dispatcher, display hooks, compiled patch, complete stock RGB frame task, stock side renderer, stock RGB encoder and BSS zero loop; mocked RAM and system timer",
+  "not_tested": [
+    "Hardware boot/OTA acceptance",
+    "2.4G/Bluetooth radio execution or pairing",
+    "Physical RGB LED direction/channel appearance",
+    "MCU battery ADC accuracy",
+    "Real task/interrupt concurrency and timing"
+  ],
+  "checks": {
+    "image_structure_and_binary_preservation": {
+      "status": "PASS",
+      "byte_changes_in_original_body": 19,
+      "allowed_ranges": [
+        {
+          "offset": "0x18",
+          "length": 4,
+          "reason": "OTA header image size",
+          "original": "54ed0100",
+          "modified": "24ef0100"
+        },
+        {
+          "offset": "0x142",
+          "length": 4,
+          "reason": "Reserve 4 B at old BSS end",
+          "original": "130eae55",
+          "modified": "130eee55"
+        },
+        {
+          "offset": "0x98f0",
+          "length": 4,
+          "reason": "Side renderer entry jump",
+          "original": "411122c6",
+          "modified": "6f500146"
+        },
+        {
+          "offset": "0xc400",
+          "length": 4,
+          "reason": "Total-frame task entry jump for final battery overlay",
+          "original": "011122cc",
+          "modified": "6f205126"
+        },
+        {
+          "offset": "0x13520",
+          "length": 8,
+          "reason": "Fn+B press helper and return to stock epilogue",
+          "original": "8b078035f99b93e7",
+          "modified": "efb010116f00000d"
+        }
+      ],
+      "radio_and_other_original_code": "byte-identical outside listed display/startup/header patches",
+      "all_ram_code_and_initialized_data_preserved": true,
+      "image_header_crc_alignment_and_128k_limit": "PASS"
+    },
+    "startup_bss": {
+      "status": "PASS",
+      "old_end": "0x82698",
+      "new_end": "0x8269c",
+      "new_state_zeroed_by_actual_startup": true,
+      "adjacent_guard_unchanged": true
+    },
+    "fn_b_dispatch": {
+      "status": "PASS",
+      "all_256_flag_values": true,
+      "press_and_release_paths": true,
+      "fn_b_stock_pressed_guard_and_epilogue": true,
+      "timer_and_old_counter_init": true
+    },
+    "battery_bar_machine_code": {
+      "status": "PASS",
+      "percent_mode_charge_combinations": 2304,
+      "input_bytes_0_to_255_clamped_to_100": true,
+      "main_leds_and_guards_unchanged": true,
+      "no_mmio_writes_or_radio_calls": true,
+      "wrap_and_retrigger": true,
+      "callee_saved_gp_tp_sp_ra_preserved": true,
+      "maximum_rv32_instructions_per_active_render": 165,
+      "sample_rgb_frames": {
+        "0": [
+          [
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            0
+          ]
+        ],
+        "10": [
+          [
+            145,
+            28,
+            0
+          ],
+          [
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            0
+          ]
+        ],
+        "25": [
+          [
+            162,
+            81,
+            0
+          ],
+          [
+            162,
+            81,
+            0
+          ],
+          [
+            40,
+            20,
+            0
+          ],
+          [
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            0
+          ]
+        ],
+        "50": [
+          [
+            162,
+            162,
+            0
+          ],
+          [
+            162,
+            162,
+            0
+          ],
+          [
+            162,
+            162,
+            0
+          ],
+          [
+            162,
+            162,
+            0
+          ],
+          [
+            81,
+            81,
+            0
+          ],
+          [
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            0
+          ]
+        ],
+        "75": [
+          [
+            81,
+            162,
+            0
+          ],
+          [
+            81,
+            162,
+            0
+          ],
+          [
+            81,
+            162,
+            0
+          ],
+          [
+            81,
+            162,
+            0
+          ],
+          [
+            81,
+            162,
+            0
+          ],
+          [
+            81,
+            162,
+            0
+          ],
+          [
+            60,
+            121,
+            0
+          ],
+          [
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            0
+          ]
+        ],
+        "88": [
+          [
+            38,
+            162,
+            0
+          ],
+          [
+            38,
+            162,
+            0
+          ],
+          [
+            38,
+            162,
+            0
+          ],
+          [
+            38,
+            162,
+            0
+          ],
+          [
+            38,
+            162,
+            0
+          ],
+          [
+            38,
+            162,
+            0
+          ],
+          [
+            38,
+            162,
+            0
+          ],
+          [
+            34,
+            149,
+            0
+          ],
+          [
+            0,
+            0,
+            0
+          ]
+        ],
+        "100": [
+          [
+            0,
+            162,
+            0
+          ],
+          [
+            0,
+            162,
+            0
+          ],
+          [
+            0,
+            162,
+            0
+          ],
+          [
+            0,
+            162,
+            0
+          ],
+          [
+            0,
+            162,
+            0
+          ],
+          [
+            0,
+            162,
+            0
+          ],
+          [
+            0,
+            162,
+            0
+          ],
+          [
+            0,
+            162,
+            0
+          ],
+          [
+            0,
+            162,
+            0
+          ]
+        ],
+        "255": [
+          [
+            0,
+            162,
+            0
+          ],
+          [
+            0,
+            162,
+            0
+          ],
+          [
+            0,
+            162,
+            0
+          ],
+          [
+            0,
+            162,
+            0
+          ],
+          [
+            0,
+            162,
+            0
+          ],
+          [
+            0,
+            162,
+            0
+          ],
+          [
+            0,
+            162,
+            0
+          ],
+          [
+            0,
+            162,
+            0
+          ],
+          [
+            0,
+            162,
+            0
+          ]
+        ]
+      }
+    },
+    "inactive_stock_renderer": {
+      "status": "PASS",
+      "inactive_original_render_cases": 120,
+      "all_five_side_modes_charge_and_off_states": true,
+      "trampoline_and_stock_stack_frame_equivalent": true
+    },
+    "expiry_and_restore": {
+      "status": "PASS",
+      "expiry_cases": 90,
+      "exact_3s_boundary_and_wrap": true,
+      "query_flag_only_cleared": true,
+      "stock_frame_and_off_state_restored": true
+    },
+    "complete_stock_frame_task": {
+      "status": "PASS",
+      "case_counts": {
+        "active": 450,
+        "inactive": 450,
+        "expired": 450
+      },
+      "scenarios": [
+        "normal",
+        "side_disabled",
+        "connection_indicator_1",
+        "connection_indicator_2",
+        "connection_indicator_3",
+        "reset_indicator",
+        "low_battery_indicator",
+        "primary_frame_enabled",
+        "lighting_disabled",
+        "stock_tick_gate"
+      ],
+      "all_five_side_modes_three_connections_three_charge_states": true,
+      "primary_84_rgb_triplets_match_stock": true,
+      "inactive_and_expired_entire_data_ram_match_stock": true,
+      "active_bar_has_priority_over_stock_indicators_and_off_gates": true,
+      "added_stack_depth_bytes": 16,
+      "abi_preserved": true
+    },
+    "stock_rgb_encoder": {
+      "status": "PASS",
+      "sample_frames_encoded_by_stock_machine_code": 8,
+      "waveform_bytes_and_grb_order": true,
+      "encoded_buffer_guards_unchanged": true
+    }
+  }
+}

@@ -1,0 +1,65 @@
+{
+  "status": "PASS_OFFLINE_ONLY_NOT_FLASHED",
+  "modified_sha256": "f3e86554be1ed5faf11750fceea85980c9ccd080912be4552e8317fb09ef7719",
+  "device_access": "NONE",
+  "checks": {
+    "startup_copies_and_bss": {
+      "status": "PASS",
+      "actual_startup_copy_and_zero_loops": true,
+      "only_ram_difference": "0x82698..0x8269b",
+      "not_executed": "reset CSR/peripheral setup and main application startup"
+    },
+    "moving_deadline": {
+      "status": "PASS",
+      "two_frame_deadline_scenarios": 900,
+      "timer_wrap_included": true,
+      "all_side_modes_connections_charge_states": true,
+      "one_deadline_decision_per_frame": true,
+      "next_frame_restores_stock_data_and_off_flags": true
+    },
+    "all_primary_effects": {
+      "status": "PASS",
+      "cases": 285,
+      "primary_effect_ids": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        13,
+        14,
+        15,
+        16,
+        17,
+        18
+      ],
+      "side_modes": 5,
+      "states": 3,
+      "observed_stack_write_depth_bytes": {
+        "stock": 108,
+        "modified": 124
+      },
+      "scope": "controlled initial states; not every animation history or physical interrupt schedule"
+    },
+    "stateful_frames": {
+      "status": "PASS",
+      "frames": 1000,
+      "active": 540,
+      "inactive_or_expired": 460,
+      "presses": 60,
+      "releases": 60,
+      "encoded_frames": 100,
+      "timer_wrap_retrigger_release_and_on_off_toggles": true,
+      "three_stack_locations": true,
+      "flash_XIP_read_execute_only": true
+    }
+  }
+}

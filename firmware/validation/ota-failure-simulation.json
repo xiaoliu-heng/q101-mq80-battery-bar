@@ -1,0 +1,435 @@
+{
+  "status": "PASS_OFFLINE_ONLY_NO_HARDWARE_ACCESS",
+  "stock_sha256": "d19733978808c856db93236ea3472b2cf843493c9aa6d5320db50412431e5210",
+  "modified_sha256": "f3e86554be1ed5faf11750fceea85980c9ccd080912be4552e8317fb09ef7719",
+  "case_count": 16,
+  "cases": [
+    {
+      "status": "PASS",
+      "active_bank": "0x0",
+      "target_bank": "0x40000",
+      "scenario": "incomplete",
+      "usb_ota_result_code": 11,
+      "active_boot_flag": "0x4b",
+      "target_boot_flag": "0xff",
+      "old_image_unchanged_on_error": true,
+      "flash_ops_in_python_ram_only": [],
+      "real_crc_routine_executed": false,
+      "executed_instructions": 14,
+      "direction": "stock_to_modified"
+    },
+    {
+      "status": "PASS",
+      "active_bank": "0x0",
+      "target_bank": "0x40000",
+      "scenario": "crc_error",
+      "usb_ota_result_code": 7,
+      "active_boot_flag": "0x4b",
+      "target_boot_flag": "0xff",
+      "old_image_unchanged_on_error": true,
+      "flash_ops_in_python_ram_only": [
+        {
+          "op": "program",
+          "address": "0x40000",
+          "size": 16,
+          "bytes": "25a0000000005d020000000000000000"
+        },
+        {
+          "op": "program",
+          "address": "0x40020",
+          "size": 1,
+          "bytes": "4b"
+        },
+        {
+          "op": "erase_sector",
+          "address": "0x40000",
+          "size": 4096
+        }
+      ],
+      "real_crc_routine_executed": true,
+      "executed_instructions": 4068624,
+      "direction": "stock_to_modified"
+    },
+    {
+      "status": "PASS",
+      "active_bank": "0x0",
+      "target_bank": "0x40000",
+      "scenario": "header_readback_error",
+      "usb_ota_result_code": 4,
+      "active_boot_flag": "0x4b",
+      "target_boot_flag": "0xff",
+      "old_image_unchanged_on_error": true,
+      "flash_ops_in_python_ram_only": [
+        {
+          "op": "program",
+          "address": "0x40000",
+          "size": 16,
+          "bytes": "25a0000000005d020000000000000000"
+        },
+        {
+          "op": "erase_sector",
+          "address": "0x40000",
+          "size": 4096
+        }
+      ],
+      "real_crc_routine_executed": false,
+      "executed_instructions": 63,
+      "direction": "stock_to_modified"
+    },
+    {
+      "status": "PASS",
+      "active_bank": "0x0",
+      "target_bank": "0x40000",
+      "scenario": "valid_image",
+      "usb_ota_result_code": 0,
+      "active_boot_flag": "0x0",
+      "target_boot_flag": "0x4b",
+      "old_image_unchanged_on_error": false,
+      "flash_ops_in_python_ram_only": [
+        {
+          "op": "program",
+          "address": "0x40000",
+          "size": 16,
+          "bytes": "25a0000000005d020000000000000000"
+        },
+        {
+          "op": "program",
+          "address": "0x40020",
+          "size": 1,
+          "bytes": "4b"
+        },
+        {
+          "op": "program",
+          "address": "0x20",
+          "size": 1,
+          "bytes": "00"
+        }
+      ],
+      "real_crc_routine_executed": true,
+      "executed_instructions": 4068626,
+      "direction": "stock_to_modified"
+    },
+    {
+      "status": "PASS",
+      "active_bank": "0x40000",
+      "target_bank": "0x0",
+      "scenario": "incomplete",
+      "usb_ota_result_code": 11,
+      "active_boot_flag": "0x4b",
+      "target_boot_flag": "0xff",
+      "old_image_unchanged_on_error": true,
+      "flash_ops_in_python_ram_only": [],
+      "real_crc_routine_executed": false,
+      "executed_instructions": 14,
+      "direction": "stock_to_modified"
+    },
+    {
+      "status": "PASS",
+      "active_bank": "0x40000",
+      "target_bank": "0x0",
+      "scenario": "crc_error",
+      "usb_ota_result_code": 7,
+      "active_boot_flag": "0x4b",
+      "target_boot_flag": "0xff",
+      "old_image_unchanged_on_error": true,
+      "flash_ops_in_python_ram_only": [
+        {
+          "op": "program",
+          "address": "0x0",
+          "size": 16,
+          "bytes": "25a0000000005d020000000000000000"
+        },
+        {
+          "op": "program",
+          "address": "0x20",
+          "size": 1,
+          "bytes": "4b"
+        },
+        {
+          "op": "erase_sector",
+          "address": "0x0",
+          "size": 4096
+        }
+      ],
+      "real_crc_routine_executed": true,
+      "executed_instructions": 4068622,
+      "direction": "stock_to_modified"
+    },
+    {
+      "status": "PASS",
+      "active_bank": "0x40000",
+      "target_bank": "0x0",
+      "scenario": "header_readback_error",
+      "usb_ota_result_code": 4,
+      "active_boot_flag": "0x4b",
+      "target_boot_flag": "0xff",
+      "old_image_unchanged_on_error": true,
+      "flash_ops_in_python_ram_only": [
+        {
+          "op": "program",
+          "address": "0x0",
+          "size": 16,
+          "bytes": "25a0000000005d020000000000000000"
+        },
+        {
+          "op": "erase_sector",
+          "address": "0x0",
+          "size": 4096
+        }
+      ],
+      "real_crc_routine_executed": false,
+      "executed_instructions": 63,
+      "direction": "stock_to_modified"
+    },
+    {
+      "status": "PASS",
+      "active_bank": "0x40000",
+      "target_bank": "0x0",
+      "scenario": "valid_image",
+      "usb_ota_result_code": 0,
+      "active_boot_flag": "0x0",
+      "target_boot_flag": "0x4b",
+      "old_image_unchanged_on_error": false,
+      "flash_ops_in_python_ram_only": [
+        {
+          "op": "program",
+          "address": "0x0",
+          "size": 16,
+          "bytes": "25a0000000005d020000000000000000"
+        },
+        {
+          "op": "program",
+          "address": "0x20",
+          "size": 1,
+          "bytes": "4b"
+        },
+        {
+          "op": "program",
+          "address": "0x40020",
+          "size": 1,
+          "bytes": "00"
+        }
+      ],
+      "real_crc_routine_executed": true,
+      "executed_instructions": 4068626,
+      "direction": "stock_to_modified"
+    },
+    {
+      "status": "PASS",
+      "active_bank": "0x0",
+      "target_bank": "0x40000",
+      "scenario": "incomplete",
+      "usb_ota_result_code": 11,
+      "active_boot_flag": "0x4b",
+      "target_boot_flag": "0xff",
+      "old_image_unchanged_on_error": true,
+      "flash_ops_in_python_ram_only": [],
+      "real_crc_routine_executed": false,
+      "executed_instructions": 14,
+      "direction": "modified_to_stock"
+    },
+    {
+      "status": "PASS",
+      "active_bank": "0x0",
+      "target_bank": "0x40000",
+      "scenario": "crc_error",
+      "usb_ota_result_code": 7,
+      "active_boot_flag": "0x4b",
+      "target_boot_flag": "0xff",
+      "old_image_unchanged_on_error": true,
+      "flash_ops_in_python_ram_only": [
+        {
+          "op": "program",
+          "address": "0x40000",
+          "size": 16,
+          "bytes": "25a0000000005d020000000000000000"
+        },
+        {
+          "op": "program",
+          "address": "0x40020",
+          "size": 1,
+          "bytes": "4b"
+        },
+        {
+          "op": "erase_sector",
+          "address": "0x40000",
+          "size": 4096
+        }
+      ],
+      "real_crc_routine_executed": true,
+      "executed_instructions": 4053726,
+      "direction": "modified_to_stock"
+    },
+    {
+      "status": "PASS",
+      "active_bank": "0x0",
+      "target_bank": "0x40000",
+      "scenario": "header_readback_error",
+      "usb_ota_result_code": 4,
+      "active_boot_flag": "0x4b",
+      "target_boot_flag": "0xff",
+      "old_image_unchanged_on_error": true,
+      "flash_ops_in_python_ram_only": [
+        {
+          "op": "program",
+          "address": "0x40000",
+          "size": 16,
+          "bytes": "25a0000000005d020000000000000000"
+        },
+        {
+          "op": "erase_sector",
+          "address": "0x40000",
+          "size": 4096
+        }
+      ],
+      "real_crc_routine_executed": false,
+      "executed_instructions": 63,
+      "direction": "modified_to_stock"
+    },
+    {
+      "status": "PASS",
+      "active_bank": "0x0",
+      "target_bank": "0x40000",
+      "scenario": "valid_image",
+      "usb_ota_result_code": 0,
+      "active_boot_flag": "0x0",
+      "target_boot_flag": "0x4b",
+      "old_image_unchanged_on_error": false,
+      "flash_ops_in_python_ram_only": [
+        {
+          "op": "program",
+          "address": "0x40000",
+          "size": 16,
+          "bytes": "25a0000000005d020000000000000000"
+        },
+        {
+          "op": "program",
+          "address": "0x40020",
+          "size": 1,
+          "bytes": "4b"
+        },
+        {
+          "op": "program",
+          "address": "0x20",
+          "size": 1,
+          "bytes": "00"
+        }
+      ],
+      "real_crc_routine_executed": true,
+      "executed_instructions": 4053728,
+      "direction": "modified_to_stock"
+    },
+    {
+      "status": "PASS",
+      "active_bank": "0x40000",
+      "target_bank": "0x0",
+      "scenario": "incomplete",
+      "usb_ota_result_code": 11,
+      "active_boot_flag": "0x4b",
+      "target_boot_flag": "0xff",
+      "old_image_unchanged_on_error": true,
+      "flash_ops_in_python_ram_only": [],
+      "real_crc_routine_executed": false,
+      "executed_instructions": 14,
+      "direction": "modified_to_stock"
+    },
+    {
+      "status": "PASS",
+      "active_bank": "0x40000",
+      "target_bank": "0x0",
+      "scenario": "crc_error",
+      "usb_ota_result_code": 7,
+      "active_boot_flag": "0x4b",
+      "target_boot_flag": "0xff",
+      "old_image_unchanged_on_error": true,
+      "flash_ops_in_python_ram_only": [
+        {
+          "op": "program",
+          "address": "0x0",
+          "size": 16,
+          "bytes": "25a0000000005d020000000000000000"
+        },
+        {
+          "op": "program",
+          "address": "0x20",
+          "size": 1,
+          "bytes": "4b"
+        },
+        {
+          "op": "erase_sector",
+          "address": "0x0",
+          "size": 4096
+        }
+      ],
+      "real_crc_routine_executed": true,
+      "executed_instructions": 4053724,
+      "direction": "modified_to_stock"
+    },
+    {
+      "status": "PASS",
+      "active_bank": "0x40000",
+      "target_bank": "0x0",
+      "scenario": "header_readback_error",
+      "usb_ota_result_code": 4,
+      "active_boot_flag": "0x4b",
+      "target_boot_flag": "0xff",
+      "old_image_unchanged_on_error": true,
+      "flash_ops_in_python_ram_only": [
+        {
+          "op": "program",
+          "address": "0x0",
+          "size": 16,
+          "bytes": "25a0000000005d020000000000000000"
+        },
+        {
+          "op": "erase_sector",
+          "address": "0x0",
+          "size": 4096
+        }
+      ],
+      "real_crc_routine_executed": false,
+      "executed_instructions": 63,
+      "direction": "modified_to_stock"
+    },
+    {
+      "status": "PASS",
+      "active_bank": "0x40000",
+      "target_bank": "0x0",
+      "scenario": "valid_image",
+      "usb_ota_result_code": 0,
+      "active_boot_flag": "0x0",
+      "target_boot_flag": "0x4b",
+      "old_image_unchanged_on_error": false,
+      "flash_ops_in_python_ram_only": [
+        {
+          "op": "program",
+          "address": "0x0",
+          "size": 16,
+          "bytes": "25a0000000005d020000000000000000"
+        },
+        {
+          "op": "program",
+          "address": "0x20",
+          "size": 1,
+          "bytes": "4b"
+        },
+        {
+          "op": "program",
+          "address": "0x40020",
+          "size": 1,
+          "bytes": "00"
+        }
+      ],
+      "real_crc_routine_executed": true,
+      "executed_instructions": 4053728,
+      "direction": "modified_to_stock"
+    }
+  ],
+  "limitations": [
+    "No real flash chip timing/power-failure model",
+    "No Q101 image dump or hardware OTA test",
+    "No failed-application boot/recovery simulation",
+    "USB result/reboot routine stops after capturing status",
+    "Only OTA END and image CRC branches executed, not full transport"
+  ]
+}

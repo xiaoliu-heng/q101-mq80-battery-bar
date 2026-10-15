@@ -1,0 +1,79 @@
+{
+  "checked_at_utc": "2026-10-15T22:30:16.624143+00:00",
+  "status": "PASS_OFFLINE_PUBLICATION_CHECKS",
+  "device_access": false,
+  "flashing_performed": false,
+  "immutable_firmware": {
+    "stock.bin": {
+      "size": 126292,
+      "sha256": "d19733978808c856db93236ea3472b2cf843493c9aa6d5320db50412431e5210"
+    },
+    "battery-bar-v2.bin": {
+      "size": 126756,
+      "sha256": "f3e86554be1ed5faf11750fceea85980c9ccd080912be4552e8317fb09ef7719"
+    }
+  },
+  "firmware_rebuild": {
+    "sha256": "f3e86554be1ed5faf11750fceea85980c9ccd080912be4552e8317fb09ef7719",
+    "byte_identical_to_tested_v2": true,
+    "compiler": "xPack riscv-none-elf-gcc 15.2.0-1",
+    "offline_checks": "PASS_OFFLINE_ONLY_NOT_FLASHED",
+    "extended_checks": "PASS_OFFLINE_ONLY_NOT_FLASHED",
+    "independent_rv32": {
+      "status": "PASS_OFFLINE_ONLY",
+      "modified_sha256": "f3e86554be1ed5faf11750fceea85980c9ccd080912be4552e8317fb09ef7719",
+      "engine": "separate Python standard-library RV32 integer interpreter; no Unicorn or Andes adapter",
+      "fn_b_initialization_cases": 256,
+      "active_bar_cases": 1024,
+      "max_leaf_instructions": 164,
+      "exact_write_allowlists_and_ABI": true,
+      "scope": "new leaf functions only; not original firmware, full MCU, peripherals or concurrency"
+    }
+  },
+  "simulator": {
+    "python_tests_passed": 41,
+    "swift_controller_checks_passed": 33,
+    "firmware_regression_passed": 10,
+    "firmware_regression_total": 10,
+    "relocated_archive_engine_checks_passed": 16,
+    "ad_hoc_signature_verified": true,
+    "app_bundle_byte_identical_to_previously_tested_2_1": true,
+    "runtime_sources_byte_identical": true,
+    "patch_sources_byte_identical": true,
+    "source_packaging_change": "Only public docs, directory organization, notices and a standalone image verifier; no runtime or firmware logic changes",
+    "controller_note": "Initial invocation did not become ready within the harness 10 s startup deadline. Rerun with an absolute resource path passed all 33 checks; documented command uses an absolute path. No runtime edits were made."
+  },
+  "release_assets": {
+    "MQ80-CS836B-V0109-20241220-FnB-BatteryBar-v2-EXPERIMENTAL.bin": {
+      "bytes": 126756,
+      "sha256": "f3e86554be1ed5faf11750fceea85980c9ccd080912be4552e8317fb09ef7719"
+    },
+    "MQ80-CS836B-V0109-20241220-STOCK.bin": {
+      "bytes": 126292,
+      "sha256": "d19733978808c856db93236ea3472b2cf843493c9aa6d5320db50412431e5210"
+    },
+    "MQ80-Firmware-Lab-v2.1-native-macOS-arm64.zip": {
+      "bytes": 10413006,
+      "sha256": "e87a9747ddce8bb8d026467185a3083017eb28e37e12bf24a8db29b3417b53fa"
+    },
+    "SHA256SUMS.txt": {
+      "bytes": 437,
+      "sha256": "dda9e4d03846ac07eebc5f8781525a98e5a91ce27543d30a70fc7d41e3f111be"
+    },
+    "unicorn-2.1.4-source.tar.gz": {
+      "bytes": 4252854,
+      "sha256": "ea8863f095a0136388694e5a6063afd9bb7650e30243dd6251af59c5ce5601f4"
+    }
+  },
+  "privacy_review": {
+    "personal_debug_logs_included": false,
+    "work_dirs_or_toolchains_included": false,
+    "photo_metadata_removed": true,
+    "photo_jpeg_image_data_unchanged": true,
+    "commit_email": "GitHub noreply"
+  },
+  "documentation": {
+    "relative_links_valid": true,
+    "hardware_claims": "Limited to the reported single Q101 observation; full-chip, all-batch compatibility and forced recovery remain unverified"
+  }
+}

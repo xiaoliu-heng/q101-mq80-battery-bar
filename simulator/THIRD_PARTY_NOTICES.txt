@@ -1,0 +1,24 @@
+MQ80 Firmware Lab 2.1 is a personal research workbench, not an IQUNIX product.
+
+Manufacturer firmware: MQ80-CS836B-V0109-20241220 and its experimental
+battery-bar patch. Original rights remain with their respective owners.
+These images are not claimed as original simulator source or relicensed here.
+
+Unicorn Engine 2.1.4: core GPL v2; Python bindings BSD.
+https://github.com/unicorn-engine/unicorn/tree/2.1.4
+The public project Release provides the unmodified 2.1.4 source archive
+alongside the app. License texts are in the repository's third-party directory.
+
+Python 3.9: Python Software Foundation License.
+https://docs.python.org/3.9/license.html
+
+PyInstaller 6.16.0: GPL with the PyInstaller bootloader exception.
+https://pyinstaller.org/en/v6.16.0/license.html
+
+Source, build instructions and additional notices:
+https://github.com/xiaoliu-heng/q101-mq80-battery-bar/tree/main/simulator
+https://github.com/xiaoliu-heng/q101-mq80-battery-bar/tree/main/third-party
+
+Native UI: SwiftUI/AppKit with a stdio Python engine. No real HID/serial
+device access or firmware flashing. Icon source: native/Icon.swift.
+Personal-use project intent does not narrow third-party license permissions.

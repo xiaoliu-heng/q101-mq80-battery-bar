@@ -1,0 +1,180 @@
+{
+  "application": "MQ80 Firmware Lab",
+  "version": "2.1.0",
+  "created_at": "2026-10-15T16:22:23.616535+00:00",
+  "build": {
+    "architecture": "arm64",
+    "ui": "native AppKit window, SwiftUI controls, native AppKit key buttons",
+    "minimum_macos_target": "13.0",
+    "tested_macos": "26.5.1",
+    "transport": "stdio-json-lines",
+    "webview": false,
+    "web_ui_files": false,
+    "http_listener": false,
+    "signing": "local ad-hoc",
+    "signature_verified": true,
+    "notarized": false,
+    "release_test_environment": null,
+    "native_executable_sha256": "fd107fb005cabf6f119a83183684af6ba8c75331893de85b87a83a7bccf1dcd2"
+  },
+  "changes": [
+    "focused app-local keydown, keyup and modifier input into real matrix pipeline",
+    "right Command maps to virtual Fn; optional virtual Fn latch",
+    "release-all clears chord selection, physical state and Fn latch with visible feedback",
+    "disabling chord mode automatically releases all input",
+    "focus loss, sheets, page changes, capture stop and reset release held keys",
+    "physical modifier flags reconcile even if capture starts after modifier keydown",
+    "original and v2 firmware images remain bundled and unchanged"
+  ],
+  "tests": {
+    "python": {
+      "passed": 41,
+      "log": "tests-log-v2.1.txt"
+    },
+    "swift_controller": {
+      "passed": 33,
+      "report": "test-results/native-controller-v2.1.json"
+    },
+    "firmware_suite": {
+      "passed": 10,
+      "total": 10
+    },
+    "native_gui_interaction": {
+      "version": "2.1.0",
+      "status": "PASS",
+      "created_at": "2026-10-15T16:21:22.540130+00:00",
+      "input_method": "Computer Use native pointer clicks, keyboard chords, menus and native save panels",
+      "qa_bundle_id": "local.xiaoliu.mq80-firmware-lab.native.qa21",
+      "accessibility_exposure_bypass_in_qa": true,
+      "release_accessibility_bypass": false,
+      "voiceover_acceptance": "unverified",
+      "release_native_executable_sha256": "fd107fb005cabf6f119a83183684af6ba8c75331893de85b87a83a7bccf1dcd2",
+      "qa_native_executable_sha256": "d3356ac574aabc42e31aa14a5e37a3268b5cc729932208269e74b3259fd17315",
+      "unsigned_native_code_identical": true,
+      "unsigned_native_code_sha256": "1b6bf80446866ccd30d41334509d80edbfe2eec7f3bf2ef21a09fa8f5263bea9",
+      "checks": [
+        {
+          "name": "physical Shift+A",
+          "status": "PASS",
+          "evidence": "native-gui-keyboard-report-v2.1.json",
+          "report": "0200040000000000"
+        },
+        {
+          "name": "physical Control+Option+B",
+          "status": "PASS",
+          "evidence": "native-gui-keyboard-report-v2.1.json",
+          "report": "0500050000000000"
+        },
+        {
+          "name": "Command-period exits capture and clears input",
+          "status": "PASS",
+          "hid": "0000000000000000"
+        },
+        {
+          "name": "release-all mouse button",
+          "status": "PASS",
+          "observed": "Shift and A highlights cleared; selected count 2 to 0; footer 所有按键已松开"
+        },
+        {
+          "name": "unchecking chord mode",
+          "status": "PASS",
+          "observed": "Shift and A selections cleared automatically"
+        },
+        {
+          "name": "virtual Fn latch plus physical B",
+          "status": "PASS",
+          "observed": "Fn highlighted, 2.9 s query countdown, green side battery bar; host text unchanged"
+        },
+        {
+          "name": "leaving workbench releases capture and Fn latch",
+          "status": "PASS",
+          "observed": "returned from lighting page with 使用实体键盘, Fn latch off, no highlighted keys"
+        },
+        {
+          "name": "battery overlay expires",
+          "status": "PASS",
+          "evidence": "native-gui-final-release-report-v2.1.json",
+          "side_lit": 0
+        },
+        {
+          "name": "two bundled firmware menu choices",
+          "status": "PASS",
+          "observed": [
+            "MQ80 官方 V0109",
+            "Fn+B 侧灯电量条 v2"
+          ]
+        },
+        {
+          "name": "native report save panel",
+          "status": "PASS",
+          "evidence": [
+            "native-gui-keyboard-report-v2.1.json",
+            "native-gui-final-release-report-v2.1.json"
+          ]
+        }
+      ],
+      "notes": [
+        "Computer Use injects modifier flags with ordinary key events and can omit modifier-release flagsChanged; exact left/right modifier releases are also covered by the Swift AppKit event harness.",
+        "QA uses an isolated app identifier; only signing and Info.plist differ from release, verified on unsigned executable copies.",
+        "No hardware HID, updater or flashing access was used."
+      ]
+    },
+    "bundled_engine_checks": 16,
+    "relocation": {
+      "signature_verified": true,
+      "native_executable_identical": true,
+      "engine_checks": 16,
+      "swift_checks": 33
+    }
+  },
+  "limitations": {
+    "raw_device_access": false,
+    "full_chip_simulation": false,
+    "physical_main_led_mapping_verified": false,
+    "reactive_lighting_complete": false,
+    "physical_input": "app-local NSEvents; OS-reserved shortcuts/media keys and hardware Fn may not reach the app; each matrix change settles for at least 35 virtual ms",
+    "ui_qa": "separate QA bundle uses accessibility-exposure bypass because the Computer Use service crashes on the full SwiftUI tree; native executables are identical after removing code signatures from verification copies; full VoiceOver acceptance is unverified",
+    "hardware_boundaries": "MODEL_COVERAGE.json"
+  },
+  "immutable_firmware_sha256": {
+    "battery-bar-v2.bin": "f3e86554be1ed5faf11750fceea85980c9ccd080912be4552e8317fb09ef7719",
+    "stock.bin": "d19733978808c856db93236ea3472b2cf843493c9aa6d5320db50412431e5210"
+  },
+  "source_sha256": {
+    "mq80lab/__init__.py": "8cedbf7ca367cdaa02754516acbc9b22864fa61ae8389859b824e4543c753952",
+    "mq80lab/cli.py": "7f0cd2251c4aaee3815e115aa16286e397bea19a7e0f8a15159c3fe58a01236d",
+    "mq80lab/engine.py": "f99fa88f8d82e27e55689684c8bb12d2bd410a3b6ed740c764fc348b8e56f358",
+    "mq80lab/machine.py": "f5a388c4fd598250a03b10b21b735c1dc812bc1e8e69da6a04a320a243fb24f4",
+    "mq80lab/native_rpc.py": "f3fe1aa2669a3ae463632e61c210f60ed94b54efc874058449b11d10f8c94550",
+    "mq80lab/ota.py": "9aa31024f32dd39daf93fc47f5a79d34bece06dc0f8ae39b9dcc16600a98d86a",
+    "mq80lab/peripherals.py": "499e8d8aaf8ce1c1a9fb22ff45ccb82a26e6886396ec498112b429064d6696b9",
+    "mq80lab/profile.py": "19a8c5972d98b15ebbafb90717a3969d79d7dd0d23cc047458fcbb9d9d90c436",
+    "mq80lab/scenarios.py": "4d20ef052d7da590374b65d4a26bc5efd5f9b31079990ea10f60e391e90666e9",
+    "mq80lab/server.py": "8d1054e423e0052ec94282850bd397dfa5e84226e7733c169a75b785d297cf68",
+    "native/App.swift": "baadd3b35b4889b532b8cbe194f283e968dc632374788f2a795f1c45ffc11e1a",
+    "native/Engine.swift": "e8be936215bda0465dca561b151e738d9002d3f90f6a1974895c26f0f3d92b5f",
+    "native/Icon.swift": "a3c29754d4efef86b2c7b4c188ac07a7f7698aa1be724ea8a5347381ca1aa461",
+    "native/Keyboard.swift": "d33b89a7ed3f10cc5edb8a94823c7b810c4585eb46217b4a4a96efa00e5d3591",
+    "native/LabsViews.swift": "1255056be611a0666d58f70d409f554a9946b261c43c41ccf355a101bc06c913",
+    "native/Models.swift": "6559bfe072e9b9eebf0c0452165303db0100272130c6bddff815d429c078c124",
+    "native/PhysicalInput.swift": "4a94168bd37595ff38ea77da2430350d8c90dd580833d2d538194493509b33ce",
+    "native/Views.swift": "684a2b22f0f4bc4f4dc39d15953633e146ee693022224ed31e05c0d40c6bc0ca",
+    "tests/test_live.py": "de156dee1209b3539d23fe10a64c64ccdb169c79527fbffb8555bdd23640789e",
+    "tests/test_native.py": "ed7d645086925d42e7a3b4277349b58d38cb6c671bc85cce3d6a50d585d04f8b",
+    "tests/test_runtime.py": "f205e4103363610bb296d71e7abfd4ec02a902c73fc75ba4b3e71eb8536e9b04",
+    "tests/NativeControllerTests.swift": "284a85159c602077dce4523a480ecf198dadefe15b9751f68e11a1a94fddbb8a",
+    "build_macos.py": "53d8534fabd2972a0d65f28737be4fc54d059f14451a50bf8ffe7bf9b8a741ab",
+    "package_native_v21.py": "0da232f3e603ff52f62dc18f0c20a8f434a8ec9b462196a48ca49fbddb839b8b",
+    "validate_native_package.py": "baead1324395b21c6ea6d110ba474aa3b6e34b1a2cf9e15b0bdbf25c2002397b",
+    "run_native.py": "5e4f612ddc30ae45379f79b0d6717692664c4733f3e486468c691815d4fcf9e1",
+    "README.md": "e60b09c5e5577da334086dc14275bb8a8b6efe98e93cda548ab8cd9d72cc211a",
+    "使用说明.txt": "c5f63833a9ad622c6926c1a2fc0a560d5bda9191742c0d77579ad55ef66dd73a",
+    "MODEL_COVERAGE.json": "a96690a589a65f86e2ff6c6840ccb3dd7ad10e6b21afe4860f73f723686fe04b",
+    "requirements.txt": "56bce36af734e3b9aeff2be4301bbc2a2c2b58ea1ea1e6ee6e792db84f96fbd4"
+  },
+  "artifacts": {
+    "app_zip": "MQ80-Firmware-Lab-v2.1-native-macOS-arm64.zip",
+    "source_zip": "MQ80-Firmware-Lab-v2.1-native-source.zip"
+  },
+  "historical_validation": "Versioned 1.0, 1.1 and 2.0 evidence is historical; VALIDATION-v2.0.json is retained"
+}

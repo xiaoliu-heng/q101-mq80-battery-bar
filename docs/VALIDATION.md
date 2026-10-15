@@ -1,0 +1,35 @@
+# 验证范围与时间线
+
+本文件区分固件离线验证、使用者实机反馈和软件发布检查。未把离线通过写成实机通过，也未为未测试功能补上结论。
+
+## 实机反馈
+
+项目使用者在一台 Q101 上先升级 MQ80 官方 V0109，确认官方版 USB 和 2.4G 输入正常；随后导入 codesize 126756、CRC 068F4D5A 的电量条 v2，并反馈：
+
+> 已经刷入了，显示 OTA Success，2.4G 也正常使用。电量显示现在满电显示绿色。
+
+仓库实机图片来自该使用者后续提供的满电侧灯照片。图片已移除附加元数据，未改变图像像素。没有据此宣称所有电量档位、蓝牙、长期稳定性、所有 PCB 批次或强制恢复成功。
+
+## 固件离线证据
+
+`firmware/validation/` 保存 v2 当时的原始记录：
+
+- `build-manifest.json`：精确基底/产物 SHA-256、修改地址、编译参数、464 字节追加代码和 4 字节新增 BSS。
+- `validation.json`：实际 Fn+B 分派、补丁、完整 RGB 帧任务、原侧灯渲染、编码与 BSS 路径。
+- `extended-validation.json`：时钟跨界、主灯效果、连续状态、RAM 写入范围等扩展检查。
+- `independent-rv32-validation.json`：独立 Python RV32 整数解释器运行新增叶函数，不依赖 Unicorn/Andes 适配。
+- `ota-failure-simulation.json`：16 个 OTA 结束/CRC 场景；不是完整传输、bootloader 或真实掉电测试。
+
+原始报告中的 `NOT_FLASHED`、`NOT_PERFORMED` 指**生成这些报告的离线操作**，保留原值用于说明证据边界；后来的实机反馈独立记录于上文。本次分享只复制并校验已验证的 v2 字节。
+
+## 测试软件 2.1
+
+原始 `simulator/VALIDATION-v2.1.json` 记录 41 项 Python 检查、33 项 Swift 控制器检查、10/10 固件回归、16 项打包引擎检查、原生 UI 和解压迁移检查。
+
+界面测试覆盖实体 Shift+A、Ctrl+Option+B、Fn+B、松开所有键、取消组合键、页面切换释放、原生保存面板及电量条到期。QA 使用独立副本的无障碍树隐藏开关；发布版未启用该开关。完整 VoiceOver、全部 OS 保留快捷键和真实 RF 发送不在这些结论内。
+
+## 本次发布
+
+本次检查的机器可读结果在 [PUBLICATION_CHECKS.json](PUBLICATION_CHECKS.json)。从整理后的源码目录检查镜像、重建补丁并对比产物，运行 Python 测试和固件回归，复核 App 包签名/镜像以及 README 相对链接。没有操作实体键盘或重新刷写。
+
+通过条件只覆盖所列检查。测试软件不是通用 Telink 芯片模拟器，也不提供硬件刷写或强制恢复入口。

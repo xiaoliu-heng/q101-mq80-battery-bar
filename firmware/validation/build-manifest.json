@@ -1,0 +1,91 @@
+{
+  "status": "PASS_OFFLINE_ONLY_NOT_FLASHED",
+  "base_firmware": "MQ80-CS836B-V0109-20241220",
+  "stock_sha256": "d19733978808c856db93236ea3472b2cf843493c9aa6d5320db50412431e5210",
+  "modified_name": "MQ80-CS836B-V0109-20241220-FnB-BatteryBar-v2-EXPERIMENTAL.bin",
+  "modified_sha256": "f3e86554be1ed5faf11750fceea85980c9ccd080912be4552e8317fb09ef7719",
+  "stock_size": 126292,
+  "modified_size": 126756,
+  "stock_crc32_telink": "0xb00c451e",
+  "modified_crc32_telink": "0x68f4d5a",
+  "append_offset": "0x1ed50",
+  "compiled_code_size": 464,
+  "appended_aligned_size": 464,
+  "actual_original_byte_changes": 19,
+  "patched_ranges": [
+    {
+      "offset": "0x18",
+      "length": 4,
+      "reason": "OTA header image size",
+      "original": "54ed0100",
+      "modified": "24ef0100"
+    },
+    {
+      "offset": "0x142",
+      "length": 4,
+      "reason": "Reserve 4 B at old BSS end",
+      "original": "130eae55",
+      "modified": "130eee55"
+    },
+    {
+      "offset": "0x98f0",
+      "length": 4,
+      "reason": "Side renderer entry jump",
+      "original": "411122c6",
+      "modified": "6f500146"
+    },
+    {
+      "offset": "0xc400",
+      "length": 4,
+      "reason": "Total-frame task entry jump for final battery overlay",
+      "original": "011122cc",
+      "modified": "6f205126"
+    },
+    {
+      "offset": "0x13520",
+      "length": 8,
+      "reason": "Fn+B press helper and return to stock epilogue",
+      "original": "8b078035f99b93e7",
+      "modified": "efb010116f00000d"
+    }
+  ],
+  "symbols": {
+    "patch_start_tick": "0x82698",
+    "stock_side_resume": "0x200098f4",
+    "stock_frame_resume": "0x2000c404",
+    "patch_side_entry": "0x2001ed50",
+    "patch_begin": "0x2001ee30",
+    "patch_frame_entry": "0x2001ee64",
+    "patch_stock_side": "0x2001ef10",
+    "patch_stock_frame": "0x2001ef18"
+  },
+  "compiler_version": "riscv-none-elf-gcc (xPack GNU RISC-V Embedded GCC arm64) 15.2.0",
+  "compiler_flags": [
+    "-march=rv32im",
+    "-mabi=ilp32",
+    "-Os",
+    "-msmall-data-limit=0",
+    "-mno-relax",
+    "-ffreestanding",
+    "-fno-builtin",
+    "-fno-pic",
+    "-fno-stack-protector",
+    "-fno-unwind-tables",
+    "-fno-asynchronous-unwind-tables",
+    "-ffunction-sections",
+    "-fdata-sections",
+    "-Wall",
+    "-Wextra",
+    "-Werror"
+  ],
+  "raw_code_sha256": "592d9b18ffb8652db4e72e626fe6d9342ed033cab598e7b2ef96a01fe515f1fd",
+  "no_unresolved_symbols": true,
+  "ram_start_tick": "0x82698",
+  "bss_end_exclusive_original": "0x82698",
+  "bss_end_exclusive_modified": "0x8269c",
+  "display_ticks": 48000000,
+  "radio_2_4g_code_preserved_byte_for_byte_except_display_hooks": true,
+  "physical_validation": "NOT_PERFORMED",
+  "device_access": "NONE",
+  "validation_file": "validation.json"
+}

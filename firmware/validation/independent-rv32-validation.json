@@ -1,0 +1,10 @@
+{
+  "status": "PASS_OFFLINE_ONLY",
+  "modified_sha256": "f3e86554be1ed5faf11750fceea85980c9ccd080912be4552e8317fb09ef7719",
+  "engine": "separate Python standard-library RV32 integer interpreter; no Unicorn or Andes adapter",
+  "fn_b_initialization_cases": 256,
+  "active_bar_cases": 1024,
+  "max_leaf_instructions": 164,
+  "exact_write_allowlists_and_ABI": true,
+  "scope": "new leaf functions only; not original firmware, full MCU, peripherals or concurrency"
+}

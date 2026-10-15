@@ -1,0 +1,13 @@
+.DS_Store
+__pycache__/
+*.py[cod]
+.venv/
+.build-venv/
+build/
+dist/
+test-results/
+*.log
+*.app/
+*.zip
+*.tar.gz
+.release/
