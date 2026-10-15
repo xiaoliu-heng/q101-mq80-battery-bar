@@ -43,7 +43,7 @@
 
 ## 下载与校验
 
-> **发布状态：Release 附件待上传。** 当前可直接下载[电量条固件](simulator/assets/battery-bar-v2.bin)与[官方 MQ80 镜像](simulator/assets/stock.bin)；macOS App 下载包将随 [Release](https://github.com/xiaoliu-heng/q101-mq80-battery-bar/releases) 提供，源码已位于 [`simulator/`](simulator/)。
+在 [Release 的 Assets](https://github.com/xiaoliu-heng/q101-mq80-battery-bar/releases/tag/battery-bar-v2) 下载固件、macOS App 和校验清单。固件也可从仓库获取：[电量条固件](simulator/assets/battery-bar-v2.bin) · [官方 MQ80 镜像](simulator/assets/stock.bin)。测试软件源码位于 [`simulator/`](simulator/)。
 
 Release 文件说明：
 
