@@ -74,7 +74,7 @@ COVERAGE = [
     {'id':'clock','name':'时钟 / Timer1','level':'model','detail':'严格仿真采用 16 MHz STIMER、假定 1 ms IRQ 和离散调度。实时灯效预览在空闲时按墙钟合并渲染，不执行被跳过的 IRQ，不用于休眠计时断言；有按键、队列或 PM 等待时回到离散执行。'},
     {'id':'pm','name':'2.4G 休眠 / 唤醒','level':'partial','detail':'真实 PM 准备和返回代码；在 PM API 处暂停，PAD / TIMER 由环境响应。没有真实电流与保持域模型。'},
     {'id':'rf','name':'2.4G 接收器','level':'partial','detail':'真实报告排队与封包，模拟 ACK、延迟、断连与丢包；没有空口、RF IRQ 或接收器固件。'},
-    {'id':'usb','name':'USB 主机','level':'partial','detail':'真实 USB 报告任务调用端点发送边界；可设置忙、挂起、主机 LED。枚举、完整控制传输和远程唤醒未建模。'},
+    {'id':'usb','name':'USB 主机','level':'partial','detail':'真实 USB 报告任务和 Raw HID 两条接收/分派路径；OUT FIFO 与端点发送边界由模型提供。可设置忙、挂起、主机 LED；枚举、完整控制传输和远程唤醒未建模。'},
     {'id':'ble','name':'Bluetooth 主机','level':'partial','detail':'真实应用任务、队列、通知提交边界；BLE SDK 调度、链路层、配对、加密与休眠由模型替代。'},
     {'id':'battery','name':'电池 / 充电','level':'model','detail':'向已定位电量缓存和充电输入注入测试值；没有复刻 ADC、锂电放电曲线或充电芯片。'},
     {'id':'flash','name':'NOR Flash / OTA','level':'partial','detail':'1 MB 内存 NOR、1→0 写入与扇区擦除；可执行真实 OTA END / CRC 路径。没有掉电、电气时序或 bootloader 自动恢复模型。'},

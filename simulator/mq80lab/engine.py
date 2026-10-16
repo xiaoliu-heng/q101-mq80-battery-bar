@@ -99,7 +99,8 @@ class Runtime(m.FirmwareEmulator):
     def _initialize_checkpoint(self):
         for address,value in {0x80994:MODES[self.env.connection],0x80a31:3,0x80a12:2,
                               0x80be3:10,0x809ae:3,0x80993:1,0x808d2:0,0x808d4:11,
-                              0x809f0:0,0x809f1:0,0x809e2:0,0x80b2c:0}.items(): self.byte(address,value)
+                              0x809f0:0,0x809f1:0,0x809e2:0,0x80b2c:0,
+                              0x80be1:int(self.env.connection=='usb' and self.env.cable)}.items(): self.byte(address,value)
         self.word(0x80944,48000000)
         self.word(0xbdc,0x20014b20)
         self.word(0x81ac0,0x12345678)
@@ -120,6 +121,11 @@ class Runtime(m.FirmwareEmulator):
         self.u.mem_protect(m.XIP,0x20000,m.un.UC_PROT_READ|m.un.UC_PROT_EXEC)
 
     def on_code(self,u,address,size,extra):
+        # Unicorn may reuse a translated block containing a different later
+        # stop address. Honor the current call boundary even for cached blocks.
+        if self.call_context and address==self.call_context['end']:
+            u.emu_stop()
+            return
         self.total_instructions += 1
         self._call_instructions += 1
         self.covered.add(address)
@@ -173,6 +179,10 @@ class Runtime(m.FirmwareEmulator):
         super().write_int(address,value,size)
 
     def on_read(self,u,kind,address,size,value,extra):
+        if address == 0x8010081e and getattr(self,'_raw_hid_fifo',None) is not None:
+            if size != 1 or not self._raw_hid_fifo:
+                raise SimulationFault('USB OUT FIFO 被超量读取。')
+            self.u.mem_write(address,bytes([self._raw_hid_fifo.pop(0)]))
         if address == m.STIMER:
             self.clock(self.now_us*16)
         if address == 0x80140182:
@@ -437,6 +447,46 @@ class Runtime(m.FirmwareEmulator):
     def render(self):
         if self.call_context: return
         self.invoke('frame',FUNCTIONS['frame'])
+
+    def receive_raw_hid(self,report,path='direct'):
+        """Model a USB OUT FIFO; execute both original receive/dispatch paths.
+
+        This does not emulate USB enumeration, endpoint electrical timing or
+        receiver firmware. Short reports are accepted here for negative tests.
+        """
+        if not isinstance(report,bytes) or not 1 <= len(report) <= 32:
+            raise ValueError('Raw HID 报告需要 1～32 字节。')
+        if path not in ['direct','general']:
+            raise ValueError('未知 USB 接收路径。')
+        if self.env.connection != 'usb' or not self.env.cable or not self.env.host_ready or self.env.host_suspended:
+            raise ValueError('需要可响应的虚拟 USB 主机。')
+        if self.call_context:
+            raise ValueError('请先结束当前外设等待。')
+        start=len(self.reports)
+        self._raw_hid_fifo=list(report)
+        self.byte(0x80100816,len(report))
+        self.byte(0x80100839,0x40)
+        self.byte(0x80100803,0)
+        try:
+            if path=='general':
+                self.invoke('usb_general_receive',m.XIP+0xde8c)
+                # Model the W1C acknowledgement; pending data is now in RAM.
+                self.byte(0x80100839,0)
+            else:
+                self.byte(0x80b5c,self.byte(0x80b5c)|8)
+            self.invoke('raw_hid_dispatch',m.XIP+0xe190)
+            if self._raw_hid_fifo:
+                raise SimulationFault('USB OUT FIFO 没有被原接收路径完整消费。')
+        finally:
+            self._raw_hid_fifo=None
+            self.byte(0x80100839,0)
+        replies=[bytes.fromhex(r['hex']) for r in self.reports[start:]
+                 if r.get('endpoint')==4 and len(bytes.fromhex(r['hex']))==32]
+        if len(replies)!=1:
+            raise SimulationFault('Raw HID 请求没有得到一个完整回复。')
+        self.log('raw-hid','firmware+model','虚拟主机请求已执行真实接收和回复路径',
+                 {'request':report.hex(),'reply':replies[0].hex(),'receive_path':path})
+        return replies[0]
 
     def _animation_pulse(self):
         # Actual housekeeping basic block: main/side speed dividers and ticks.

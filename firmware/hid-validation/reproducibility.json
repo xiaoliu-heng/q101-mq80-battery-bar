@@ -1,0 +1,6 @@
+{
+  "status": "PASS",
+  "method": "two separate GCC builds",
+  "identical_binary": true,
+  "sha256": "f380297767d86cba31d4264b1b419a69a17e7e6b7370413992eeb3b47d92a61c"
+}
