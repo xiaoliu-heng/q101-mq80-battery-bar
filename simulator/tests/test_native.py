@@ -101,7 +101,11 @@ class NativeTransportTests(unittest.TestCase):
         self.assertEqual(result['transport'],'stdio-json-lines')
         self.assertEqual(len(result['layout']),84)
         self.assertEqual(len(result['scenarios']),10)
-        self.assertEqual(len(result['firmwares']),2)
+        self.assertEqual(len(result['firmwares']),6)
+        self.assertTrue(any(x['side_hid'] for x in result['firmwares']))
+        self.assertTrue(any(x['side_hid_rf'] for x in result['firmwares']))
+        self.assertTrue(any(x['firmware_version']=='3.0.0' for x in result['firmwares']))
+        self.assertTrue(any(x['firmware_version']=='3.0.1' for x in result['firmwares']))
         self.assertNotIn('url',result)
 
     def test_query_preview_expiry_and_sleep_first_key_through_native_pipe(self):
@@ -131,6 +135,20 @@ class NativeTransportTests(unittest.TestCase):
         state=self.rpc('action',{'action':'restore','snapshot':saved})
         self.assertEqual(state['host_text'],'a')
         self.assertEqual(self.rpc('recording')['id'],'after-restore')
+
+    def test_side_hid_color_animation_and_release_through_native_pipe(self):
+        image=next(x['id'] for x in self.rpc('bootstrap')['firmwares'] if x['side_hid'])
+        self.rpc('action',{'action':'reset','firmware':image,'environment':{'connection':'usb','cable':True}})
+        state=self.rpc('action',{'action':'side_hid','mode':'solid','colors':[[255,0,0]]*9})
+        self.assertEqual(state['rgb']['side'],[[162,0,0]]*9)
+        self.rpc('action',{'action':'side_hid','mode':'rainbow'})
+        state=self.rpc('action',{'action':'preview','ms':3100})
+        self.assertTrue(state['side_hid']['active'])
+        self.assertEqual(state['side_hid']['mode'],'rainbow')
+        self.assertGreater(state['side_hid']['frames_sent'],60)
+        self.assertFalse(self.rpc('action',{'action':'side_hid','mode':'release'})['side_hid']['active'])
+        self.assertEqual(self.rpc('state')['rgb']['side'],[[0,0,0]]*9)
+        self.assertTrue(self.rpc('report')['no_device_access'])
 
 
 if __name__=='__main__':unittest.main(verbosity=2)

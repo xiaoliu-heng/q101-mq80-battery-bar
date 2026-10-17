@@ -17,7 +17,7 @@ struct RootView: View {
                 VStack(alignment: .leading, spacing: 5) {
                     Label(lab.ready ? "引擎已连接" : "引擎连接中", systemImage: lab.ready ? "circle.fill" : "circle.dotted")
                         .foregroundStyle(lab.ready ? Color.green : Color.secondary)
-                    Text("2.1 · SwiftUI / AppKit").foregroundStyle(.secondary)
+                    Text("2.4.1 · SwiftUI / AppKit").foregroundStyle(.secondary)
                 }.font(.caption).frame(maxWidth: .infinity, alignment: .leading).padding(15)
             }.padding(10).frame(width:185).background(Color(nsColor:.windowBackgroundColor))
             Divider()
@@ -25,7 +25,7 @@ struct RootView: View {
                 if lab.ready {
                     HStack(spacing:0) {
                         page.frame(maxWidth: .infinity, maxHeight: .infinity)
-                        if lab.showInspector && (lab.page == .workbench || lab.page == .lighting) {
+                        if lab.showInspector && (lab.page == .workbench || lab.page == .lighting || lab.page == .sideHID) {
                             Divider()
                             EnvironmentView(lab: lab).frame(width:255)
                         }
@@ -53,6 +53,7 @@ struct RootView: View {
         switch lab.page {
         case .workbench: WorkbenchView(lab: lab)
         case .lighting: LightingView(lab: lab)
+        case .sideHID: SideHIDView(lab: lab)
         case .scenarios: ScenariosView(lab: lab)
         case .inspect: InspectView(lab: lab)
         case .coverage: CoverageView(lab: lab)

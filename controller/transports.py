@@ -20,6 +20,7 @@ class MacTransport:
         if sys.platform!='darwin':
             raise TransportError('IOKit 传输仅支持 macOS。')
         self.device=self.manager=self.device_set=self.dictionary=None
+        self.connection='rf' if receiver else 'usb'
         self.references=[]
         self.received=[]
         self.cf=C.CDLL('/System/Library/Frameworks/CoreFoundation.framework/CoreFoundation')
@@ -124,6 +125,7 @@ class MacTransport:
 
 class HidApiTransport:
     def __init__(self,receiver=False):
+        self.connection='rf' if receiver else 'usb'
         try:import hid
         except ImportError as e:
             raise TransportError('Windows/Linux 需安装 hidapi：python -m pip install hidapi') from e
@@ -150,12 +152,16 @@ class HidApiTransport:
 
 
 class SimulatedTransport:
-    def __init__(self,firmware):
+    def __init__(self,firmware,connection='usb'):
         from mq80lab.engine import Runtime
-        self.runtime=Runtime(firmware,{'connection':'usb','cable':True})
+        if connection not in ['usb','rf']:raise ValueError('仿真通道需要为 USB 或 2.4G。')
+        self.connection=connection
+        self.runtime=Runtime(firmware,{'connection':connection,'cable':connection=='usb'})
 
     def request(self,packet):
-        reply=self.runtime.receive_raw_hid(packet)
+        reply=(self.runtime.receive_raw_hid(packet) if self.connection=='usb'
+               else self.runtime.receive_rf_hid(packet))
+        if reply is None:raise TransportError('虚拟 2.4G 请求未收到回复。')
         self.runtime.render()
         return reply
 

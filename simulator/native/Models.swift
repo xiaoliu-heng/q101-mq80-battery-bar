@@ -83,13 +83,13 @@ struct TraceRow: Identifiable {
     }
 }
 enum LabPage: String, CaseIterable, Identifiable {
-    case workbench, lighting, scenarios, inspect, coverage
+    case workbench, lighting, sideHID, scenarios, inspect, coverage
     var id: String { rawValue }
     var title: String {
-        switch self { case .workbench: return "工作台"; case .lighting: return "灯效预览"; case .scenarios: return "场景与回归"; case .inspect: return "运行时检查"; case .coverage: return "建模覆盖" }
+        switch self { case .workbench: return "工作台"; case .lighting: return "灯效预览"; case .sideHID: return "侧灯 HID"; case .scenarios: return "场景与回归"; case .inspect: return "运行时检查"; case .coverage: return "建模覆盖" }
     }
     var icon: String {
-        switch self { case .workbench: return "keyboard"; case .lighting: return "lightbulb.led.wide"; case .scenarios: return "checklist"; case .inspect: return "cpu"; case .coverage: return "square.stack.3d.up" }
+        switch self { case .workbench: return "keyboard"; case .lighting: return "lightbulb.led.wide"; case .sideHID: return "slider.horizontal.3"; case .scenarios: return "checklist"; case .inspect: return "cpu"; case .coverage: return "square.stack.3d.up" }
     }
 }
 

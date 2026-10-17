@@ -1,0 +1,5 @@
+#define SIDE_FW_MAJOR 3u
+#define SIDE_FW_MINOR 0u
+#define SIDE_FW_PATCH 1u
+#define SIDE_FW_BUILD 2u
+#define SIDE_FW_FEATURE_FLAGS 15u

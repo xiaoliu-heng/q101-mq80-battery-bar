@@ -1,0 +1,30 @@
+{
+  "status": "PASS",
+  "archive": "dist/Q101-MQ80-SideHID-v3.0.1-build2-20261017.zip",
+  "archive_sha256": "f7e9b0b2b7e813404eb8f460ec11abb465c9a17a1be9af0aa039b7b1b1a8fdec",
+  "verified_manifest_files": 66,
+  "extracted_cli_actual_info": {
+    "active": false,
+    "battery_query": false,
+    "battery_percent": 88,
+    "connection": "rf",
+    "last_frame_sequence": 0,
+    "timeout_ms": 2000,
+    "remaining_ms": 0,
+    "usb_control": true,
+    "led_count": 9,
+    "maximum_channel": 162,
+    "rf_control": true,
+    "firmware_version": "3.0.1",
+    "firmware_build": 2,
+    "firmware_feature_flags": 15,
+    "firmware_features": [
+      "fn_b_battery_bar",
+      "battery_query",
+      "usb_side_rgb",
+      "rf_side_rgb"
+    ]
+  },
+  "firmware_sha256": "7b800e3edab6b2e8c421c3b7729464e990edfd2e5a2647ded6059c1901006534",
+  "device_access": "NONE"
+}

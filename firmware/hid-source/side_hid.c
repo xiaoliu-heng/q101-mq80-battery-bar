@@ -4,12 +4,26 @@
 #define patch_frame_entry battery_only_frame_entry
 #include "../source/battery_bar.c"
 #undef patch_frame_entry
+#include "firmware_version.h"
+
+/* Optional v1 INFO metadata, occupying previously zero reply bytes 23..31.
+ * Generated from version.json. Protocol and official image versions stay
+ * independent. These constants require no additional RAM or Flash writes.
+ */
+__attribute__((used))
+const uint8_t side_firmware_metadata[9] = {
+    'F', 'V', 1, SIDE_FW_MAJOR, SIDE_FW_MINOR, SIDE_FW_PATCH,
+    SIDE_FW_FEATURE_FLAGS, SIDE_FW_BUILD & 255u, SIDE_FW_BUILD >> 8
+};
 
 enum {
     RAW_BUFFER = 0x80be8,
     CONNECTION = 0x80994,
     RF_LENGTH = 0x809b0,
+    RF_MODE = 1,
     USB_MODE = 2,
+    FAST_IDLE_COUNT = 0x80b30,
+    IDLE_SECONDS = 0x80a64,
     DEFAULT_TIMEOUT_MS = 2000,
     MIN_TIMEOUT_MS = 500,
     MAX_TIMEOUT_MS = 10000,
@@ -38,7 +52,7 @@ struct host_state {
     uint8_t last_sequence;
     uint8_t dirty;
     uint8_t usb_length;
-    uint8_t reserved;
+    uint8_t owner_mode;
 };
 _Static_assert(sizeof(struct host_state) == 40, "Reserved BSS size changed");
 extern volatile struct host_state side_host;
@@ -49,10 +63,30 @@ static uint32_t timeout_ticks(void) {
 }
 
 static uint32_t remaining_ticks(uint32_t now) {
-    if (!side_host.active || U8(CONNECTION) != USB_MODE) return 0;
+    uint32_t mode = U8(CONNECTION);
+    if (!side_host.active || mode != side_host.owner_mode ||
+        (mode != USB_MODE && mode != RF_MODE)) return 0;
     uint32_t elapsed = now - side_host.last_tick;
     uint32_t limit = timeout_ticks();
     return elapsed < limit ? limit - elapsed : 0;
+}
+
+static void expire_host(uint32_t now) {
+    if (side_host.active && !remaining_ticks(now)) {
+        side_host.active = 0;
+        side_host.dirty = 1;
+    }
+}
+
+/* Only a live RF lighting lease delays the original idle sleep gates.
+ * No radio/PM API or persistent setting is changed. Expiry/release stops these
+ * writes so the stock idle counters can run again; INFO cannot keep awake.
+ */
+static void keep_rf_awake(void) {
+    if (U8(CONNECTION) == RF_MODE) {
+        U32(FAST_IDLE_COUNT) = 0;
+        U32(IDLE_SECONDS) = 0;
+    }
 }
 
 /* Called only after the stock transport gates have produced a request.
@@ -71,13 +105,16 @@ uint32_t side_hid_process(void) {
     if (length != 32) status = BAD_LENGTH;
     else if ((p[3] >> 4) != PROTOCOL_VERSION) status = BAD_VERSION;
     else if ((p[3] & 8u) || command > OP_TIMEOUT) status = BAD_OPCODE;
-    else if (command != OP_INFO && mode != USB_MODE) status = UNSUPPORTED_TRANSPORT;
+    else if (command != OP_INFO && mode != USB_MODE && mode != RF_MODE)
+        status = UNSUPPORTED_TRANSPORT;
     else if (command == OP_FRAME) {
         for (uint32_t i = 0; i < 27; ++i) side_host.rgb[i] = p[5 + i];
         side_host.last_tick = now;
         side_host.last_sequence = p[4];
         side_host.dirty = 0;
+        side_host.owner_mode = (uint8_t)mode;
         side_host.active = 1;
+        keep_rf_awake();
     } else if (command == OP_RELEASE) {
         if (side_host.active) {
             side_host.active = 0;
@@ -85,12 +122,23 @@ uint32_t side_hid_process(void) {
         }
     } else if (command == OP_KEEPALIVE) {
         if (!remaining_ticks(now)) status = INACTIVE;
-        else side_host.last_tick = now;
+        else {
+            side_host.last_tick = now;
+            keep_rf_awake();
+        }
     } else if (command == OP_TIMEOUT) {
         uint32_t milliseconds = (uint32_t)p[5] | ((uint32_t)p[6] << 8);
         if (milliseconds < MIN_TIMEOUT_MS || milliseconds > MAX_TIMEOUT_MS)
             status = BAD_ARGUMENT;
-        else side_host.timeout_ticks = milliseconds * TICKS_PER_MS;
+        else {
+            /* Latch expiry before changing its deadline, even if the frame
+             * task has not run yet. A shorter deadline can also expire now.
+             * Only a new FRAME may reactivate an expired host picture.
+             */
+            expire_host(now);
+            side_host.timeout_ticks = milliseconds * TICKS_PER_MS;
+            expire_host(now);
+        }
     }
 
     /* ACK: same magic/sequence, response bit in byte 3, compact status payload.
@@ -109,7 +157,7 @@ uint32_t side_hid_process(void) {
     p[9] = (uint8_t)percent;
     p[10] = (uint8_t)mode;
     p[11] = side_host.last_sequence;
-    p[12] = 1; /* Supported control transports: USB. RF info query is allowed. */
+    p[12] = 3; /* Supported control transports: bit0 USB, bit1 2.4G. */
     p[13] = (uint8_t)timeout;
     p[14] = (uint8_t)(timeout >> 8);
     /* A still-valid fractional millisecond must not report inactive. */
@@ -119,15 +167,15 @@ uint32_t side_hid_process(void) {
     p[17] = 'Q'; p[18] = '1'; p[19] = '0'; p[20] = '1';
     p[21] = GAUGE_BRIGHTNESS;
     p[22] = 15; /* frame, release, keepalive, configurable timeout */
+    for (uint32_t i = 0; i < sizeof(side_firmware_metadata); ++i)
+        p[23 + i] = side_firmware_metadata[i];
     return 1;
 }
 
 __attribute__((used, noinline))
 void side_host_before_frame(void) {
-    if (side_host.active && !remaining_ticks(U32(SYSTEM_TIMER))) {
-        side_host.active = 0;
-        side_host.dirty = 1;
-    }
+    if (side_host.active) expire_host(U32(SYSTEM_TIMER));
+    if (side_host.active) keep_rf_awake();
     if (side_host.dirty) {
         volatile uint8_t *rgb = (volatile uint8_t *)(uintptr_t)
                                 (RGB_FRAME + FIRST_SIDE_LED * 3);

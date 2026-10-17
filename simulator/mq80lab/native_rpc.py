@@ -14,7 +14,7 @@ from .scenarios import BUILTINS
 
 def dispatch(lab,method,params):
     if method=='bootstrap':
-        return {'version':'2.0.0','firmwares':lab.catalog(),'layout':layout(lab.runtime.image),
+        return {'version':'2.4.1','firmwares':lab.catalog(),'layout':layout(lab.runtime.image),
                 'scenarios':BUILTINS,'coverage':COVERAGE,'transport':'stdio-json-lines'}
     if method=='action':return lab.action(params)
     if method=='firmware':

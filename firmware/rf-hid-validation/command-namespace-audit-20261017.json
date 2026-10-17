@@ -1,0 +1,398 @@
+{
+  "created_at_utc": "2026-10-16T16:24:15.524962+00:00",
+  "scope": "Fixed V0109 command namespace isolation; offline machine-code trace, no device access",
+  "status": "PASS_SCOPED_NOT_GLOBAL_NONUSE_PROOF",
+  "firmware_sha256": "200b27e312debb8125ff0cb480efe6e208df0dabe36f298ee43854af039d7a83",
+  "buffer": {
+    "address": "0x80be8",
+    "size": 32,
+    "payload_offsets": [
+      5,
+      31
+    ],
+    "globally_unused": false
+  },
+  "stock_dispatch": {
+    "command_byte_offset": 0,
+    "maximum_jump_table_command": 21,
+    "unknown_command": "0x2000e6b8",
+    "extension_command": 254,
+    "extension_enters_stock_default_without_patch": true,
+    "hook_before_dispatch": "0x2000e22c",
+    "stock_dispatch_resume": "0x2000e230",
+    "stock_common_reply": "0x2000e2f4"
+  },
+  "static_existing_payload_users": [
+    {
+      "command": "0x0E",
+      "handler": "0x2000E354",
+      "evidence": "Loads count from report+3 and passes report+4 as destination for existing data read at 0x2000E376."
+    },
+    {
+      "command": "0x0F",
+      "handler": "0x2000E384",
+      "evidence": "Reads existing data from report+4 onward in copy loop 0x2000E3DC..0x2000E400."
+    },
+    {
+      "command": "0x13",
+      "handler": "0x2000E460",
+      "evidence": "Loads report bytes +4 and +5 at 0x2000E48A and 0x2000E48E to update existing configuration."
+    }
+  ],
+  "dynamic_cases": [
+    {
+      "transport": "direct",
+      "case": "info",
+      "old_command_dispatch_reached": false,
+      "common_reply_reached": true,
+      "flash_operations": 0,
+      "status_byte": 0
+    },
+    {
+      "transport": "direct",
+      "case": "frame",
+      "old_command_dispatch_reached": false,
+      "common_reply_reached": true,
+      "flash_operations": 0,
+      "status_byte": 0
+    },
+    {
+      "transport": "direct",
+      "case": "release",
+      "old_command_dispatch_reached": false,
+      "common_reply_reached": true,
+      "flash_operations": 0,
+      "status_byte": 0
+    },
+    {
+      "transport": "direct",
+      "case": "inactive_keepalive",
+      "old_command_dispatch_reached": false,
+      "common_reply_reached": true,
+      "flash_operations": 0,
+      "status_byte": 4
+    },
+    {
+      "transport": "direct",
+      "case": "timeout",
+      "old_command_dispatch_reached": false,
+      "common_reply_reached": true,
+      "flash_operations": 0,
+      "status_byte": 0
+    },
+    {
+      "transport": "direct",
+      "case": "bad_version",
+      "old_command_dispatch_reached": false,
+      "common_reply_reached": true,
+      "flash_operations": 0,
+      "status_byte": 1
+    },
+    {
+      "transport": "direct",
+      "case": "bad_opcode",
+      "old_command_dispatch_reached": false,
+      "common_reply_reached": true,
+      "flash_operations": 0,
+      "status_byte": 2
+    },
+    {
+      "transport": "direct",
+      "case": "response_bit",
+      "old_command_dispatch_reached": false,
+      "common_reply_reached": true,
+      "flash_operations": 0,
+      "status_byte": 2
+    },
+    {
+      "transport": "direct",
+      "case": "short_frame",
+      "old_command_dispatch_reached": false,
+      "common_reply_reached": true,
+      "flash_operations": 0,
+      "status_byte": 6
+    },
+    {
+      "transport": "direct",
+      "case": "passthrough_01",
+      "old_command_dispatch_reached": true,
+      "reply_matches_legacy": true,
+      "flash_operations": 0
+    },
+    {
+      "transport": "direct",
+      "case": "passthrough_080301",
+      "old_command_dispatch_reached": true,
+      "reply_matches_legacy": true,
+      "flash_operations": 0
+    },
+    {
+      "transport": "direct",
+      "case": "passthrough_0c",
+      "old_command_dispatch_reached": true,
+      "reply_matches_legacy": true,
+      "flash_operations": 0
+    },
+    {
+      "transport": "direct",
+      "case": "passthrough_0d",
+      "old_command_dispatch_reached": true,
+      "reply_matches_legacy": true,
+      "flash_operations": 0
+    },
+    {
+      "transport": "direct",
+      "case": "passthrough_11",
+      "old_command_dispatch_reached": true,
+      "reply_matches_legacy": true,
+      "flash_operations": 0
+    },
+    {
+      "transport": "direct",
+      "case": "passthrough_fe534d1102",
+      "old_command_dispatch_reached": true,
+      "reply_matches_legacy": true,
+      "flash_operations": 0
+    },
+    {
+      "transport": "general",
+      "case": "info",
+      "old_command_dispatch_reached": false,
+      "common_reply_reached": true,
+      "flash_operations": 0,
+      "status_byte": 0
+    },
+    {
+      "transport": "general",
+      "case": "frame",
+      "old_command_dispatch_reached": false,
+      "common_reply_reached": true,
+      "flash_operations": 0,
+      "status_byte": 0
+    },
+    {
+      "transport": "general",
+      "case": "release",
+      "old_command_dispatch_reached": false,
+      "common_reply_reached": true,
+      "flash_operations": 0,
+      "status_byte": 0
+    },
+    {
+      "transport": "general",
+      "case": "inactive_keepalive",
+      "old_command_dispatch_reached": false,
+      "common_reply_reached": true,
+      "flash_operations": 0,
+      "status_byte": 4
+    },
+    {
+      "transport": "general",
+      "case": "timeout",
+      "old_command_dispatch_reached": false,
+      "common_reply_reached": true,
+      "flash_operations": 0,
+      "status_byte": 0
+    },
+    {
+      "transport": "general",
+      "case": "bad_version",
+      "old_command_dispatch_reached": false,
+      "common_reply_reached": true,
+      "flash_operations": 0,
+      "status_byte": 1
+    },
+    {
+      "transport": "general",
+      "case": "bad_opcode",
+      "old_command_dispatch_reached": false,
+      "common_reply_reached": true,
+      "flash_operations": 0,
+      "status_byte": 2
+    },
+    {
+      "transport": "general",
+      "case": "response_bit",
+      "old_command_dispatch_reached": false,
+      "common_reply_reached": true,
+      "flash_operations": 0,
+      "status_byte": 2
+    },
+    {
+      "transport": "general",
+      "case": "short_frame",
+      "old_command_dispatch_reached": false,
+      "common_reply_reached": true,
+      "flash_operations": 0,
+      "status_byte": 6
+    },
+    {
+      "transport": "general",
+      "case": "passthrough_01",
+      "old_command_dispatch_reached": true,
+      "reply_matches_legacy": true,
+      "flash_operations": 0
+    },
+    {
+      "transport": "general",
+      "case": "passthrough_080301",
+      "old_command_dispatch_reached": true,
+      "reply_matches_legacy": true,
+      "flash_operations": 0
+    },
+    {
+      "transport": "general",
+      "case": "passthrough_0c",
+      "old_command_dispatch_reached": true,
+      "reply_matches_legacy": true,
+      "flash_operations": 0
+    },
+    {
+      "transport": "general",
+      "case": "passthrough_0d",
+      "old_command_dispatch_reached": true,
+      "reply_matches_legacy": true,
+      "flash_operations": 0
+    },
+    {
+      "transport": "general",
+      "case": "passthrough_11",
+      "old_command_dispatch_reached": true,
+      "reply_matches_legacy": true,
+      "flash_operations": 0
+    },
+    {
+      "transport": "general",
+      "case": "passthrough_fe534d1102",
+      "old_command_dispatch_reached": true,
+      "reply_matches_legacy": true,
+      "flash_operations": 0
+    },
+    {
+      "transport": "rf",
+      "case": "info",
+      "old_command_dispatch_reached": false,
+      "common_reply_reached": true,
+      "flash_operations": 0,
+      "status_byte": 0
+    },
+    {
+      "transport": "rf",
+      "case": "frame",
+      "old_command_dispatch_reached": false,
+      "common_reply_reached": true,
+      "flash_operations": 0,
+      "status_byte": 0
+    },
+    {
+      "transport": "rf",
+      "case": "release",
+      "old_command_dispatch_reached": false,
+      "common_reply_reached": true,
+      "flash_operations": 0,
+      "status_byte": 0
+    },
+    {
+      "transport": "rf",
+      "case": "inactive_keepalive",
+      "old_command_dispatch_reached": false,
+      "common_reply_reached": true,
+      "flash_operations": 0,
+      "status_byte": 4
+    },
+    {
+      "transport": "rf",
+      "case": "timeout",
+      "old_command_dispatch_reached": false,
+      "common_reply_reached": true,
+      "flash_operations": 0,
+      "status_byte": 0
+    },
+    {
+      "transport": "rf",
+      "case": "bad_version",
+      "old_command_dispatch_reached": false,
+      "common_reply_reached": true,
+      "flash_operations": 0,
+      "status_byte": 1
+    },
+    {
+      "transport": "rf",
+      "case": "bad_opcode",
+      "old_command_dispatch_reached": false,
+      "common_reply_reached": true,
+      "flash_operations": 0,
+      "status_byte": 2
+    },
+    {
+      "transport": "rf",
+      "case": "response_bit",
+      "old_command_dispatch_reached": false,
+      "common_reply_reached": true,
+      "flash_operations": 0,
+      "status_byte": 2
+    },
+    {
+      "transport": "rf",
+      "case": "short_frame",
+      "old_command_dispatch_reached": false,
+      "common_reply_reached": true,
+      "flash_operations": 0,
+      "status_byte": 6
+    },
+    {
+      "transport": "rf",
+      "case": "passthrough_01",
+      "old_command_dispatch_reached": true,
+      "reply_matches_legacy": true,
+      "flash_operations": 0
+    },
+    {
+      "transport": "rf",
+      "case": "passthrough_080301",
+      "old_command_dispatch_reached": true,
+      "reply_matches_legacy": true,
+      "flash_operations": 0
+    },
+    {
+      "transport": "rf",
+      "case": "passthrough_0c",
+      "old_command_dispatch_reached": true,
+      "reply_matches_legacy": true,
+      "flash_operations": 0
+    },
+    {
+      "transport": "rf",
+      "case": "passthrough_0d",
+      "old_command_dispatch_reached": true,
+      "reply_matches_legacy": true,
+      "flash_operations": 0
+    },
+    {
+      "transport": "rf",
+      "case": "passthrough_11",
+      "old_command_dispatch_reached": true,
+      "reply_matches_legacy": true,
+      "flash_operations": 0
+    },
+    {
+      "transport": "rf",
+      "case": "passthrough_fe534d1102",
+      "old_command_dispatch_reached": true,
+      "reply_matches_legacy": true,
+      "flash_operations": 0
+    }
+  ],
+  "checks": {
+    "accepted_extension_cases_bypass_stock_command_dispatch": 27,
+    "normal_or_foreign_namespace_cases_match_legacy": 18,
+    "normal_command_can_reuse_report_buffer_without_corrupting_owned_rgb": true,
+    "total_case_checks": 46
+  },
+  "limitations": [
+    "This proves only the traced fixed-image command paths, not absence of every possible buffer alias or asynchronous interrupt consumer.",
+    "Original command 0x0E has static evidence only here: execution stops at unsupported Andes instruction 0xAD8787FF at 0x2000E35C; no exhaustive legacy-command coverage is claimed.",
+    "Receiver firmware and real IRQ/DMA concurrency are not audited by this offline trace.",
+    "The report buffer remains shared and transient; extension RGB is copied into separately reserved state."
+  ]
+}

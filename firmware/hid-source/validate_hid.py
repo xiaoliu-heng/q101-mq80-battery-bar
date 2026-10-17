@@ -20,7 +20,7 @@ from mq80lab.engine import Runtime
 from mq80lab.peripherals import crc16
 from mq80lab.scenarios import BUILTINS,run_scenario,apply_step,expected_bar
 
-BUILD=ROOT/'build/side-hid'
+BUILD=ROOT/'build/side-hid-rf-v3.0.1'
 IMAGE=b''
 STOCK=(ROOT/'simulator/assets/stock.bin').read_bytes()
 V2=(ROOT/'simulator/assets/battery-bar-v2.bin').read_bytes()
@@ -35,7 +35,7 @@ def usb(image=None,**environment):
 
 
 def host_bytes(r):
-    return bytes(r.u.mem_read(HOST,38)) # Exclude recorded USB length and padding.
+    return bytes(r.u.mem_read(HOST,38))+bytes(r.u.mem_read(HOST+39,1)) # Exclude recorded USB length.
 
 
 def send(r,command=0,payload=b'',sequence=42,path='direct'):
@@ -58,6 +58,74 @@ def rf_receive(r,request,corrupt_crc=False):
 
 
 class HidTests(unittest.TestCase):
+    def test_firmware_version_features_and_build_through_usb_and_rf(self):
+        for path in ['direct','general','rf']:
+            r=Runtime(IMAGE,{'connection':'rf' if path=='rf' else 'usb','cable':path!='rf'})
+            before=host_bytes(r)
+            p=packet(0,101)
+            reply=r.receive_rf_hid(p) if path=='rf' else r.receive_raw_hid(p,path)
+            state=decode(p,reply)
+            self.assertEqual(state.firmware_version,'3.0.1')
+            self.assertEqual(state.firmware_build,2)
+            self.assertEqual(state.firmware_feature_flags,15)
+            self.assertEqual(state.firmware_features,('fn_b_battery_bar','battery_query','usb_side_rgb','rf_side_rgb'))
+            self.assertEqual(reply[23:],b'FV\x01\x03\x00\x01\x0f\x02\x00')
+            self.assertEqual(host_bytes(r),before)
+            self.assertFalse(r.flash.operations)
+        checks['firmware_identity']={'version':state.firmware_version,'build':state.firmware_build,
+                                     'features':state.firmware_features,'protocol_version':1,
+                                     'transports':['usb-direct','usb-general','rf']}
+
+    def test_new_version_tail_preserves_all_existing_v1_reply_fields(self):
+        previous=(ROOT/'firmware/experimental/side-hid-rf.bin').read_bytes()
+        for connection in ['usb','rf']:
+            a,b=[SimulatedTransport(image,connection) for image in [previous,IMAGE]]
+            for command,payload in [(0,b''),(4,(750).to_bytes(2,'little')),(1,bytes(range(27))),(3,b''),(2,b'')]:
+                p=packet(command,55,payload);qa=a.request(p);qb=b.request(p)
+                self.assertEqual(qa[:23],qb[:23],(connection,command))
+                self.assertEqual(qa[23:],bytes(9))
+                self.assertEqual(qb[23:26],b'FV\x01')
+
+    def test_old_hid_versions_remain_explicitly_unknown_and_controllable(self):
+        for filename,connection in [('side-hid.bin','usb'),('side-hid-rf.bin','rf')]:
+            t=SimulatedTransport((ROOT/'firmware/experimental'/filename).read_bytes(),connection)
+            c=Client(t);state=c.info()
+            self.assertIsNone(state.firmware_version)
+            self.assertIsNone(state.firmware_build)
+            self.assertIsNone(state.firmware_feature_flags)
+            self.assertEqual(state.firmware_features,())
+            self.assertTrue(c.frame(b'\xff'*27).active)
+            self.assertFalse(c.release().active)
+
+    def test_unknown_metadata_schema_is_not_misidentified(self):
+        r=usb();p=packet(0);reply=bytearray(r.receive_raw_hid(p))
+        for marker in [b'FV\x02',b'??\x01',bytes(3)]:
+            reply[23:26]=marker
+            state=decode(p,bytes(reply))
+            self.assertIsNone(state.firmware_version)
+            self.assertIsNone(state.firmware_build)
+            self.assertTrue(state.usb_control)
+
+    def test_feature_flags_and_build_are_decoded_without_guessing(self):
+        r=usb();p=packet(0);reply=bytearray(r.receive_raw_hid(p))
+        reply[26:29]=bytes([3,2,4]);reply[29]=0x81;reply[30:32]=(513).to_bytes(2,'little')
+        state=decode(p,bytes(reply))
+        self.assertEqual(state.firmware_version,'3.2.4')
+        self.assertEqual(state.firmware_build,513)
+        self.assertEqual(state.firmware_feature_flags,0x81)
+        self.assertEqual(state.firmware_features,('fn_b_battery_bar',))
+
+    def test_manifest_constant_and_versioned_filename_match_firmware(self):
+        manifest=json.loads((BUILD/'build-manifest.json').read_text())
+        r=usb();state=send(r)
+        self.assertEqual(manifest['firmware_version'],state.firmware_version)
+        self.assertEqual(manifest['firmware_build'],state.firmware_build)
+        self.assertEqual(manifest['firmware_feature_flags'],state.firmware_feature_flags)
+        self.assertIn('-v3.0.1-',manifest['modified_name'])
+        offset=int(manifest['symbols']['side_firmware_metadata'],16)-0x20000000
+        self.assertEqual(IMAGE[offset:offset+9],r.receive_raw_hid(packet(0))[23:])
+        self.assertEqual(IMAGE[:0x18],STOCK[:0x18])
+
     def test_image_and_fixed_address_preservation(self):
         manifest=json.loads((BUILD/'build-manifest.json').read_text())
         self.assertEqual(hashlib.sha256(IMAGE).hexdigest(),manifest['modified_sha256'])
@@ -246,6 +314,58 @@ class HidTests(unittest.TestCase):
             self.assertEqual(reply[5],3)
             self.assertEqual(host_bytes(r),before)
 
+    def test_timeout_change_cannot_revive_expired_frame_before_next_render(self):
+        # The main loop can receive TIMEOUT after the deadline but before the
+        # lighting task has cleared active. No render/jump_clock is allowed
+        # between expiry and the request: that was the missing v3.0.0 case.
+        for path in ['direct','general','rf']:
+            for elapsed_us in [2000000,2000001]:
+                for start_us in [0,268435000]:
+                    r=Runtime(IMAGE,{'connection':'rf' if path=='rf' else 'usb',
+                                     'cable':path!='rf','main_off':True,'side_mode':4})
+                    exchange=r.receive_rf_hid if path=='rf' else lambda p:r.receive_raw_hid(p,path)
+                    r.now_us=start_us
+                    exchange(packet(1,17,b'\xff'*27));r.render()
+                    r.now_us+=elapsed_us
+                    self.assertFalse(exchange(packet(0))[8]&1)
+                    r.word(0x80b30,7);r.word(0x80a64,11)
+                    response=exchange(packet(4,payload=(5000).to_bytes(2,'little')))
+                    self.assertEqual(response[5],0)
+                    self.assertFalse(response[8]&1,(path,elapsed_us,start_us))
+                    self.assertEqual(exchange(packet(3))[5],4)
+                    r.render()
+                    self.assertEqual(bytes(r.u.mem_read(SIDE,27)),bytes(27))
+                    self.assertEqual((r.word(0x80b30),r.word(0x80a64)),(7,11))
+                    self.assertTrue(exchange(packet(1,payload=b'\x80'*27))[8]&1)
+
+    def test_shortening_timeout_latches_expiry_until_new_frame(self):
+        for path in ['direct','general','rf']:
+            r=Runtime(IMAGE,{'connection':'rf' if path=='rf' else 'usb','cable':path!='rf'})
+            exchange=r.receive_rf_hid if path=='rf' else lambda p:r.receive_raw_hid(p,path)
+            exchange(packet(1,payload=b'\xff'*27))
+            r.now_us=750000
+            self.assertFalse(exchange(packet(4,payload=(500).to_bytes(2,'little')))[8]&1)
+            # Extending a newly expired timeout in the same main-loop interval
+            # must not reactivate the old frame either.
+            self.assertFalse(exchange(packet(4,payload=(5000).to_bytes(2,'little')))[8]&1)
+            self.assertEqual(exchange(packet(3))[5],4)
+            self.assertTrue(exchange(packet(1,payload=b'\x80'*27))[8]&1)
+
+    def test_live_timeout_change_keeps_original_frame_timestamp(self):
+        for path in ['direct','general','rf']:
+            r=Runtime(IMAGE,{'connection':'rf' if path=='rf' else 'usb','cable':path!='rf'})
+            exchange=r.receive_rf_hid if path=='rf' else lambda p:r.receive_raw_hid(p,path)
+            exchange(packet(1,payload=b'\xff'*27))
+            r.now_us=250000
+            response=exchange(packet(4,payload=(500).to_bytes(2,'little')))
+            self.assertTrue(response[8]&1)
+            self.assertEqual(int.from_bytes(response[15:17],'little'),250)
+            self.assertEqual(r.word(HOST),0)
+            response=exchange(packet(4,payload=(5000).to_bytes(2,'little')))
+            self.assertTrue(response[8]&1)
+            self.assertEqual(int.from_bytes(response[15:17],'little'),4750)
+            self.assertEqual(r.word(HOST),0)
+
     def test_fn_b_temporarily_overrides_then_resumes_host_frame(self):
         for side_mode in [0,4]:
             r=usb(main_off=True,side_mode=side_mode)
@@ -275,7 +395,7 @@ class HidTests(unittest.TestCase):
         self.assertEqual(r.byte(HOST+35),0)
         self.assertEqual(bytes(r.u.mem_read(SIDE,27)),bytes(27))
 
-    def test_real_rf_receive_dispatch_reply_and_control_gate(self):
+    def test_real_rf_receive_dispatch_reply_and_control(self):
         r=Runtime(IMAGE,{'connection':'rf'})
         p=packet(0,37)
         self.assertEqual(rf_receive(r,p),1)
@@ -293,11 +413,101 @@ class HidTests(unittest.TestCase):
                                     'reply':reply.hex(),'rf_packet':rf_packet.hex(),
                                     'receiver_firmware_emulated':False,'physical_rf_test':False}
         r.byte(0x80b2d,0)
-        before=host_bytes(r)
         self.assertEqual(rf_receive(r,packet(1,38,b'\xff'*27)),1)
         r.invoke('raw_hid_dispatch',0x2000e190)
-        self.assertEqual(r.byte(0x80be8+5),5)
-        self.assertEqual(host_bytes(r),before)
+        self.assertEqual(r.byte(0x80be8+5),0)
+        self.assertEqual(r.byte(HOST+39),1)
+        r.render()
+        self.assertEqual(bytes(r.u.mem_read(SIDE,27)),b'\xa2'*27)
+
+    def test_rf_all_commands_and_repeated_transaction_cleanup(self):
+        t=SimulatedTransport(IMAGE,connection='rf');c=Client(t);r=t.runtime
+        self.assertTrue(c.info().rf_control)
+        self.assertEqual(c.timeout(750).timeout_ms,750)
+        for i in range(260):
+            state=c.frame(bytes([i&255])*27)
+            self.assertEqual(state.last_frame_sequence,c.sequence)
+            self.assertEqual(r.byte(0x80b2d),0)
+        self.assertEqual(len(r.packets),1000)
+        r.jump_clock(500)
+        self.assertTrue(c.keepalive().active)
+        self.assertEqual(c.info().remaining_ms,750)
+        self.assertFalse(c.release().active)
+        self.assertFalse(r.flash.operations)
+        self.assertGreater(r.calls['rf_configuration_closing_ack'],780)
+
+    def test_rf_bad_crc_checksum_and_short_frame_are_non_mutating(self):
+        r=Runtime(IMAGE,{'connection':'rf','cable':False})
+        before=host_bytes(r)
+        for corrupt in ['corrupt_crc','corrupt_checksum']:
+            self.assertIsNone(r.receive_rf_hid(packet(1,payload=b'\xff'*27),**{corrupt:True}))
+            self.assertEqual(host_bytes(r),before)
+            self.assertEqual(r.byte(0x80b2d),0)
+        for length in range(3,32):
+            reply=r.receive_rf_hid(packet(1,payload=b'\xff'*27)[:length])
+            self.assertEqual(len(reply),length)
+            self.assertEqual(r.byte(0x80be8+5),6)
+            self.assertEqual(host_bytes(r),before)
+
+    def test_rf_live_lease_holds_idle_then_expiry_and_release_allow_sleep(self):
+        for finish in ['release','timeout']:
+            t=SimulatedTransport(IMAGE,connection='rf');c=Client(t);r=t.runtime
+            for command in ['frame','keepalive']:
+                if command=='frame':c.frame(b'\xff'*27)
+                r.word(0x80b30,90);r.word(0x80a64,590)
+                if command=='keepalive':c.keepalive()
+                r.render()
+                self.assertEqual(r.word(0x80b30),0)
+                self.assertEqual(r.word(0x80a64),0)
+            if finish=='release':c.release()
+            else:r.jump_clock(2000)
+            r.word(0x80b30,7);r.word(0x80a64,11)
+            self.assertFalse(c.info().active)
+            r.render()
+            self.assertEqual(r.word(0x80b30),7)
+            self.assertEqual(r.word(0x80a64),11)
+            r.sleep_checkpoint()
+            self.assertEqual(r.state()['status'],'sleeping')
+            r.tap(['3,1'])
+            self.assertEqual(r.host_text,'a')
+
+    def test_rf_info_and_invalid_keepalive_cannot_delay_sleep(self):
+        r=Runtime(IMAGE,{'connection':'rf','cable':False})
+        r.word(0x80b30,7);r.word(0x80a64,11)
+        self.assertFalse(decode(packet(0),r.receive_rf_hid(packet(0))).active)
+        self.assertEqual(r.receive_rf_hid(packet(3))[5],4)
+        self.assertEqual(r.word(0x80b30),7)
+        self.assertEqual(r.word(0x80a64),11)
+
+    def test_rf_parser_only_adds_two_idle_counters_to_memory_write_set(self):
+        r=Runtime(IMAGE,{'connection':'rf','cable':False})
+        symbols=json.loads((BUILD/'build-manifest.json').read_text())['symbols']
+        r.u.mem_write(0x80be8,packet(1,73,bytes(range(27))))
+        r.byte(0x809b0,32)
+        r.invoke('rf_parser_memory_audit',int(symbols['side_hid_process'],16))
+        allowed=(set(range(0x80be8,0x80c08))|set(range(HOST,HOST+40))|
+                 set(range(0x9fc00,0xa0000))|set(range(0x80b30,0x80b34))|set(range(0x80a64,0x80a68)))
+        for address,size,_ in r.writes:
+            self.assertTrue(set(range(address,address+size))<=allowed,(hex(address),size))
+        self.assertFalse(r.flash.operations)
+
+    def test_rf_connection_switch_revokes_instead_of_migrating_lease(self):
+        t=SimulatedTransport(IMAGE,connection='rf');c=Client(t);r=t.runtime
+        c.frame(bytes([0,0,255])*9);r.render()
+        self.assertEqual(bytes(r.u.mem_read(SIDE,27)),bytes([0,0,162])*9)
+        r.byte(0x80994,2);r.render()
+        self.assertEqual(r.byte(HOST+35),0)
+        # USB connection indication can legitimately render after a mode
+        # switch; verify host RGB is no longer reapplied across render calls.
+        r.render()
+        self.assertNotEqual(bytes(r.u.mem_read(SIDE,27)),bytes([0,0,162])*9)
+
+    def test_rf_non_extension_via_traffic_matches_battery_firmware(self):
+        a,b=[Runtime(image,{'connection':'rf','cable':False}) for image in [V2,IMAGE]]
+        for data in [bytes([1]),bytes([2]),bytes([8,3,1]),bytes([0xc]),bytes([0xfe,1,2,3,4])]:
+            p=data+bytes(32-len(data))
+            self.assertEqual(a.receive_rf_hid(p),b.receive_rf_hid(p),p.hex())
+        self.assertFalse(b.flash.operations)
 
     def test_bad_rf_crc_is_rejected_before_dispatch(self):
         r=Runtime(IMAGE,{'connection':'rf'})
@@ -310,6 +520,14 @@ class HidTests(unittest.TestCase):
             with self.assertRaises(UnsupportedFirmware):Client(t).frame(b'\xff'*27)
             self.assertEqual(t.runtime.calls.get('raw_hid_dispatch'),1)
             self.assertFalse(t.runtime.flash.operations)
+
+    def test_client_refuses_rf_control_on_legacy_usb_only_firmware(self):
+        legacy=(ROOT/'firmware/experimental/side-hid.bin').read_bytes()
+        t=SimulatedTransport(legacy,connection='rf');c=Client(t)
+        with self.assertRaises(ProtocolError):c.frame(b'\xff'*27)
+        self.assertEqual(t.runtime.calls.get('raw_hid_dispatch'),1)
+        self.assertEqual(t.runtime.byte(HOST+35),0)
+        self.assertFalse(t.runtime.flash.operations)
 
     def test_guarded_host_client_commands(self):
         t=SimulatedTransport(IMAGE);c=Client(t)

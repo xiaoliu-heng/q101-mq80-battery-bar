@@ -1,5 +1,6 @@
 import copy
 from .engine import Runtime, bounded_int
+from .side_hid import validate_settings
 
 
 def expected_bar(percent):
@@ -68,7 +69,8 @@ def validate_scenario(scenario):
     if not isinstance(steps,list) or not 1<=len(steps)<=150: raise ValueError('场景需要 1～150 个步骤。')
     allowed={'keys':{'type','keys'},'tap':{'type','keys','hold_ms'},'advance':{'type','ms'},
              'jump':{'type','ms'},'environment':{'type','values'},'sleep':{'type','gate'},
-             'render':{'type'},'query':{'type'},'preview':{'type','ms'},'assert':{'type','path','equals'}}
+             'render':{'type'},'query':{'type'},'preview':{'type','ms'},'assert':{'type','path','equals'},
+             'side_hid':{'type','mode','colors','brightness','period_ms'}}
     total=0
     for step in steps:
         if not isinstance(step,dict) or step.get('type') not in allowed: raise ValueError('未知场景步骤。')
@@ -77,6 +79,7 @@ def validate_scenario(scenario):
         if kind=='advance': total+=bounded_int(step.get('ms'),0,5000,'推进时间')
         if kind=='jump': bounded_int(step.get('ms'),0,3600000,'跳跃时间')
         if kind=='preview': bounded_int(step.get('ms'),0,5000,'预览时间')
+        if kind=='side_hid': validate_settings({k:v for k,v in step.items() if k!='type'})
         if kind=='tap': total+=bounded_int(step.get('hold_ms',50),1,1000,'按住时间')+100
         if kind=='assert' and (not isinstance(step.get('path'),str) or len(step['path'])>100):
             raise ValueError('断言路径无效。')
@@ -104,6 +107,7 @@ def apply_step(runtime,step):
     elif kind=='environment': runtime.apply_environment(step['values'])
     elif kind=='sleep': runtime.sleep_checkpoint(step.get('gate','fast'))
     elif kind=='render': runtime.render()
+    elif kind=='side_hid': runtime.side_hid.configure({k:v for k,v in step.items() if k!='type'})
     elif kind=='query':
         for substep in query_steps(): apply_step(runtime,substep)
     elif kind=='assert':

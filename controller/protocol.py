@@ -1,11 +1,13 @@
 """Pure packet codec and guarded client; importing this module opens no device."""
 from dataclasses import dataclass
+from typing import Optional, Tuple
 
 MAGIC = bytes([0xfe,0x53,0x4c])
 VERSION = 1
 INFO, FRAME, RELEASE, KEEPALIVE, TIMEOUT = range(5)
+FIRMWARE_FEATURES = {1:'fn_b_battery_bar',2:'battery_query',4:'usb_side_rgb',8:'rf_side_rgb'}
 STATUS = {0:'OK',1:'协议版本不支持',2:'未知命令',3:'参数无效',4:'控制已超时或尚未激活',
-          5:'当前版本仅支持 USB 模式控制',6:'报告长度必须为 32 字节'}
+          5:'当前连接方式不允许侧灯控制',6:'报告长度必须为 32 字节'}
 
 
 class ProtocolError(RuntimeError):
@@ -46,6 +48,11 @@ class State:
     usb_control:bool
     led_count:int
     maximum_channel:int
+    rf_control:bool=False
+    firmware_version:Optional[str]=None
+    firmware_build:Optional[int]=None
+    firmware_feature_flags:Optional[int]=None
+    firmware_features:Tuple[str,...]=()
 
 
 def decode(request,reply):
@@ -55,12 +62,18 @@ def decode(request,reply):
         raise ProtocolError('回复版本、命令或序号不匹配。')
     if reply[5]:
         raise ProtocolError(STATUS.get(reply[5],'未知状态：%d'%reply[5]))
-    if reply[7]!=9 or reply[21]!=162 or not reply[12]&1:
+    if reply[7]!=9 or reply[21]!=162 or not reply[12]&3:
         raise UnsupportedFirmware('设备能力与此客户端不匹配。')
+    metadata = reply[23:26] == b'FV\x01'
+    firmware_version = '.'.join(map(str,reply[26:29])) if metadata else None
+    feature_flags = reply[29] if metadata else None
     return State(bool(reply[8]&1),bool(reply[8]&2),reply[9],
                  {0:'ble',1:'rf',2:'usb'}.get(reply[10],'unknown'),reply[11],
                  int.from_bytes(reply[13:15],'little'),int.from_bytes(reply[15:17],'little'),
-                 bool(reply[12]&1),reply[7],reply[21])
+                 bool(reply[12]&1),reply[7],reply[21],bool(reply[12]&2),
+                 firmware_version,int.from_bytes(reply[30:32],'little') if metadata else None,
+                 feature_flags,tuple(name for bit,name in FIRMWARE_FEATURES.items()
+                                     if feature_flags is not None and feature_flags&bit))
 
 
 class Client:
@@ -69,6 +82,7 @@ class Client:
         self.sequence=0
         self.verified=False
         self.connection=None
+        self.controls={}
 
     def _request(self,command,payload=b''):
         self.sequence=(self.sequence+1)&255
@@ -79,31 +93,33 @@ class Client:
         state=self._request(INFO)
         self.verified=True
         self.connection=state.connection
+        self.controls={'usb':state.usb_control,'rf':state.rf_control}
         return state
 
-    def _require_usb(self):
+    def _require_control(self):
         # Every new connection verifies the extension before sending any frame.
         if not self.verified:
             self.info()
-        if self.connection!='usb':
-            raise ProtocolError('请接数据线并切到 USB 模式；接收器目前只开放能力查询。')
+        expected=getattr(self.transport,'connection',self.connection)
+        if self.connection!=expected or not self.controls.get(self.connection,False):
+            raise ProtocolError('固件未开放当前通道的侧灯控制；2.4G 需要 USB/RF 实验固件并切到 2.4G 模式。')
 
     def frame(self,rgb):
         if not isinstance(rgb,bytes) or len(rgb)!=27:
             raise ValueError('需要 27 字节 RGB 帧。')
-        self._require_usb()
+        self._require_control()
         return self._request(FRAME,rgb)
 
     def release(self):
-        self._require_usb()
+        self._require_control()
         return self._request(RELEASE)
 
     def keepalive(self):
-        self._require_usb()
+        self._require_control()
         return self._request(KEEPALIVE)
 
     def timeout(self,milliseconds):
         if type(milliseconds) is not int or not 500 <= milliseconds <= 10000:
             raise ValueError('超时需要在 500～10000 毫秒之间。')
-        self._require_usb()
+        self._require_control()
         return self._request(TIMEOUT,milliseconds.to_bytes(2,'little'))

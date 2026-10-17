@@ -86,6 +86,8 @@ class Runtime(m.FirmwareEmulator):
         self._initialize_checkpoint()
         self.invoke('lighting_initialize',m.XIP+0xd5b4)
         self.log('runtime','checkpoint','从已连接运行检查点启动',{'full_boot':False,'profile':PROFILE})
+        from .side_hid import SideHIDHost
+        self.side_hid = SideHIDHost(self)
         self.render()
 
     def log(self,kind,origin,message,details=None):
@@ -334,19 +336,24 @@ class Runtime(m.FirmwareEmulator):
 
     def _rf_transmit(self,address):
         frame = bytes(self.u.mem_read(address,64))
+        configuration = ((frame[10] == 0x30 and 1 <= frame[11] <= 32)
+                         or frame[10:12] == b'\xb7\x00')
         token = frame.hex()
         repeated = token == self.rf_frame_token
         if not repeated:
             self.rf_frame_token = token
             self.rf_unique_count += 1
         self.rf_tx_attempts += 1
-        drop = bool(self.env.drop_every and self.rf_tx_attempts % self.env.drop_every==0)
+        drop = bool(not configuration and self.env.drop_every and self.rf_tx_attempts % self.env.drop_every==0)
         record = {'time_ms':round(self.now_us/1000,3),'bytes':token,'retry':repeated,
-                  'modeled_drop':drop,'receiver_connected':self.env.receiver}
+                  'modeled_drop':drop,'receiver_connected':self.env.receiver,
+                  'kind':'configuration' if configuration else 'keyboard'}
         self.packets.append(record)
         self.packets = self.packets[-1000:]
         if not repeated: self.log('tx','firmware','2.4G 封包提交到发送边界',record)
-        if self.rf_ack is None and self.env.receiver and not drop:
+        # Configuration delivery uses its real B2 ACK path in receive_rf_hid.
+        # Keyboard packet loss/latency injection remains in the original model.
+        if not configuration and self.rf_ack is None and self.env.receiver and not drop:
             self.rf_ack = {'at_us':self.now_us+self.env.ack_delay_ms*1000,'frame':frame.hex()}
 
     def _process_ack(self):
@@ -448,6 +455,65 @@ class Runtime(m.FirmwareEmulator):
         if self.call_context: return
         self.invoke('frame',FUNCTIONS['frame'])
 
+    def receive_rf_hid(self,report,corrupt_crc=False,corrupt_checksum=False):
+        """Execute stock RF B0 receive, shared dispatch, reply and B2 ACK.
+
+        Receiver delivery is immediate and modeled, not a receiver firmware or
+        RF IRQ/air simulation. Keyboard report loss/delay injection is separate.
+        Invalid CRC/checksum packets return None without dispatching a command.
+        """
+        if not isinstance(report,bytes) or not 1 <= len(report) <= 32:
+            raise ValueError('2.4G 配置报告需要 1～32 字节。')
+        if self.env.connection!='rf' or not self.env.receiver or not self.env.host_ready or self.env.host_suspended:
+            raise ValueError('需要可响应的虚拟 2.4G 接收器。')
+        if self.call_context:
+            raise ValueError('键盘已休眠；请先按键唤醒，再发送侧灯命令。')
+        if self.byte(0x80b2d):
+            raise SimulationFault('上一条无线配置尚未完成确认。')
+        frame=bytearray(64)
+        frame[5]=7;frame[6]=0x57;frame[8]=0x8c;frame[9]=0xb0;frame[10]=len(report)
+        frame[11:11+len(report)]=report
+        frame[11+len(report)]=sum(frame[9:11+len(report)])&255
+        if corrupt_checksum:frame[11+len(report)]^=1
+        frame[47:49]=crc16(frame[6:47]).to_bytes(2,'little')
+        if corrupt_crc:frame[47]^=1
+        self.u.mem_write(0x90000,bytes(frame))
+        self.invoke('rf_configuration_receive',0x1840,0x90000)
+        if self.reg(10)!=1 or self.byte(0x80b2d)!=1:return None
+        marker=self.packets[-1] if self.packets else None
+        self.invoke('raw_hid_dispatch',m.XIP+0xe190)
+        self.invoke('rf_configuration_reply',m.XIP+0x10dfc)
+        replies=[]
+        for row in reversed(self.packets):
+            if row is marker:break
+            data=bytes.fromhex(row['bytes'])
+            size=data[11]
+            if (data[10]==0x30 and 1 <= size <= 32
+                    and data[12+size]==sum(data[10:12+size])&255):
+                replies.append(data[12:12+size])
+        if len(replies)!=1:raise SimulationFault('无线配置未产生一个完整回复。')
+        ack=bytearray(64)
+        ack[5]=7;ack[6]=0x57;ack[8]=0x8c;ack[9]=0xb2
+        ack[47:49]=crc16(ack[6:47]).to_bytes(2,'little')
+        self.u.mem_write(0x90000,bytes(ack))
+        self.invoke('rf_configuration_ack',0x1840,0x90000)
+        if self.byte(0x80b2d)!=3:raise SimulationFault('无线配置 B2 确认未被接受。')
+        # The original B2 path requests three B7 closing transmissions. Its
+        # receive callback releases the pending flag only after those sends,
+        # on a normal CRC-checked link ACK. Execute that state machine too.
+        closing_ack=bytearray(64)
+        closing_ack[5]=7;closing_ack[6:9]=b'\x57\x82\x00'
+        closing_ack[9:11]=crc16(closing_ack[6:9]).to_bytes(2,'little')
+        for _ in range(3):
+            self.invoke('rf_configuration_reply_cleanup',m.XIP+0x10dfc)
+            self.u.mem_write(0x90000,bytes(closing_ack))
+            self.invoke('rf_configuration_closing_ack',0x1840,0x90000)
+        if self.byte(0x80b2d):raise SimulationFault('无线配置确认后未释放接收状态。')
+        self.log('raw-hid','firmware+model','虚拟 2.4G 请求已执行真实收包、回复和确认路径',
+                 {'request':report.hex(),'reply':replies[0].hex(),'receive_path':'rf',
+                  'configuration_ack':'B2','receiver_delivery':'immediate-model'})
+        return replies[0]
+
     def receive_raw_hid(self,report,path='direct'):
         """Model a USB OUT FIFO; execute both original receive/dispatch paths.
 
@@ -462,7 +528,7 @@ class Runtime(m.FirmwareEmulator):
             raise ValueError('需要可响应的虚拟 USB 主机。')
         if self.call_context:
             raise ValueError('请先结束当前外设等待。')
-        start=len(self.reports)
+        marker=self.reports[-1] if self.reports else None
         self._raw_hid_fifo=list(report)
         self.byte(0x80100816,len(report))
         self.byte(0x80100839,0x40)
@@ -480,8 +546,11 @@ class Runtime(m.FirmwareEmulator):
         finally:
             self._raw_hid_fifo=None
             self.byte(0x80100839,0)
-        replies=[bytes.fromhex(r['hex']) for r in self.reports[start:]
-                 if r.get('endpoint')==4 and len(bytes.fromhex(r['hex']))==32]
+        replies=[]
+        for row in reversed(self.reports):
+            if row is marker:break
+            if row.get('endpoint')==4 and len(bytes.fromhex(row['hex']))==32:
+                replies.append(bytes.fromhex(row['hex']))
         if len(replies)!=1:
             raise SimulationFault('Raw HID 请求没有得到一个完整回复。')
         self.log('raw-hid','firmware+model','虚拟主机请求已执行真实接收和回复路径',
@@ -535,6 +604,8 @@ class Runtime(m.FirmwareEmulator):
                 self._animation_pulse()
                 self.render()
         self._process_ack()
+
+        self.side_hid.pump()
 
     def advance(self,milliseconds):
         bounded_int(milliseconds,0,5000,'推进时间')
@@ -591,6 +662,7 @@ class Runtime(m.FirmwareEmulator):
         while self._last_frame_at+10000 <= target:
             self.now_us=max(self.now_us,self._last_frame_at+10000)
             self.clock(self.now_us*16)
+            self.side_hid.pump()
             self._animation_pulse()
             self.render()
         self.now_us=target
@@ -608,6 +680,8 @@ class Runtime(m.FirmwareEmulator):
     def sleep_checkpoint(self,gate='fast'):
         if self.env.connection=='usb': raise ValueError('USB 主机挂起可单独设置；无线休眠场景不适用于 USB。')
         if self.keys or self.call_context: raise ValueError('请先松开所有键，并等待当前任务完成。')
+        if self.side_hid.state()['active'] and self.env.connection=='rf':
+            raise ValueError('侧灯控制期间保持无线接收；请先释放控制或等待超时，再检查休眠。')
         if gate not in ['fast','normal']: raise ValueError('未知休眠场景。')
         if gate=='fast':
             self.apply_environment({'main_off':True,'side_mode':4})
@@ -623,6 +697,7 @@ class Runtime(m.FirmwareEmulator):
         colors=[list(rgb[i:i+3]) for i in range(0,279,3)]
         status='fault' if self.error_info else 'sleeping' if self.pending_pm or self.sdk_sleep else 'restoring' if self.byte(0x80b08) else 'ready'
         return {'firmware':self.metadata,'profile':PROFILE,'environment':asdict(self.env),
+                'side_hid':self.side_hid.state(),
                 'time_ms':round(self.now_us/1000,3),'status':status,'error':self.error_info,
                 'keys':[','.join(map(str,k)) for k in sorted(self.keys)],
                 'rgb':{'main':colors[:84],'side':colors[84:],'physical_main_mapping_verified':False},
@@ -637,7 +712,7 @@ class Runtime(m.FirmwareEmulator):
                          'pending_pm':self.pending_pm,'silicon_sleep_proven':False},
                 'battery':{'cache':self.byte(0x80948),'query_active':bool(self.byte(0x80b58)&2),
                            'query_remaining_ms':max(0,3000-(((self.now_us*16-self.word(m.TICK))&0xffffffff)//16000))
-                           if self.byte(0x80b58)&2 and self.metadata['sha256']=='f3e86554be1ed5faf11750fceea85980c9ccd080912be4552e8317fb09ef7719' else None},
+                           if self.byte(0x80b58)&2 and (self.metadata['side_hid'] or self.metadata['sha256']=='f3e86554be1ed5faf11750fceea85980c9ccd080912be4552e8317fb09ef7719') else None},
                 'stats':{'instructions':self.total_instructions,'andes_extensions':self.total_extensions,
                          'covered_addresses':len(self.covered),'calls':self.calls,'boundaries':self.boundary_counts,
                          'trace_dropped':self.trace_dropped,'flash_operations':len(self.flash.operations)},
@@ -669,6 +744,7 @@ class Runtime(m.FirmwareEmulator):
                         last_hid=self._last_hid.hex(),covered=list(self.covered),
                         mmio_reads=self.mmio_reads,mmio_writes=self.mmio_writes)
         return {'format':'mq80lab-snapshot-v1','profile':PROFILE,'firmware_sha256':self.metadata['sha256'],
+                'side_hid_host':self.side_hid.snapshot(),
                 'environment':asdict(self.env),'runtime':metadata,
                 'regions':[[address,size,base64.b64encode(zlib.compress(bytes(self.u.mem_read(address,size)))).decode()]
                            for address,size in regions],
@@ -705,6 +781,9 @@ class Runtime(m.FirmwareEmulator):
                   'total_instructions','total_extensions','calls','boundary_counts','_last_queue','_last_frame_at',
                   '_next_irq_us','_call_instructions','keys','last_host_hid','last_hid','covered','mmio_reads','mmio_writes'}
         if set(runtime)!=required: raise ValueError('快照运行状态字段不匹配。')
+        from .side_hid import SideHIDHost
+        host=SideHIDHost(self)
+        if 'side_hid_host' in snapshot: host.restore(snapshot['side_hid_host'])
         for address,raw in decoded: self.u.mem_write(address,raw)
         self._decoded_instructions.clear()
         for i,value in enumerate(registers[:32]): self.set_reg(i,value)
@@ -721,4 +800,5 @@ class Runtime(m.FirmwareEmulator):
         self.mmio_writes={int(k):v for k,v in runtime['mmio_writes'].items()}
         self.flash.data[:]=flash
         self.flash.operations=snapshot['flash_operations']
+        self.side_hid=host
         self.log('snapshot','model','运行快照已恢复',{'same_firmware_sha256':True})

@@ -2,6 +2,7 @@
 import argparse
 import hashlib
 import json
+import re
 import struct
 import subprocess
 import zlib
@@ -11,7 +12,6 @@ STOCK_SHA = 'd19733978808c856db93236ea3472b2cf843493c9aa6d5320db50412431e5210'
 XIP = 0x20000000
 APPEND = 0x1ed50
 BSS_END = 0x826c4
-NAME = 'MQ80-CS836B-V0109-20241220-BatteryBar-SideHID-EXPERIMENTAL.bin'
 ORIGINAL = {0x142:'130eae55', 0x98f0:'411122c6', 0xc400:'011122cc',
             0x13520:'8b078035f99b93e7', 0xe22c:'8b14803e',
             0xdfc4:'03876781', 0xe1d8:'03876781'}
@@ -32,6 +32,17 @@ def jal(pc, target, rd=0):
 def build(stock_path, toolchain, out):
     src = Path(__file__).resolve().parent
     out.mkdir(parents=True,exist_ok=True)
+    version = json.loads((src/'version.json').read_text())
+    assert re.fullmatch(r'(0|[1-9]\d*)\.(0|[1-9]\d*)\.(0|[1-9]\d*)', version['version']), 'Requires numeric major.minor.patch'
+    parts = list(map(int, version['version'].split('.')))
+    assert all(0 <= n <= 255 for n in parts)
+    assert type(version['build']) is int and 1 <= version['build'] <= 65535
+    assert type(version['feature_flags']) is int and 0 <= version['feature_flags'] <= 255
+    firmware_name = 'MQ80-CS836B-V0109-20241220-BatteryBar-SideHID-v%s-USB-RF-EXPERIMENTAL.bin' % version['version']
+    header = '\n'.join('#define SIDE_FW_%s %du' % (key, value) for key, value in
+                       zip(['MAJOR','MINOR','PATCH','BUILD','FEATURE_FLAGS'],
+                           [*parts,version['build'],version['feature_flags']]))+'\n'
+    (out/'firmware_version.h').write_text(header)
     stock = stock_path.read_bytes()
     assert digest(stock) == STOCK_SHA, 'Requires the exact MQ80 V0109 stock image'
     assert len(stock) == APPEND+4
@@ -48,7 +59,7 @@ def build(stock_path, toolchain, out):
     flags = [*arch,'-Os','-msmall-data-limit=0','-ffreestanding','-fno-builtin','-fno-pic',
              '-fno-stack-protector','-fno-unwind-tables','-fno-asynchronous-unwind-tables',
              '-ffunction-sections','-fdata-sections','-Wall','-Wextra','-Werror']
-    run('gcc',*flags,'-c',src/'side_hid.c','-o',out/'side_hid.o')
+    run('gcc',*flags,'-I',out.resolve(),'-c',src/'side_hid.c','-o',out/'side_hid.o')
     run('gcc',*arch,'-c',src/'hid_trampoline.S','-o',out/'hid_trampoline.o')
     run('gcc',*arch,'-c',src.parent/'source/trampoline.S','-o',out/'battery_trampoline.o')
     elf = out/'side_hid.elf'
@@ -91,16 +102,20 @@ def build(stock_path, toolchain, out):
     assert actual <= allowed
     assert stock[0x190:0x91b4] == modified[0x190:0x91b4]
     assert stock[0x1c000:APPEND] == modified[0x1c000:APPEND]
-    (out/NAME).write_bytes(modified)
+    (out/firmware_name).write_bytes(modified)
     (out/'stock.bin').write_bytes(stock)
     manifest = {'status':'BUILT_OFFLINE_NOT_FLASHED','base_firmware':'MQ80-CS836B-V0109-20241220',
-                'modified_name':NAME,'modified_size':len(modified),'modified_sha256':digest(modified),
+                'modified_name':firmware_name,'modified_size':len(modified),'modified_sha256':digest(modified),
                 'modified_crc32_telink':'%08X'%(zlib.crc32(body)^0xffffffff),
                 'stock_sha256':digest(stock),'compiled_code_size':len(code),
                 'actual_original_byte_changes':len(actual),'patched_ranges':patches,
                 'symbols':{k:hex(v) for k,v in symbols.items()},'bss_end':hex(BSS_END),
                 'compiler':run('gcc','--version').splitlines()[0],'compiler_flags':flags,
-                'control_transports':['usb'],'rf_info_query':True,'device_access':'NONE'}
+                'control_transports':['usb','rf'],'rf_info_query':True,
+                'firmware_version':version['version'],'firmware_build':version['build'],
+                'firmware_feature_flags':version['feature_flags'],'version_metadata_format':1,
+                'rf_sleep_policy':'Live lighting lease holds stock idle counters at zero; expiry/release resumes stock idle timing.',
+                'device_access':'NONE'}
     (out/'build-manifest.json').write_text(json.dumps(manifest,indent=2)+'\n')
     return manifest
 
