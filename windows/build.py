@@ -70,8 +70,14 @@ def main():
             if not (output/name).is_file():raise RuntimeError('Publish the application before packaging: '+name)
         sdk_version=existing['sdk'];self_contained=existing['self_contained']
     else:
-        for project in ['Kryra.App','Kryra.Cli']:
-            run('publish',f'windows/{project}/{project}.csproj','-c','Release','-r','win-x64','--self-contained',str(not args.framework_dependent).lower(),'-p:PublishSingleFile=false','-p:DebugType=None','--nologo','-o',str(output))
+        projects=['Kryra.App','Kryra.Cli']
+        properties=['-p:PublishSingleFile=false','-p:DebugType=None','-p:DebugSymbols=false',f'-p:PathMap={ROOT}=/_/kryra']
+        # Core tests and publish share intermediate files. Clean both graphs so
+        # a previously tested DLL cannot retain an absolute CodeView PDB path.
+        for project in projects:
+            run('clean',f'windows/{project}/{project}.csproj','-c','Release','-r','win-x64',f'-p:SelfContained={str(not args.framework_dependent).lower()}',*properties,'--nologo')
+        for project in projects:
+            run('publish',f'windows/{project}/{project}.csproj','-c','Release','-r','win-x64','--self-contained',str(not args.framework_dependent).lower(),*properties,'--nologo','-o',str(output))
         sdk_version=subprocess.check_output([str(sdk),'--version'],env=env,text=True).strip();self_contained=not args.framework_dependent
     shutil.copy2(ROOT/'windows/API.html',output/'使用说明.html')
     shutil.copy2(ROOT/'windows/README.md',output/'README.md')
