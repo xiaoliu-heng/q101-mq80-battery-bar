@@ -4,17 +4,18 @@
 
 **项目使用者已在一台 Q101 上确认：有线、2.4G、蓝牙和 VIA 均正常使用。** 其他硬件批次及刷写失败后的强制恢复尚未验证。刷写前请阅读[风险与免责声明](DISCLAIMER.md)。
 
-新开发版 **固件 v3.1.0（构建 3）+ Kryra v1.1.0** 增加纯色、闪烁、呼吸和彩虹的固件本地播放。一次命令包含颜色、亮度、周期和时长，不需要心跳或逐帧发送；到期恢复原灯效，原有无线休眠可提前结束通知。本轮仅离线验证，未刷写真机或验证续航改善。见 [本地通知协议](docs/SIDE_HID.md#本地通知灯效-v310)、[新版实验 BIN](firmware/experimental/side-hid-rf-v3.1.0.bin) 与 [Kryra 原生应用](macos/README.md)。
+新开发版 **固件 v3.1.0（构建 3）+ Kryra v1.3.0** 提供纯色、闪烁、呼吸和彩虹的固件本地播放。一次命令包含颜色、亮度、周期和时长，不需要心跳或逐帧发送；到期恢复原灯效，原有无线休眠可提前结束通知。Kryra 仅支持 3.1.0，采用连续渐变的竖向灯带、固定尺寸面板及 macOS 26 原生 Liquid Glass。使用者已反馈此前 Kryra 真机测试正常；本次 SDK 26 新包先完成离线检查，等待新系统验收。见 [本地通知协议](docs/SIDE_HID.md#本地通知灯效-v310)、[新版实验 BIN](firmware/experimental/side-hid-rf-v3.1.0.bin) 与 [Kryra 原生应用](macos/README.md)。
 
 开发分支新增 [USB / 2.4G 侧灯 HID 控制](docs/SIDE_HID.md)，已验证过真机基础功能的历史固件为 **v3.0.1，构建号 2**，支持 Fn+B 电量条、电量查询及 USB / 2.4G 控灯。可通过电脑工具的 `info` 命令查询版本和功能，下载 [v3.0.1 实验 BIN](firmware/experimental/side-hid-rf-v3.0.1.bin)。2026-10-17，使用者反馈已在真机的 USB 和 2.4G 两种连接下确认读取电量与控制灯光；[反馈记录](firmware/v3.0.1-validation/user-hardware-confirmation-20261017.json)。2.4G 持续控灯会暂缓休眠，释放或停发超时后恢复原计时。
 
-新增 [Kryra 原生 macOS 应用](macos/README.md)：菜单栏显示电量，支持纯色、九段独立调色和彩虹、本机 HTTP API、原生命令行工具，以及一键安装 Codex skill。与用于离线实验的 MQ80 Firmware Lab 分别提供。
+新增 [Kryra 原生 macOS 应用](macos/README.md)：菜单栏显示电量，提供本地通知灯效、本机 HTTP API、原生命令行工具和一键安装 Codex skill。与用于离线实验的 MQ80 Firmware Lab 分别提供。
 
 之前的电量条 **v2** 镜像及其校验值保留不变，未内嵌新的版本查询字段。固件版本 v3.0.1、测试 App 版本 2.4.1、扩展协议版本 1 和官方基线 V0109 分别表示不同对象。[版本与功能说明](docs/SIDE_HID.md#固件版本与功能)
 
 ## 目录
 
 - [功能与实测](#功能与实测)
+- [Kryra 控制应用](#kryra-控制应用)
 - [下载与校验](#下载与校验)
 - [刷写步骤](#刷写步骤)
 - [故障与恢复](#故障与恢复)
@@ -48,6 +49,23 @@
 | Fn+B 电量显示 | 满电时侧灯全长绿色 |
 
 以上来自单台 Q101，不能代表所有 Q101 / MQ80 批次。全部电量档位、长期稳定性、续航和强制恢复仍需进一步验证。[完整验证记录](docs/VALIDATION.md)
+
+## Kryra 控制应用
+
+Kryra 是日常使用的原生 macOS 菜单栏应用，直接通过 IOKit 访问键盘，不依赖 Python 或云服务。运行支持 macOS 13+；**1.3.0 使用 SDK 26.5 / Swift 6.3.3 构建，在 macOS 26+ 使用原生 Liquid Glass**，旧系统使用 Material。
+
+- 菜单栏显示键盘电量，支持 USB 与 2.4G；默认每分钟查询，可设为 30 秒～1 小时，重启保留。
+- 连续渐变的竖向灯带预览；纯色、闪烁、呼吸和彩虹均由固件自行播放，默认亮度 25%、持续 5 秒。编辑只预览，点击发送才下发一次通知。
+- 主面板固定尺寸，设置独立成页；长提示、连接变化和模式切换不会引入滚动条或突然挤窄内容。
+- 本机 API 与 `kryractl` 共用设备控制器，可供自动化程序调用；一键安装 skill 后，可让 Codex 查询电量或发送短时灯光提醒。
+
+<img src="macos/previews/kryra-v1.3.0-light.png" width="310" alt="Kryra 浅色主面板：竖向渐变灯带、电量和四种本地通知灯效"> <img src="macos/previews/kryra-v1.3.0-settings.png" width="310" alt="Kryra 设置页：电量默认每一分钟查询，可配置间隔">
+
+截图为 SDK 26.5 构建在当前 macOS 15.7.4 上的兼容外观，数据来自演示模式；macOS 26 的原生玻璃效果待新系统实测。[深色预览](macos/previews/kryra-v1.3.0-dark.png)。
+
+安装、构建、API 与 skill 用法见 [Kryra README](macos/README.md)；后续 Windows 版本可参考保存的 [产品与技术设计文档](docs/KRYRA_DESIGN.md)，其中包括 UI、轮询规则、USB/RF 协议、平台 HID 适配与验收清单。
+
+使用者于 2026-10-17 [反馈此前 Kryra 真机连接测试正常](macos/hardware-confirmation-20261017.json)，未指定连接方式或功耗数据。新增 SDK 26 / 查询配置的离线结果见 [1.3.0 验证记录](macos/VALIDATION-v1.3.0.json)，不据此宣称续航改善。
 
 ## 下载与校验
 

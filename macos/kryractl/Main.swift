@@ -6,6 +6,7 @@ import AppKit
     Kryra \(AppIdentity.version) — 本机键盘控制
       kryractl battery [--refresh]
       kryractl status
+      kryractl settings [--poll-interval 60]
       kryractl solid FF8000 [--brightness 25] [--seconds 5]
       kryractl blink FF8000 [--period 1000] [--brightness 25] [--seconds 5]
       kryractl breathe 34D399 [--period 1000] [--brightness 25] [--seconds 5]
@@ -13,8 +14,9 @@ import AppKit
       kryractl frame HEX HEX HEX HEX HEX HEX HEX HEX HEX [--brightness 25] [--seconds 5]
       kryractl release
       kryractl launch
-    默认亮度 25%，5 秒后恢复原灯效。四种内置灯效仅发送一次，需 v3.1.0 固件；0.1～60 秒。
-    九段静态颜色支持 0.5～10 秒。没有持续发送或无限期模式；无线休眠可提前结束内置通知。
+    仅支持 v3.1.0 固件，包括电量查询。默认亮度 25%，5 秒后恢复原灯效。
+    四种内置灯效仅发送一次，支持 0.1～60 秒；自定义渐变的九个颜色采样点支持 0.5～10 秒。
+    没有持续发送或无限期模式；无线休眠可提前结束内置通知。
     可选 --request-id N 用于重试同一次内置通知；相同编号和参数不会重新计时。
     结果为 JSON；release 立即恢复键盘原灯效。
     """
@@ -31,6 +33,15 @@ import AppKit
                 route = "/v1/battery" + (args.isEmpty ? "" : "?refresh=true")
             } else if command == "status" {
                 guard args.isEmpty else { throw ControlError("status 不接受额外参数。",status:400) }
+            } else if command == "settings" {
+                route = "/v1/settings"
+                if !args.isEmpty {
+                    guard args.count == 2, args[0] == "--poll-interval", let seconds = Int(args[1]) else {
+                        throw ControlError("settings 仅接受 --poll-interval 整数秒（30～3600）。",status:400)
+                    }
+                    try BatteryPolling.validate(seconds)
+                    method = "POST"; payload = ["battery_poll_interval_seconds":seconds]
+                }
             } else if ["solid","blink","breathe","frame","rainbow","release"].contains(command) {
                 method = "POST"; route = "/v1/lighting"; var body: [String:Any] = ["mode":command]
                 if ["solid","blink","breathe"].contains(command) {

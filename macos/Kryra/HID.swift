@@ -135,7 +135,6 @@ final class DeviceGateway {
     func scan() throws -> [DeviceDescriptor] { devices = try backend.scan(); return devices }
     func command(_ command: Wire.Command, payload: [UInt8] = []) throws -> DeviceReading {
         guard let current, let verified, verified.permits(current.transport) else { throw ControlError("请先连接支持该通道的键盘。") }
-        guard command != .play || verified.nativeEffects else { throw ControlError("本地灯效需要 v3.1.0 或更新的兼容固件，请先升级固件。") }
         do {
             let state = try request(command, payload:payload, device:current)
             guard state.connection == current.transport else { throw ControlError("键盘连接模式已改变，请重新连接。") }

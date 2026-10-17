@@ -43,19 +43,19 @@ enum Wire {
     }
     static func decode(_ request: [UInt8], _ reply: [UInt8]) throws -> FirmwareState {
         guard request.count == 32, reply.count == 32, Array(reply[0..<3]) == magic,
-              Array(reply[17..<21]) == Array("Q101".utf8) else { throw ControlError("键盘尚未提供 Q101 控制协议，请使用已验证的 v3 固件。") }
+              Array(reply[17..<21]) == Array("Q101".utf8) else { throw ControlError("Kryra 需要键盘固件 3.1.0，请先更新固件。") }
         guard reply[3] == request[3] | 8, reply[4] == request[4], reply[6] == 1 else { throw ControlError("键盘回复的命令、序号或协议版本不匹配。") }
         let errors = ["", "协议版本不支持", "未知命令", "参数无效", "灯光控制已过期", "当前连接不允许控灯", "报文长度错误"]
         guard reply[5] == 0 else { throw ControlError(Int(reply[5]) < errors.count ? errors[Int(reply[5])] : "未知固件错误") }
         guard reply[7] == 9, reply[21] == 162, reply[12] & 3 != 0, reply[9] <= 100 else { throw ControlError("键盘返回的能力或电量数据无效。") }
-        let versioned = Array(reply[23..<26]) == [0x46,0x56,1]
+        guard Array(reply[23..<29]) == [0x46,0x56,1,3,1,0], reply[29] & 16 != 0, reply[22] & 16 != 0 else {
+            throw ControlError("Kryra 仅支持键盘固件 3.1.0，请先更新固件。")
+        }
         return FirmwareState(percent: Int(reply[9]), connection: reply[10] == 2 ? "usb" : reply[10] == 1 ? "rf" : "ble",
             active: reply[8] & 1 != 0, batteryQuery: reply[8] & 2 != 0,
             usbControl: reply[12] & 1 != 0, rfControl: reply[12] & 2 != 0,
             timeoutMS: Int(reply[13]) | Int(reply[14]) << 8, remainingMS: Int(reply[15]) | Int(reply[16]) << 8,
-            version: versioned ? "\(reply[26]).\(reply[27]).\(reply[28])" : nil,
-            build: versioned ? Int(reply[30]) | Int(reply[31]) << 8 : nil,
-            nativeEffects: versioned && reply[29] & 16 != 0 && reply[22] & 16 != 0)
+            version:"3.1.0",build:Int(reply[30]) | Int(reply[31]) << 8,nativeEffects:true)
     }
 }
 
@@ -100,18 +100,18 @@ struct LightingCommand: Equatable {
                   n.doubleValue >= 0.1, n.doubleValue <= 60 else { throw ControlError("duration_seconds 需要在 0.1～60 秒之间。", status: 400) }
             duration = n.doubleValue
         }
-        if mode == "frame", let duration, !(0.5...10).contains(duration) { throw ControlError("九段静态颜色支持 0.5～10 秒；四种内置灯效支持最多 60 秒。",status:400) }
+        if mode == "frame", let duration, !(0.5...10).contains(duration) { throw ControlError("自定义渐变支持 0.5～10 秒；四种内置灯效支持最多 60 秒。",status:400) }
         var colors = Array(repeating: RGB(255,128,0), count: 9)
         if ["solid","blink","breathe"].contains(mode) {
             guard let hex = value["color"] as? String, value["colors"] == nil else { throw ControlError("纯色需要 color 参数。", status: 400) }
             colors = Array(repeating: try RGB(hex: hex), count: 9)
         } else if mode == "frame" {
-            guard let hexes = value["colors"] as? [String], hexes.count == 9, value["color"] == nil else { throw ControlError("逐段颜色需要九个十六进制 colors。", status: 400) }
+            guard let hexes = value["colors"] as? [String], hexes.count == 9, value["color"] == nil else { throw ControlError("自定义渐变需要九个十六进制颜色采样点 colors。", status: 400) }
             colors = try hexes.map { try RGB(hex: $0) }
         } else if value["color"] != nil || value["colors"] != nil { throw ControlError("该模式不接受颜色参数。", status: 400) }
         if mode == "release", value.count != 1 { throw ControlError("release 仅接受 mode 参数。", status: 400) }
         let requestID = value["request_id"] == nil ? nil : UInt32(try integer("request_id",1,1...Int(UInt32.max)))
-        if mode == "frame", requestID != nil { throw ControlError("九段旧协议不支持 request_id。",status:400) }
+        if mode == "frame", requestID != nil { throw ControlError("FRAME 不支持 request_id。",status:400) }
         return LightingCommand(mode: mode, colors: colors, brightness: brightness, periodMS: period, duration: duration, requestID:requestID)
     }
     func payload(elapsed: Double) -> [UInt8] {

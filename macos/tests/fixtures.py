@@ -12,7 +12,7 @@ from mq80lab.engine import Runtime
 
 def main():
     rows=[]
-    for version in ['3.0.1','3.1.0']:
+    for version in ['3.1.0']:
         image=(ROOT/f'firmware/experimental/side-hid-rf-v{version}.bin').read_bytes()
         for path in ['direct','general','rf']:
             r=Runtime(image,{'connection':'rf' if path=='rf' else 'usb','cable':path!='rf'})

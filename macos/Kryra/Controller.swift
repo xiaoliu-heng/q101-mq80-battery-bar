@@ -13,36 +13,60 @@ import Combine
     @Published private(set) var framesSent = 0
     @Published private(set) var selection: String
     @Published private(set) var sleeping = false
+    @Published private(set) var pollIntervalSeconds: Int
     let demo: Bool
     private let worker: HIDWorker
     private let defaults: UserDefaults
+    private let pollSleep: @Sendable (TimeInterval) async throws -> Void
+    private let dateNow: @Sendable () -> Date
     private var pollTask: Task<Void,Never>?, lightingTask: Task<Void,Never>?
     private var generation = 0, failures = 0
     private var ownsControl = false, closing = false
     private var operations = 0, revision = 0
     private var startedAt: TimeInterval = 0, firmwareReceivedAt: TimeInterval = 0
     private var activeRequestID: UInt32?
-    init(worker: HIDWorker = HIDWorker(), demo: Bool = false, defaults: UserDefaults = .standard) {
+    init(worker: HIDWorker = HIDWorker(), demo: Bool = false, defaults: UserDefaults = .standard,
+         pollSleep: @escaping @Sendable (TimeInterval) async throws -> Void = { seconds in
+             try await Task.sleep(nanoseconds:UInt64(seconds*1e9))
+         }, dateNow: @escaping @Sendable () -> Date = { Date() }) {
         self.worker = worker; self.demo = demo; self.defaults = defaults
+        self.pollSleep = pollSleep
+        self.dateNow = dateNow
+        pollIntervalSeconds = BatteryPolling.stored(in:defaults)
         selection = defaults.string(forKey:"selectedDevice") ?? "auto"
     }
     var battery: Int? { firmware?.percent }
-    var stale: Bool { !connected || updatedAt.map { Date().timeIntervalSince($0) > 65 } ?? true }
+    var stale: Bool { !connected || updatedAt.map { dateNow().timeIntervalSince($0) > BatteryPolling.staleAfter(pollIntervalSeconds) } ?? true }
     var effectElapsed: TimeInterval { max(0,ProcessInfo.processInfo.systemUptime-startedAt) }
     var mode: String { command?.mode ?? (connected && firmware?.active == true && firmwareRemainingMS > 0 ? "external" : "original") }
     private var firmwareRemainingMS: Double { max(0,Double(firmware?.remainingMS ?? 0)-(ProcessInfo.processInfo.systemUptime-firmwareReceivedAt)*1000) }
     var connectionName: String { device?.transport == "usb" ? "USB" : device?.transport == "rf" ? "2.4G" : "未连接" }
     var modeName: String {
-        switch mode { case "solid":return "纯色"; case "frame":return "逐段颜色"; case "blink":return "闪烁提醒"; case "breathe":return "呼吸提醒"; case "rainbow":return "彩虹播放中"
+        switch mode { case "solid":return "纯色提醒"; case "frame":return "自定义渐变"; case "blink":return "闪烁提醒"; case "breathe":return "呼吸提醒"; case "rainbow":return "彩虹播放中"
         case "external":return "其他程序正在控灯"; default:return "键盘原灯效" }
     }
     func start() {
+        guard pollTask == nil, !closing else { return }
+        schedulePolling(immediate:true)
+    }
+    func setPollingInterval(_ seconds: Int) throws {
+        try BatteryPolling.validate(seconds)
+        guard seconds != pollIntervalSeconds else { return }
+        pollIntervalSeconds = seconds; defaults.set(seconds,forKey:BatteryPolling.defaultsKey)
+        // Changing preferences rearms the timer, without performing an HID read.
+        if pollTask != nil, !closing { schedulePolling(immediate:false) }
+    }
+    private func schedulePolling(immediate: Bool) {
+        pollTask?.cancel()
         pollTask = Task { [weak self] in
+            var readNow = immediate
             while !Task.isCancelled {
                 guard let self, !closing else { return }
-                if !sleeping && !ownsControl { _ = try? await refresh() }
-                let seconds = devices.isEmpty ? 5.0 : min(120.0,30.0 * pow(2,Double(max(0,failures-1))))
-                do { try await Task.sleep(nanoseconds:UInt64(seconds*1e9)) } catch { return }
+                if readNow, !sleeping, !ownsControl, !busy { _ = try? await refresh() }
+                guard !Task.isCancelled, !closing else { return }
+                readNow = true
+                let seconds = BatteryPolling.delay(seconds:pollIntervalSeconds,failures:failures,noDevices:devices.isEmpty)
+                do { try await pollSleep(seconds) } catch { return }
             }
         }
     }
@@ -91,9 +115,6 @@ import Combine
             apply(reading)
             guard reading.state.permits(reading.device.transport) else { throw ControlError("此固件尚未开放当前通道的灯光控制。") }
             let native = request.nativeEffectID != nil
-            if native && !reading.state.nativeEffects {
-                throw ControlError("本地灯效需要 v3.1.0 或更新的兼容固件，请先升级固件。")
-            }
             let first: DeviceReading
             var requestID: UInt32?
             if native {
@@ -154,14 +175,15 @@ import Combine
     }
     private func apply(_ reading: DeviceReading) {
         device = reading.device; firmware = reading.state; devices = reading.devices
-        updatedAt = Date(); connected = true; firmwareReceivedAt = ProcessInfo.processInfo.systemUptime
+        updatedAt = dateNow(); connected = true; firmwareReceivedAt = ProcessInfo.processInfo.systemUptime
         if ownsControl && !reading.state.active { command = nil; ownsControl = false; lightingTask?.cancel(); lightingTask = nil }
     }
     func batteryJSON() -> [String:Any] {
         ["percent":battery as Any? ?? NSNull(),"connected":connected,"stale":stale,
          "updated_at":updatedAt.map { ISO8601DateFormatter().string(from:$0) } as Any? ?? NSNull(),
-         "transport":device?.transport as Any? ?? NSNull(),"demo":demo]
+         "transport":device?.transport as Any? ?? NSNull(),"poll_interval_seconds":pollIntervalSeconds,"demo":demo]
     }
+    func settingsJSON() -> [String:Any] { ["battery_poll_interval_seconds":pollIntervalSeconds] }
     func snapshot() -> [String:Any] {
         var descriptor = device?.json ?? [:]
         descriptor["connected"] = connected
@@ -175,7 +197,7 @@ import Combine
             "execution":command?.nativeEffectID != nil ? "firmware" : "static_frame", "commands_sent":framesSent,
             "prevents_idle_sleep":ownsControl && command?.nativeEffectID == nil && device?.transport == "rf","frames_sent":framesSent]
         let result: [String:Any] = ["app_version":AppIdentity.version,"api_version":1,"demo":demo,"device":descriptor,
-            "devices":devices.map(\.json),"battery":batteryJSON(),"sleeping":sleeping,
+            "devices":devices.map(\.json),"battery":batteryJSON(),"sleeping":sleeping,"settings":settingsJSON(),
             "lighting":lighting,"error":issue as Any? ?? NSNull()]
         return result
     }
@@ -184,6 +206,10 @@ import Combine
             switch (request.method,request.path) {
             case ("GET","/v1/health"): return HTTPResponse(["ok":true,"app_version":AppIdentity.version,"api_version":1,"demo":demo])
             case ("GET","/v1/status"): return HTTPResponse(snapshot())
+            case ("GET","/v1/settings"): return HTTPResponse(settingsJSON())
+            case ("POST","/v1/settings"):
+                try setPollingInterval(BatteryPolling.parseSettings(request.json()))
+                return HTTPResponse(settingsJSON())
             case ("GET","/v1/battery"):
                 if request.query.contains(where:{$0.name == "refresh" && ["true","1"].contains($0.value ?? "")}) { _ = try await refresh() }
                 return HTTPResponse(batteryJSON())

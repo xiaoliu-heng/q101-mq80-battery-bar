@@ -31,6 +31,32 @@ final class FakeBackend: HIDBackend {
     func close() { lock.lock();closed=true;lock.unlock() }
 }
 
+actor PollTestClock {
+    private var pending: [(UUID,CheckedContinuation<Void,Error>)] = []
+    private(set) var delays: [TimeInterval] = []
+    var pendingCount: Int { pending.count }
+    func sleep(_ seconds: TimeInterval) async throws {
+        let id = UUID()
+        try await withTaskCancellationHandler(operation: {
+            try await withCheckedThrowingContinuation { (continuation: CheckedContinuation<Void,Error>) in
+                if Task.isCancelled { continuation.resume(throwing:CancellationError()) }
+                else { delays.append(seconds); pending.append((id,continuation)) }
+            }
+        }, onCancel: { Task { await self.cancel(id) } })
+    }
+    private func cancel(_ id: UUID) {
+        if let index = pending.firstIndex(where:{$0.0 == id}) { pending.remove(at:index).1.resume(throwing:CancellationError()) }
+    }
+    func advance() { if !pending.isEmpty { pending.removeFirst().1.resume() } }
+}
+
+final class TestSampleDate: @unchecked Sendable {
+    private let lock = NSLock()
+    private var value = Date(timeIntervalSince1970:1_700_000_000)
+    func now() -> Date { lock.lock();defer{lock.unlock()};return value }
+    func advance(_ seconds: TimeInterval) { lock.lock();value = value.addingTimeInterval(seconds);lock.unlock() }
+}
+
 @main @MainActor struct CoreTests {
     static var checks: [[String:Any]] = []
     static func check(_ name: String,_ condition: @autoclosure () throws -> Bool) throws {
@@ -64,6 +90,14 @@ final class FakeBackend: HIDBackend {
                         try rejects("reject reply corruption at \(offset)") { _ = try Wire.decode(request,bad) }
                     }
                     for length in [0,1,31,33] { try rejects("reply length \(length)") { _ = try Wire.decode(request,length == 33 ? reply+[0] : Array(reply.prefix(length))) } }
+                    for version: [UInt8] in [[3,0,1],[3,0,0],[3,1,1],[4,0,0]] {
+                        var old = reply; old.replaceSubrange(26..<29,with:version)
+                        try rejects("only firmware 3.1.0 is supported: \(version)") { _ = try Wire.decode(request,old) }
+                    }
+                    for offset in [22,29] {
+                        var missing = reply; missing[offset] &= ~16
+                        try rejects("3.1.0 needs local effects at \(offset)") { _ = try Wire.decode(request,missing) }
+                    }
                 }
             }
             let colors=["000000","123456","FF8000","FFFFFF","00FF00","0000FF","ABCDEF","010101","FFFF00"]
@@ -140,6 +174,7 @@ final class FakeBackend: HIDBackend {
             try check("shutdown releases owned lighting",fake.recorded.last?[3] == 0x12)
             try await rfAndOwnershipTests()
             try await notificationPowerTests()
+            try await pollingTests()
             try await installerTests()
             let result: [String:Any] = ["status":"PASS","checks":checks,"count":checks.count,"device_access":"NONE"]
             try JSONSerialization.data(withJSONObject:result,options:[.prettyPrinted,.sortedKeys]).write(to:URL(fileURLWithPath:args[2]))
@@ -150,8 +185,8 @@ final class FakeBackend: HIDBackend {
         let limited=FakeBackend(transport:"rf");limited.capable=false
         let gateway=DeviceGateway(limited)
         let reading=try gateway.connect(selection:"auto")
-        try check("legacy RF can read battery without claiming control",reading.state.percent == 88 && !reading.state.rfControl)
-        try rejects("legacy RF cannot receive lighting frame") { _ = try gateway.command(.frame,payload:Array(repeating:255,count:27)) }
+        try check("RF transport permission is checked independently of firmware identity",reading.state.percent == 88 && !reading.state.rfControl)
+        try rejects("RF without control permission cannot receive a frame") { _ = try gateway.command(.frame,payload:Array(repeating:255,count:27)) }
         try check("unsupported RF only received INFO",limited.recorded.count == 1)
         let rf=FakeBackend(transport:"rf")
         let controller=KeyboardController(worker:HIDWorker(factory:{rf}),defaults:UserDefaults(suiteName:"KryraRFTests.\(UUID())")!)
@@ -231,6 +266,80 @@ final class FakeBackend: HIDBackend {
         catch { try check("old firmware receives only INFO and no streaming fallback",old.recorded.count == 1 && old.recorded[0][3] == 0x10 && older.command == nil) }
         await older.shutdown()
         await controller.shutdown()
+    }
+    static func waitFor(_ name: String, _ condition: () async -> Bool) async throws {
+        for _ in 0..<200 { if await condition() { return }; await delay(5) }
+        throw ControlError("Timed out: \(name)")
+    }
+    static func pollingTests() async throws {
+        let suiteName = "KryraPollingTests.\(UUID())"
+        let defaults = UserDefaults(suiteName:suiteName)!
+        defer { defaults.removePersistentDomain(forName:suiteName) }
+        let backend = FakeBackend(), clock = PollTestClock(), date = TestSampleDate()
+        let controller = KeyboardController(worker:HIDWorker(factory:{backend}),defaults:defaults,
+            pollSleep:{ try await clock.sleep($0) },dateNow:{date.now()})
+        try check("battery polling defaults to one minute",controller.pollIntervalSeconds == 60)
+        controller.start()
+        try await waitFor("initial battery poll") { await clock.pendingCount == 1 }
+        let initialDelays = await clock.delays
+        try check("initial poll reads once then waits sixty seconds",backend.recorded.count == 1 && initialDelays == [60])
+        controller.start(); await delay(20)
+        try check("starting twice does not create a second poller",backend.recorded.count == 1)
+        try controller.setPollingInterval(120)
+        try await waitFor("rearm polling") {
+            let history = await clock.delays, pending = await clock.pendingCount
+            return history.last == 120 && pending == 1
+        }
+        try check("changing interval persists without querying HID",controller.pollIntervalSeconds == 120 && defaults.integer(forKey:BatteryPolling.defaultsKey) == 120 && backend.recorded.count == 1)
+        await clock.advance()
+        try await waitFor("next configured poll") {
+            let pending = await clock.pendingCount
+            return backend.recorded.count == 2 && pending == 1
+        }
+        try check("new interval wakes exactly one poller",backend.recorded.count == 2 && backend.recorded.allSatisfy{$0[3] == 0x10})
+        _ = try await controller.setLighting(LightingCommand.parse(["mode":"breathe","color":"34D399","duration_seconds":60]))
+        let playingCount = backend.recorded.count
+        let waitsBefore = await clock.delays.count
+        await clock.advance()
+        try await waitFor("poll while playing") { await clock.delays.count > waitsBefore }
+        try check("automatic polling skips an owned notification",backend.recorded.count == playingCount)
+        await controller.suspend()
+        let sleepingCount = backend.recorded.count
+        let beforeSleep = await clock.delays.count
+        await clock.advance()
+        try await waitFor("sleep polling") { await clock.delays.count > beforeSleep }
+        try check("automatic polling sends nothing while computer sleeps",backend.recorded.count == sleepingCount)
+        await controller.resume()
+        try check("resume refreshes battery without replaying lighting",backend.recorded.count == sleepingCount+1 && backend.recorded.last?[3] == 0x10 && controller.command == nil)
+        date.advance(180)
+        try check("sample stays fresh across a longer configured interval",!controller.stale)
+        date.advance(66)
+        try check("sample becomes stale after two missed configured intervals",controller.stale)
+        _ = try await controller.refresh()
+        try check("a fresh reply clears stale state",!controller.stale)
+        let beforeSettings = backend.recorded.count
+        try controller.setPollingInterval(95)
+        try check("custom integer interval is exposed consistently",controller.settingsJSON()["battery_poll_interval_seconds"] as? Int == 95 && controller.batteryJSON()["poll_interval_seconds"] as? Int == 95 && backend.recorded.count == beforeSettings)
+        for value: [String:Any] in [[:],["battery_poll_interval_seconds":true],["battery_poll_interval_seconds":29],
+              ["battery_poll_interval_seconds":3601],["battery_poll_interval_seconds":60.5],
+              ["battery_poll_interval_seconds":"60"],["battery_poll_interval_seconds":Double.infinity],
+              ["battery_poll_interval_seconds":60,"typo":1]] {
+            try rejects("invalid polling settings \(checks.count)") { _ = try BatteryPolling.parseSettings(value) }
+        }
+        try rejects("direct setter validates polling interval") { try controller.setPollingInterval(0) }
+        try check("invalid polling change preserves preference",controller.pollIntervalSeconds == 95)
+        await controller.shutdown()
+        try await waitFor("cancel poll sleep on shutdown") { await clock.pendingCount == 0 }
+        try check("shutdown cancels all waiting polls",backend.recorded.count == beforeSettings)
+        let reloaded = KeyboardController(worker:HIDWorker(factory:{FakeBackend()}),defaults:defaults)
+        try check("restart restores selected polling interval",reloaded.pollIntervalSeconds == 95)
+        await reloaded.shutdown()
+        for bad: Any in [true,0,29,3601,60.5,"120"] {
+            defaults.set(bad,forKey:BatteryPolling.defaultsKey)
+            try check("invalid persisted polling value defaults safely: \(bad)",BatteryPolling.stored(in:defaults) == 60)
+        }
+        try check("backoff cannot shorten a long configured interval",BatteryPolling.delay(seconds:600,failures:8,noDevices:false) == 600)
+        try check("failed receiver polls back off to five minutes",BatteryPolling.delay(seconds:60,failures:4,noDevices:false) == 300)
     }
     static func installerTests() async throws {
         let fm=FileManager.default, folder=fm.temporaryDirectory.appendingPathComponent("kryra-installer-tests-\(UUID())")

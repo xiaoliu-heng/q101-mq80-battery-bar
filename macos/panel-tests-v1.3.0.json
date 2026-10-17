@@ -1,0 +1,258 @@
+{
+  "checks" : [
+    {
+      "name" : "light-lighting-solid fixed content bounds",
+      "status" : "PASS"
+    },
+    {
+      "name" : "light-lighting-solid disables intrinsic host resizing",
+      "status" : "PASS"
+    },
+    {
+      "name" : "light-lighting-solid no scrolling content or scroller",
+      "status" : "PASS"
+    },
+    {
+      "name" : "light-lighting-solid long error cannot change content\/window size",
+      "status" : "PASS"
+    },
+    {
+      "name" : "light-lighting-solid reconnect preserves width",
+      "status" : "PASS"
+    },
+    {
+      "name" : "light-lighting-blink fixed content bounds",
+      "status" : "PASS"
+    },
+    {
+      "name" : "light-lighting-blink disables intrinsic host resizing",
+      "status" : "PASS"
+    },
+    {
+      "name" : "light-lighting-blink no scrolling content or scroller",
+      "status" : "PASS"
+    },
+    {
+      "name" : "light-lighting-blink long error cannot change content\/window size",
+      "status" : "PASS"
+    },
+    {
+      "name" : "light-lighting-blink reconnect preserves width",
+      "status" : "PASS"
+    },
+    {
+      "name" : "light-lighting-breathe fixed content bounds",
+      "status" : "PASS"
+    },
+    {
+      "name" : "light-lighting-breathe disables intrinsic host resizing",
+      "status" : "PASS"
+    },
+    {
+      "name" : "light-lighting-breathe no scrolling content or scroller",
+      "status" : "PASS"
+    },
+    {
+      "name" : "light-lighting-breathe long error cannot change content\/window size",
+      "status" : "PASS"
+    },
+    {
+      "name" : "light-lighting-breathe reconnect preserves width",
+      "status" : "PASS"
+    },
+    {
+      "name" : "light-lighting-rainbow fixed content bounds",
+      "status" : "PASS"
+    },
+    {
+      "name" : "light-lighting-rainbow disables intrinsic host resizing",
+      "status" : "PASS"
+    },
+    {
+      "name" : "light-lighting-rainbow no scrolling content or scroller",
+      "status" : "PASS"
+    },
+    {
+      "name" : "light-lighting-rainbow long error cannot change content\/window size",
+      "status" : "PASS"
+    },
+    {
+      "name" : "light-lighting-rainbow reconnect preserves width",
+      "status" : "PASS"
+    },
+    {
+      "name" : "light-settings-solid fixed content bounds",
+      "status" : "PASS"
+    },
+    {
+      "name" : "light-settings-solid disables intrinsic host resizing",
+      "status" : "PASS"
+    },
+    {
+      "name" : "light-settings-solid no scrolling content or scroller",
+      "status" : "PASS"
+    },
+    {
+      "name" : "light-settings-solid long error cannot change content\/window size",
+      "status" : "PASS"
+    },
+    {
+      "name" : "light-settings-solid reconnect preserves width",
+      "status" : "PASS"
+    },
+    {
+      "name" : "dark-lighting-solid fixed content bounds",
+      "status" : "PASS"
+    },
+    {
+      "name" : "dark-lighting-solid disables intrinsic host resizing",
+      "status" : "PASS"
+    },
+    {
+      "name" : "dark-lighting-solid no scrolling content or scroller",
+      "status" : "PASS"
+    },
+    {
+      "name" : "dark-lighting-solid long error cannot change content\/window size",
+      "status" : "PASS"
+    },
+    {
+      "name" : "dark-lighting-solid reconnect preserves width",
+      "status" : "PASS"
+    },
+    {
+      "name" : "dark-lighting-blink fixed content bounds",
+      "status" : "PASS"
+    },
+    {
+      "name" : "dark-lighting-blink disables intrinsic host resizing",
+      "status" : "PASS"
+    },
+    {
+      "name" : "dark-lighting-blink no scrolling content or scroller",
+      "status" : "PASS"
+    },
+    {
+      "name" : "dark-lighting-blink long error cannot change content\/window size",
+      "status" : "PASS"
+    },
+    {
+      "name" : "dark-lighting-blink reconnect preserves width",
+      "status" : "PASS"
+    },
+    {
+      "name" : "dark-lighting-breathe fixed content bounds",
+      "status" : "PASS"
+    },
+    {
+      "name" : "dark-lighting-breathe disables intrinsic host resizing",
+      "status" : "PASS"
+    },
+    {
+      "name" : "dark-lighting-breathe no scrolling content or scroller",
+      "status" : "PASS"
+    },
+    {
+      "name" : "dark-lighting-breathe long error cannot change content\/window size",
+      "status" : "PASS"
+    },
+    {
+      "name" : "dark-lighting-breathe reconnect preserves width",
+      "status" : "PASS"
+    },
+    {
+      "name" : "dark-lighting-rainbow fixed content bounds",
+      "status" : "PASS"
+    },
+    {
+      "name" : "dark-lighting-rainbow disables intrinsic host resizing",
+      "status" : "PASS"
+    },
+    {
+      "name" : "dark-lighting-rainbow no scrolling content or scroller",
+      "status" : "PASS"
+    },
+    {
+      "name" : "dark-lighting-rainbow long error cannot change content\/window size",
+      "status" : "PASS"
+    },
+    {
+      "name" : "dark-lighting-rainbow reconnect preserves width",
+      "status" : "PASS"
+    },
+    {
+      "name" : "dark-settings-solid fixed content bounds",
+      "status" : "PASS"
+    },
+    {
+      "name" : "dark-settings-solid disables intrinsic host resizing",
+      "status" : "PASS"
+    },
+    {
+      "name" : "dark-settings-solid no scrolling content or scroller",
+      "status" : "PASS"
+    },
+    {
+      "name" : "dark-settings-solid long error cannot change content\/window size",
+      "status" : "PASS"
+    },
+    {
+      "name" : "dark-settings-solid reconnect preserves width",
+      "status" : "PASS"
+    },
+    {
+      "name" : "popover preferred size is fixed",
+      "status" : "PASS"
+    },
+    {
+      "name" : "popover content is fixed",
+      "status" : "PASS"
+    },
+    {
+      "name" : "polling interval 30 is configurable without HID",
+      "status" : "PASS"
+    },
+    {
+      "name" : "polling interval 60 is configurable without HID",
+      "status" : "PASS"
+    },
+    {
+      "name" : "polling interval 120 is configurable without HID",
+      "status" : "PASS"
+    },
+    {
+      "name" : "polling interval 300 is configurable without HID",
+      "status" : "PASS"
+    },
+    {
+      "name" : "polling interval 600 is configurable without HID",
+      "status" : "PASS"
+    },
+    {
+      "name" : "polling interval 1800 is configurable without HID",
+      "status" : "PASS"
+    },
+    {
+      "name" : "polling interval 3600 is configurable without HID",
+      "status" : "PASS"
+    },
+    {
+      "name" : "preview\/configuration never sends HID",
+      "status" : "PASS"
+    },
+    {
+      "name" : "preview renders keep hardware effects stopped",
+      "status" : "PASS"
+    }
+  ],
+  "content_size" : {
+    "height" : 584,
+    "width" : 368
+  },
+  "count" : 61,
+  "device_access" : "NONE",
+  "native_glass_sdk_compiled" : true,
+  "rendering" : "NSHostingView cache of our own hidden test windows, light\/dark, all four effects\/settings",
+  "status" : "PASS",
+  "system_glass_26_tested" : false
+}

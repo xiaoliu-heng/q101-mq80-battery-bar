@@ -14,6 +14,7 @@ import tempfile
 import time
 import urllib.error
 import urllib.request
+import uuid
 from pathlib import Path
 
 
@@ -27,7 +28,8 @@ def main():
         assert value,name
         rows.append({'name':name,'status':'PASS'})
     with tempfile.TemporaryDirectory(prefix='kryra-native-e2e-') as folder:
-        env=dict(os.environ,KRYRA_HOME=folder)
+        suite='local.xiaoliu.kryra.tests.e2e.'+uuid.uuid4().hex
+        env=dict(os.environ,KRYRA_HOME=folder,KRYRA_DEFAULTS_SUITE=suite)
         process=subprocess.Popen([str(app/'Contents/MacOS/Kryra'),'--headless','--demo'],
                                  env=env,stdout=subprocess.PIPE,stderr=subprocess.PIPE,text=True)
         try:
@@ -68,6 +70,18 @@ def main():
                 time.sleep(.1)
             check('native CLI battery',command('battery')['percent']==88)
             check('native CLI active refresh',command('battery','--refresh')['stale'] is False)
+            check('battery polling defaults to sixty seconds',command('settings')['battery_poll_interval_seconds']==60)
+            sample=request('/v1/battery')[1]['updated_at']
+            check('CLI configures the polling interval',command('settings','--poll-interval','120')['battery_poll_interval_seconds']==120)
+            check('API and UI share the saved interval',request('/v1/status')[1]['settings']['battery_poll_interval_seconds']==120)
+            check('battery status exposes its polling interval',command('battery')['poll_interval_seconds']==120)
+            check('custom integer polling interval accepted',request('/v1/settings',{'battery_poll_interval_seconds':95})[1]['battery_poll_interval_seconds']==95)
+            check('preference edits do not refresh battery',request('/v1/battery')[1]['updated_at']==sample)
+            for value in [True,29,3601,60.5,'60']:
+                check('invalid polling interval refused: '+repr(value),request('/v1/settings',{'battery_poll_interval_seconds':value})[0]==400)
+            check('unknown settings field refused',request('/v1/settings',{'battery_poll_interval_seconds':60,'typo':1})[0]==400)
+            check('CLI validates polling interval before API','error' in command('settings','--poll-interval','1',expected=1))
+            check('invalid preference preserves the last interval',request('/v1/settings')[1]['battery_poll_interval_seconds']==95)
             state=command('solid','0080FF','--brightness','50')
             check('CLI solid reaches shared controller',state['lighting']['mode']=='solid' and state['lighting']['brightness']==50)
             state=request('/v1/status')[1]
@@ -142,12 +156,14 @@ def main():
             assert select.select([process.stdout],[],[],15)[0];json.loads(process.stdout.readline())
             new_config=json.loads(config_path.read_text())
             check('API token rotates on restart',new_config['token']!=old_token)
+            check('polling interval survives process restart',command('settings')['battery_poll_interval_seconds']==95)
         finally:
             if process.poll() is None:
                 process.terminate()
                 try:process.wait(timeout=8)
                 except subprocess.TimeoutExpired:process.kill();process.wait()
             error=process.stderr.read()
+            subprocess.run(['/usr/bin/defaults','delete',suite],capture_output=True,check=False)
             assert process.returncode==0,error
     result={'status':'PASS','app_version':app_version,'checks':rows,'count':len(rows),'mode':'explicit-demo',
             'physical_hid_access':False,'tested':'native built app, real loopback listener and native CLI',

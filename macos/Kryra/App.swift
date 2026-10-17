@@ -17,8 +17,8 @@ import SwiftUI
         status.button?.imagePosition = .imageLeading
         updateStatus()
         popover = NSPopover(); popover.behavior = .semitransient
-        popover.contentViewController = NSHostingController(rootView:panel)
-        popover.contentSize = NSSize(width:410,height:690)
+        popover.contentViewController = FixedPanelHostingController(content:panel)
+        popover.contentSize = PanelMetrics.size
         model.showWindow = { [weak self] in self?.showPanel() }
         model.keyboard.objectWillChange.sink { [weak self] in
             DispatchQueue.main.async { self?.updateStatus() }
@@ -53,6 +53,7 @@ import SwiftUI
     @objc private func togglePopover() {
         if popover.isShown { popover.performClose(nil) }
         else if let button = status.button {
+            popover.contentSize = PanelMetrics.size
             NSApp.activate(ignoringOtherApps:true)
             popover.show(relativeTo:button.bounds,of:button,preferredEdge:.minY)
         }
@@ -60,9 +61,13 @@ import SwiftUI
     @objc func showPanel() {
         popover?.performClose(nil)
         if window == nil {
-            let panel = NSWindow(contentRect:NSRect(x:0,y:0,width:410,height:690),styleMask:[.titled,.closable,.miniaturizable],backing:.buffered,defer:false)
+            let panel = NSWindow(contentRect:NSRect(origin:.zero,size:PanelMetrics.size),styleMask:[.titled,.closable,.miniaturizable],backing:.buffered,defer:false)
             panel.title = "Kryra\(model.demo ? " · 演示" : "")"; panel.isReleasedWhenClosed = false
-            panel.contentView = NSHostingView(rootView:self.panel); panel.center(); window = panel
+            panel.titleVisibility = .hidden; panel.titlebarAppearsTransparent = true
+            panel.isOpaque = false; panel.backgroundColor = .clear
+            panel.contentMinSize = PanelMetrics.size; panel.contentMaxSize = PanelMetrics.size
+            panel.contentView = fixedPanelView(self.panel); panel.setContentSize(PanelMetrics.size)
+            panel.center(); window = panel
         }
         window?.makeKeyAndOrderFront(nil); NSApp.activate(ignoringOtherApps:true)
     }

@@ -1,0 +1,225 @@
+{
+  "status": "PASS_OFFLINE_MACOS26_RUNTIME_PENDING",
+  "app_version": "1.3.0",
+  "app_build": 5,
+  "date_utc": "2026-10-17T14:08:15.900695+00:00",
+  "physical_hid_access": false,
+  "sdk_upgrade": {
+    "sdk": "26.5",
+    "compiler": "Apple Swift version 6.3.3 (swiftlang-6.3.3.1.3 clang-2100.1.1.101)",
+    "package": "Apple Command Line Tools 26.6",
+    "installation_scope": "user-local developer tools; existing system developer directory untouched",
+    "developer_dir": "~/Library/Developer/Kryra/CommandLineTools-26.6",
+    "apple_product_id": "140-17812",
+    "download_verification": "Apple compressed XAR TOC digest, Apple Software certificate chain and payload extraction",
+    "packages": [
+      {
+        "url": "https://swcdn.apple.com/content/downloads/33/19/140-17812-A_21ZLMMLY4E/zu3xwktttpoe71qiawhzgzvqss6rovawsa/CLTools_macOSNMOS_SDK.pkg",
+        "size": 61622368,
+        "sha256": "debe353b27a13cd678b26ab216a040acf07b62c0639d8ac522df4ca07d121eb2",
+        "catalog_toc_digest": "3994b1aa793317dac60a9170063edf737204e3fc",
+        "apple_signature": "PASS"
+      },
+      {
+        "url": "https://swcdn.apple.com/content/downloads/33/19/140-17812-A_21ZLMMLY4E/zu3xwktttpoe71qiawhzgzvqss6rovawsa/CLTools_SwiftBackDeploy.pkg",
+        "size": 49100608,
+        "sha256": "1c3242d9ffb9cbde2853d2362913e7c367269b1ab9766d2e22b89fdd61377fcf",
+        "catalog_toc_digest": "da1fae8d55c0029e7e0649c36bb0bef3dfd662cf",
+        "apple_signature": "PASS"
+      },
+      {
+        "url": "https://swcdn.apple.com/content/downloads/33/19/140-17812-A_21ZLMMLY4E/zu3xwktttpoe71qiawhzgzvqss6rovawsa/CLTools_Executables_Universal.pkg",
+        "size": 775796124,
+        "sha256": "a1486ac20337956d9553de7c4cc6bf58fe7bd1ad7c1d76dec68901c96fb4572e",
+        "catalog_toc_digest": "7014962b2a8f82f7bd795a42c9213e57cbc7280d",
+        "apple_signature": "PASS"
+      }
+    ]
+  },
+  "native_glass": {
+    "compiled": true,
+    "container_and_glass_effect_symbols_linked": true,
+    "macho_linked_sdks": {
+      "app": [
+        "26.5",
+        "26.5"
+      ],
+      "cli": [
+        "26.5",
+        "26.5"
+      ]
+    },
+    "runtime_minimum_macos": "26.0",
+    "legacy_deployment_target": "13.0",
+    "verified_host_macos": "15.7.4",
+    "macos26_runtime_visual_acceptance": false,
+    "legacy_material_runtime_rendered": true,
+    "reduce_transparency_and_motion_respected_in_source": true
+  },
+  "battery_polling": {
+    "default_seconds": 60,
+    "range_seconds": [
+      30,
+      3600
+    ],
+    "integer_only": true,
+    "ui_presets_seconds": [
+      30,
+      60,
+      120,
+      300,
+      600,
+      1800,
+      3600
+    ],
+    "persistence": "UserDefaults batteryPollIntervalSeconds",
+    "setters": [
+      "settings UI",
+      "POST /v1/settings",
+      "kryractl settings --poll-interval N"
+    ],
+    "settings_field": "battery_poll_interval_seconds",
+    "battery_field": "poll_interval_seconds",
+    "preference_change_queries_hid": false,
+    "preference_change_rearms_wait": true,
+    "survives_restart": true,
+    "stale_threshold": "2 * configured interval + 5 seconds; disconnected is immediately stale",
+    "auto_poll_during_owned_notification": false,
+    "auto_poll_while_computer_asleep": false,
+    "no_device_discovery_delay_seconds": 5,
+    "maximum_backoff": "max(300, configured interval)"
+  },
+  "ui": {
+    "content_size_points": {
+      "width": 368,
+      "height": 584
+    },
+    "continuous_vertical_gradient": true,
+    "individual_led_cells": false,
+    "scroll_view": false,
+    "settings_on_separate_page": true,
+    "status_height_points": 34,
+    "editing_preview_sends_lighting_commands": false,
+    "native_effect_commands_per_notification": 1,
+    "screenshots": [
+      "previews/kryra-v1.3.0-light.png",
+      "previews/kryra-v1.3.0-dark.png",
+      "previews/kryra-v1.3.0-settings.png"
+    ],
+    "screenshot_source": "actual SwiftUI views in hidden test windows; explicit simulated data; macOS 15.7.4 Material appearance"
+  },
+  "firmware": {
+    "supported_versions": [
+      "3.1.0"
+    ],
+    "build": 3,
+    "sha256": "5757c625adf427a4932a9fb9e8e7be0e5a4a88311e4484278d771c5c1b29cf0a",
+    "modified": false,
+    "flashed": false
+  },
+  "tests": {
+    "core": {
+      "status": "PASS",
+      "count": 188,
+      "report": "core-tests-v1.3.0.json"
+    },
+    "panel": {
+      "status": "PASS",
+      "count": 61,
+      "report": "panel-tests-v1.3.0.json"
+    },
+    "e2e": {
+      "status": "PASS",
+      "count": 61,
+      "report": "e2e-v1.3.0.json",
+      "mode": "isolated explicit demo, real HTTP server and native CLI"
+    },
+    "total_checks": 310,
+    "wire_fixtures": {
+      "count": 27,
+      "firmware_versions": [
+        "3.1.0"
+      ],
+      "paths": [
+        "usb-direct",
+        "usb-general",
+        "rf"
+      ],
+      "actual_firmware_machine_code": true
+    },
+    "skill_validation": {
+      "status": "PASS",
+      "validator": "skill-creator/scripts/quick_validate.py",
+      "global_skill_modified": false
+    }
+  },
+  "documentation": {
+    "project_readme": "../README.md",
+    "app_readme": "README.md",
+    "design_document": "../docs/KRYRA_DESIGN.md",
+    "windows_port_design_saved": true,
+    "user_hardware_feedback": "hardware-confirmation-20261017.json"
+  },
+  "release": {
+    "status": "PASS",
+    "version": "1.3.0",
+    "architectures": [
+      "arm64",
+      "x86_64"
+    ],
+    "build_sdk": "26.5",
+    "native_liquid_glass_compiled": true,
+    "app_executable_sha256": "95d3045b9ac93b54f9608d9ddd568b6229c21771960950f578dc2005ae7c8dbd",
+    "cli_sha256": "8a4705faf150440649ab3e7c7443a8b70a558a8daa79268cdfe662607b03c011",
+    "artifacts": [
+      {
+        "path": "dist/Kryra-1.3.0-universal.zip",
+        "size": 1058083,
+        "sha256": "817a4710d4eeabb15843106c1b67a337742a245cda63faf1a3f7d0c6b2f7c4de"
+      },
+      {
+        "path": "dist/Kryra-1.3.0-universal.dmg",
+        "size": 1492719,
+        "sha256": "5b5698bd9eeeec82e757e30debe9b8e43e49a425990539af1008541264300a76"
+      }
+    ],
+    "signing": "local ad-hoc; not Developer ID notarized",
+    "published": false
+  },
+  "source_sha256": {
+    "macos/Kryra/App.swift": "eba8525c5966b33772dfed65b1dac4e3dda5f98b14ef2a421389b7a923d66bd4",
+    "macos/Kryra/AppModel.swift": "a17c23175fcb99ad1fc700baf391a191c8d191bb97bd606d7cbee80cd2ddbd3a",
+    "macos/Kryra/Controller.swift": "dafa84b23d420d8cbf4ddf3eb635cc1d69e0161fe484e5941dbe6b9968a80c14",
+    "macos/Kryra/Glass.swift": "2f80fa843159228e527445e7a8a98980c1291e1b41ecaf4d0b6cd3a30cac2304",
+    "macos/Kryra/HID.swift": "9752cf2ada888effdcfb13ec47e1fad9604df29b72e181a3e9fee0e60f3db43d",
+    "macos/Kryra/HTTP.swift": "0cc175cff59833cfbc450fd72635fdffb311f879326e2035468c80e80caca64f",
+    "macos/Kryra/PanelHost.swift": "618dc50704c5772737e82ec829dd9b7e30994499061dfa0a16296e10eadb785a",
+    "macos/Kryra/Polling.swift": "e7e7d0e595621007da9fe646b9597c1170d9c30c987bf64c79b090acea624552",
+    "macos/Kryra/Presentation.swift": "9d8b005b3784886d499823a9eabe8018f2003dcd9dccd4c594c6d897f7010bc0",
+    "macos/Kryra/Protocol.swift": "793103810b02aba2f8ad6a4e0109d8773e0832e37e51ce09e6ba988a5c94d07b",
+    "macos/Kryra/RuntimeFiles.swift": "9438a3f2cf108f62a8ab4aa75083bee4eef54f23fe40c62e603d2d97cddb745e",
+    "macos/Kryra/SkillInstaller.swift": "387e0ca9ff6a66e515990af4d5d576fa444e42b32c142caca25d2923d4700250",
+    "macos/Kryra/Views.swift": "fa76d35d0d975728a34bd0eb3f65817f677ca86521644545c483c383bea6362e",
+    "README.md": "928bde6d5a228ef22f536c26111813eac0c54ad610f75fece7b22000e21d6f2b",
+    "docs/KRYRA_DESIGN.md": "85a4d21a7a44ada2548e88a9b7ce280116374e40ea16c69d5ffa0206738ebe68",
+    "macos/kryractl/Main.swift": "997b935f96559b8c117c2ef04f81a3e373d47c50681e33ecc455dea76b434a5e",
+    "macos/build.py": "348e8b8b452b152b7b564e9d338e58ef44c16dc8eb7317f36576f8d972582652",
+    "macos/toolchain.py": "be4c20eb42f5ebeca66874de9164de8eb3ef4bddabc3b43dc3391b3dd7e9813e",
+    "macos/API.html": "580eb7f5d186d7d433a5ef5aed2429c292dc47d71f0493d4c5c169fa6bbe3028",
+    "macos/README.md": "1f73b7e8939758bf14158385b66d79e7c71c78381d89e1967883105dfd77e4c6",
+    "macos/skill/kryra/SKILL.md": "ac856b285a41117c23fa4963cac954f70bebdde6aa3ca721d6c80a5cc5b13493",
+    "macos/tests/CoreTests.swift": "a9a50f0ddc1f219bdb036aceb908c0fbca90f8c0208499a45612e701d8f56435",
+    "macos/tests/PanelTests.swift": "9457c8393accecd101df0c0d0bf4e570d1daddd2e6f8d06c7298e99ca01a7de6",
+    "macos/tests/fixtures.py": "a7b1ef0f3f9a99dba5ad117380cda95cd9687507e52c3f9ec4f684b2e04522d8",
+    "macos/tests/validate_app.py": "822011083610483b62e1e670e3cb6128f06788a5e227ed1d1e05103437e5191b",
+    "scripts/check_macos.py": "0f4d5b1d1a1b52d3e0abd4ef9cf832f4a1e74ad18093fc79ec9c6925c197a777",
+    "scripts/check_kryra_panel.py": "b14e855ce1338c4c9acae745cc63897d318644a3e4424beaa0d16fe6f721abf1",
+    "scripts/package_macos.py": "3b4873cac20d0e70cc094fbc85e951ca4b0595d9f18497be38ed84581bd86ed0"
+  },
+  "limitations": [
+    "Native macOS 26 glass rendering and interaction require user testing after the OS upgrade.",
+    "No new physical HID, optical, sleep, current or battery-life measurement; previous user feedback is separate.",
+    "Universal arm64/x86_64 build; no Intel hardware execution.",
+    "Local ad-hoc signing; not Developer ID notarized."
+  ]
+}

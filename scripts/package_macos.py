@@ -3,6 +3,7 @@ import argparse
 import hashlib
 import json
 import plistlib
+import re
 import shutil
 import subprocess
 import tempfile
@@ -23,6 +24,9 @@ def main():
     info=plistlib.loads((app/'Contents/Info.plist').read_bytes())
     assert info['CFBundleIdentifier']=='local.xiaoliu.kryra' and info['LSUIElement']
     assert 'LSEnvironment' not in info,'Do not package a demo/QA app'
+    build=json.loads((app/'Contents/Resources/BuildInfo.json').read_text())
+    assert int(build['sdk'].split('.')[0])>=26 and build['native_glass_compiled']
+    assert info['DTSDKName']=='macosx'+build['sdk'] and info['KryraNativeGlassCompiled']
     run('codesign','--verify','--deep','--strict',app)
     binary=app/'Contents/MacOS/Kryra';cli=app/'Contents/Resources/bin/kryractl'
     e2e=json.loads((ROOT/'test-results/kryra-app-e2e.json').read_text())
@@ -31,6 +35,11 @@ def main():
     assert e2e['app_executable_sha256']==sha(binary) and e2e['cli_sha256']==sha(cli),'Test the final app before packaging'
     assert set(run('lipo','-archs',binary).split())=={'arm64','x86_64'}
     assert set(run('lipo','-archs',cli).split())=={'arm64','x86_64'}
+    for executable in [binary,cli]:
+        versions=re.findall(r'^\s+sdk\s+(\d+(?:\.\d+)+)',run('otool','-l',executable),re.MULTILINE)
+        assert versions==[build['sdk']]*2,'SDK 26 must be encoded in both Mach-O slices'
+    symbols=run('nm','-arch','arm64','-u',binary)
+    assert 'GlassEffectContainer' in symbols and 'glassEffect' in symbols,'Native glass calls must be linked'
     assert run(cli,'--version').strip()==info['CFBundleShortVersionString']
     stem='Kryra-'+info['CFBundleShortVersionString']+'-universal'
     archive=dist/(stem+'.zip');dmg=dist/(stem+'.dmg')
@@ -48,6 +57,7 @@ def main():
     run('hdiutil','verify',dmg)
     artifacts=[{'path':str(p.relative_to(ROOT)),'size':p.stat().st_size,'sha256':sha(p)} for p in [archive,dmg]]
     result={'status':'PASS','version':info['CFBundleShortVersionString'],'architectures':['arm64','x86_64'],
+            'build_sdk':build['sdk'],'native_liquid_glass_compiled':True,
             'app_executable_sha256':sha(binary),'cli_sha256':sha(cli),'artifacts':artifacts,
             'signing':'local ad-hoc; not Developer ID notarized','published':False}
     (dist/(stem+'-manifest.json')).write_text(json.dumps(result,indent=2)+'\n')

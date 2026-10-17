@@ -16,7 +16,9 @@ import ServiceManagement
     let demo: Bool
     init(demo: Bool) {
         self.demo = demo
-        let defaults = demo ? UserDefaults(suiteName:AppIdentity.bundleID+".demo")! : UserDefaults.standard
+        let suite = ProcessInfo.processInfo.environment["KRYRA_DEFAULTS_SUITE"]
+        let defaults = suite.flatMap { $0.isEmpty ? nil : UserDefaults(suiteName:$0) }
+            ?? (demo ? UserDefaults(suiteName:AppIdentity.bundleID+".demo")! : UserDefaults.standard)
         keyboard = KeyboardController(worker:HIDWorker(factory: {
             if demo { return DemoBackend() }
             return IOKitBackend()
