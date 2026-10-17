@@ -17,13 +17,13 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[2]
 sys.path[:0] = [str(ROOT), str(ROOT / 'simulator')]
-from controller.protocol import packet
+from controller.protocol import packet, effect_payload
 from mq80lab.engine import Runtime
 from mq80lab.peripherals import crc16
 from mq80lab.ota import run_ota
 
 HOST, RAW, SIDE = 0x8269c, 0x80be8, 0x81dc0
-END, TIMER = 0x826c4, 0x80140200
+END, TIMER = 0x826d0, 0x80140200
 
 
 def module(name, path):
@@ -96,20 +96,20 @@ def independent_parser(image, symbols):
             if length == 32 and mode in [1, 2]:
                 continue
             e.set_byte(HOST+38, length)
-            before = e.get(HOST, 40), e.get(0x80b30, 4), e.get(0x80a64, 4)
+            before = e.get(HOST, END-HOST), e.get(0x80b30, 4), e.get(0x80a64, 4)
             reply = request(packet(1, 99, b'\xff'*27), mode, length)
             assert reply[5] == (5 if length == 32 else 6), (mode, length, reply.hex())
-            assert before == (e.get(HOST, 40), e.get(0x80b30, 4), e.get(0x80a64, 4))
+            assert before == (e.get(HOST, END-HOST), e.get(0x80b30, 4), e.get(0x80a64, 4))
             invalid += 1
     for mode in [1, 2]:
         e.set_byte(HOST+38, 32)
         for opcode in range(256):
-            if 0x10 <= opcode <= 0x14:
+            if 0x10 <= opcode <= 0x15:
                 continue
             data = bytearray(packet(1, 99, b'\xff'*27)); data[3] = opcode
-            before = e.get(HOST, 40)
+            before = e.get(HOST, END-HOST)
             assert request(bytes(data), mode)[5] in [1, 2]
-            assert e.get(HOST, 40) == before
+            assert e.get(HOST, END-HOST) == before
             invalid += 1
     namespace = 0
     for index in range(3):
@@ -118,15 +118,15 @@ def independent_parser(image, symbols):
             if value == data[index]:
                 continue
             data[index] = value
-            before = e.get(HOST, 40)
+            before = e.get(HOST, END-HOST)
             assert request(bytes(data)) == bytes(data)
-            assert e.regs[10] == 0 and e.get(HOST, 40) == before
+            assert e.regs[10] == 0 and e.get(HOST, END-HOST) == before
             namespace += 1
     boundaries = 0
     for mode in [1, 2]:
         for start in [0, 1, 0xfffffff0, 0xffff0000]:
             for timeout in [500, 501, 2000, 9999, 10000]:
-                e.put(HOST, bytes(40)); e.now = start
+                e.put(HOST, bytes(END-HOST)); e.now = start
                 assert request(packet(4, payload=timeout.to_bytes(2, 'little')), mode)[5] == 0
                 assert request(packet(1, 19, b'\xa5'*27), mode)[8] & 1
                 for elapsed, active in [(timeout*16000-1, True), (timeout*16000, False)]:
@@ -143,16 +143,33 @@ def independent_parser(image, symbols):
     timeouts = [0, 1, 499, 500, 501, 9999, 10000, 10001, 32767, 32768, 65535]
     timeouts += [rng.randrange(65536) for _ in range(128)]
     for milliseconds in timeouts:
-        before = e.get(HOST, 40)
+        before = e.get(HOST, END-HOST)
         reply = request(packet(4, payload=milliseconds.to_bytes(2, 'little')))
         assert reply[5] == (0 if 500 <= milliseconds <= 10000 else 3)
         if reply[5]:
-            assert e.get(HOST, 40) == before
+            assert e.get(HOST, END-HOST) == before
+    native = 0
+    for mode in [1,2]:
+        for effect in ['solid','blink','breathe','rainbow']:
+            for duration in [100,5000,60000]:
+                for start in [0,0xffff0000]:
+                    e.put(HOST,bytes(END-HOST));e.now=start
+                    payload=effect_payload(effect,duration_ms=duration,request_id=73)
+                    assert request(packet(5,19,payload),mode)[8]&1
+                    e.now=start+duration*16000-1
+                    reply=request(packet(5,20,payload),mode)
+                    assert reply[8]&1 and int.from_bytes(reply[15:17],'little')==1
+                    e.now+=1
+                    assert not request(packet(5,21,payload),mode)[8]&1
+                    assert request(packet(3),mode)[5]==4
+                    assert not request(packet(5,22,payload),mode)[8]&1
+                    native+=1
     return {'status': 'PASS', 'engine': 'independent standard-library RV32IM interpreter',
             'parser_calls': count, 'invalid_length_mode_opcode_cases': invalid,
             'non_extension_magic_cases': namespace, 'exact_tick_boundaries': boundaries,
             'timeout_values': len(timeouts), 'max_parser_instructions': maximum,
-            'observed_parser_stack_bytes': stack_depth, 'store_allowlist_and_abi': True}
+            'observed_parser_stack_bytes': stack_depth, 'store_allowlist_and_abi': True,
+            'native_effect_expiry_retry_wrap_cases':native}
 
 
 def startup_and_render(image):
@@ -177,7 +194,7 @@ def startup_and_render(image):
                     a, b = ext.ClockSequence(base), ext.ClockSequence(image)
                     for e in [a, b]:
                         ext.initialize(e, side=side, connection=mode, effect=effect)
-                        e.u.mem_write(HOST, bytes(40))
+                        e.u.mem_write(HOST, bytes(END-HOST))
                         e.u.mem_write(END, b'\xa7'*32)
                         e.word(0x82698, 0xffff0000)
                         if query:

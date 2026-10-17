@@ -11,10 +11,11 @@ from pathlib import Path
 STOCK_SHA = 'd19733978808c856db93236ea3472b2cf843493c9aa6d5320db50412431e5210'
 XIP = 0x20000000
 APPEND = 0x1ed50
-BSS_END = 0x826c4
+BSS_END = 0x826d0
 ORIGINAL = {0x142:'130eae55', 0x98f0:'411122c6', 0xc400:'011122cc',
             0x13520:'8b078035f99b93e7', 0xe22c:'8b14803e',
-            0xdfc4:'03876781', 0xe1d8:'03876781'}
+            0xdfc4:'03876781', 0xe1d8:'03876781',
+            0x112ac:'411126c2', 0x12a4e:'93058002'}
 
 
 def digest(data):
@@ -82,13 +83,15 @@ def build(stock_path, toolchain, out):
         body[offset:offset+len(data)] = data
     old = int.from_bytes(stock[0x142:0x146],'little')
     new = (old & 0xfffff) | (((old>>20)+(BSS_END-0x82698))<<20)
-    patch(0x142,struct.pack('<I',new),'Reserve battery timer + 40-byte host state in BSS')
+    patch(0x142,struct.pack('<I',new),'Reserve battery timer + 52-byte host/effect state in BSS')
     for offset,name,reason in [
         (0x98f0,'patch_side_entry','Existing Fn+B side renderer'),
         (0xc400,'patch_frame_entry','Host lease, battery priority and final side overlay'),
         (0xe22c,'patch_hid_dispatch_entry','Shared USB/RF request dispatch'),
         (0xdfc4,'patch_usb_length_general','Record actual report length in general USB receiver'),
-        (0xe1d8,'patch_usb_length_direct','Record actual report length in direct VIA receiver')]:
+        (0xe1d8,'patch_usb_length_direct','Record actual report length in direct VIA receiver'),
+        (0x112ac,'patch_rf_fast_sleep','Cancel local notification before original RF fast sleep'),
+        (0x12a4e,'patch_rf_normal_sleep','Cancel local notification before original RF normal sleep')]:
         patch(offset,jal(XIP+offset,symbols[name]),reason)
     patch(0x13520,jal(XIP+0x13520,symbols['patch_begin'],1)+jal(XIP+0x13524,XIP+0x135f4),
           'Existing Fn+B press/retrigger hook')
@@ -114,7 +117,9 @@ def build(stock_path, toolchain, out):
                 'control_transports':['usb','rf'],'rf_info_query':True,
                 'firmware_version':version['version'],'firmware_build':version['build'],
                 'firmware_feature_flags':version['feature_flags'],'version_metadata_format':1,
-                'rf_sleep_policy':'Live lighting lease holds stock idle counters at zero; expiry/release resumes stock idle timing.',
+                'rf_sleep_policy':'PLAY never resets idle counters; original RF sleep cancels the notification. Legacy FRAME keeps its original bounded-lease behavior.',
+                'local_effects':['solid','blink','breathe','rainbow'],
+                'local_effect_duration_ms':[100,60000],
                 'device_access':'NONE'}
     (out/'build-manifest.json').write_text(json.dumps(manifest,indent=2)+'\n')
     return manifest

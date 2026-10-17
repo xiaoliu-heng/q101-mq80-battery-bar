@@ -20,7 +20,7 @@ from mq80lab.engine import Runtime
 from mq80lab.peripherals import crc16
 from mq80lab.scenarios import BUILTINS,run_scenario,apply_step,expected_bar
 
-BUILD=ROOT/'build/side-hid-rf-v3.0.1'
+BUILD=ROOT/'build/side-hid-rf-v3.1.0'
 IMAGE=b''
 STOCK=(ROOT/'simulator/assets/stock.bin').read_bytes()
 V2=(ROOT/'simulator/assets/battery-bar-v2.bin').read_bytes()
@@ -35,7 +35,7 @@ def usb(image=None,**environment):
 
 
 def host_bytes(r):
-    return bytes(r.u.mem_read(HOST,38))+bytes(r.u.mem_read(HOST+39,1)) # Exclude recorded USB length.
+    return bytes(r.u.mem_read(HOST,38))+bytes(r.u.mem_read(HOST+39,13)) # Exclude recorded USB length.
 
 
 def send(r,command=0,payload=b'',sequence=42,path='direct'):
@@ -65,11 +65,11 @@ class HidTests(unittest.TestCase):
             p=packet(0,101)
             reply=r.receive_rf_hid(p) if path=='rf' else r.receive_raw_hid(p,path)
             state=decode(p,reply)
-            self.assertEqual(state.firmware_version,'3.0.1')
-            self.assertEqual(state.firmware_build,2)
-            self.assertEqual(state.firmware_feature_flags,15)
-            self.assertEqual(state.firmware_features,('fn_b_battery_bar','battery_query','usb_side_rgb','rf_side_rgb'))
-            self.assertEqual(reply[23:],b'FV\x01\x03\x00\x01\x0f\x02\x00')
+            self.assertEqual(state.firmware_version,'3.1.0')
+            self.assertEqual(state.firmware_build,3)
+            self.assertEqual(state.firmware_feature_flags,31)
+            self.assertEqual(state.firmware_features,('fn_b_battery_bar','battery_query','usb_side_rgb','rf_side_rgb','local_effects'))
+            self.assertEqual(reply[23:],b'FV\x01\x03\x01\x00\x1f\x03\x00')
             self.assertEqual(host_bytes(r),before)
             self.assertFalse(r.flash.operations)
         checks['firmware_identity']={'version':state.firmware_version,'build':state.firmware_build,
@@ -82,7 +82,8 @@ class HidTests(unittest.TestCase):
             a,b=[SimulatedTransport(image,connection) for image in [previous,IMAGE]]
             for command,payload in [(0,b''),(4,(750).to_bytes(2,'little')),(1,bytes(range(27))),(3,b''),(2,b'')]:
                 p=packet(command,55,payload);qa=a.request(p);qb=b.request(p)
-                self.assertEqual(qa[:23],qb[:23],(connection,command))
+                self.assertEqual(qa[:22],qb[:22],(connection,command))
+                self.assertEqual(qa[22],qb[22]&15)
                 self.assertEqual(qa[23:],bytes(9))
                 self.assertEqual(qb[23:26],b'FV\x01')
 
@@ -121,7 +122,7 @@ class HidTests(unittest.TestCase):
         self.assertEqual(manifest['firmware_version'],state.firmware_version)
         self.assertEqual(manifest['firmware_build'],state.firmware_build)
         self.assertEqual(manifest['firmware_feature_flags'],state.firmware_feature_flags)
-        self.assertIn('-v3.0.1-',manifest['modified_name'])
+        self.assertIn('-v3.1.0-',manifest['modified_name'])
         offset=int(manifest['symbols']['side_firmware_metadata'],16)-0x20000000
         self.assertEqual(IMAGE[offset:offset+9],r.receive_raw_hid(packet(0))[23:])
         self.assertEqual(IMAGE[:0x18],STOCK[:0x18])
@@ -139,10 +140,10 @@ class HidTests(unittest.TestCase):
 
     def test_startup_clears_exact_reserved_bss(self):
         r=usb()
-        r.u.mem_write(0x809b0,b'\xa5'*(0x826cc-0x809b0))
+        r.u.mem_write(0x809b0,b'\xa5'*(0x826d8-0x809b0))
         r.invoke('startup_bss',0x20000132,end=0x20000152)
-        self.assertEqual(bytes(r.u.mem_read(0x809b0,0x826c4-0x809b0)),bytes(0x826c4-0x809b0))
-        self.assertEqual(bytes(r.u.mem_read(0x826c4,8)),b'\xa5'*8)
+        self.assertEqual(bytes(r.u.mem_read(0x809b0,0x826d0-0x809b0)),bytes(0x826d0-0x809b0))
+        self.assertEqual(bytes(r.u.mem_read(0x826d0,8)),b'\xa5'*8)
 
     def test_info_executes_both_real_usb_receivers(self):
         for path in ['direct','general']:
@@ -188,7 +189,7 @@ class HidTests(unittest.TestCase):
 
     def test_invalid_version_opcode_and_reply_bit_are_non_mutating(self):
         r=usb()
-        for byte in [0x01,0x21,0xf1,0x15,0x16,0x17,0x18,0x19,0x1f]:
+        for byte in [0x01,0x21,0xf1,0x16,0x17,0x18,0x19,0x1f]:
             p=bytearray(packet(1,91,b'\xff'*27));p[3]=byte
             before=host_bytes(r)
             reply=r.receive_raw_hid(bytes(p))
@@ -290,7 +291,7 @@ class HidTests(unittest.TestCase):
         r.byte(HOST+38,32)
         boundaries=dict(r.boundary_counts)
         r.invoke('parser_memory_audit',int(symbols['side_hid_process'],16))
-        allowed=set(range(0x80be8,0x80c08))|set(range(HOST,HOST+40))|set(range(0x9fc00,0xa0000))
+        allowed=set(range(0x80be8,0x80c08))|set(range(HOST,HOST+52))|set(range(0x9fc00,0xa0000))
         for address,size,_ in r.writes:
             self.assertTrue(set(range(address,address+size))<=allowed,(hex(address),size))
         self.assertEqual(r.boundary_counts,boundaries)
@@ -485,7 +486,7 @@ class HidTests(unittest.TestCase):
         r.u.mem_write(0x80be8,packet(1,73,bytes(range(27))))
         r.byte(0x809b0,32)
         r.invoke('rf_parser_memory_audit',int(symbols['side_hid_process'],16))
-        allowed=(set(range(0x80be8,0x80c08))|set(range(HOST,HOST+40))|
+        allowed=(set(range(0x80be8,0x80c08))|set(range(HOST,HOST+52))|
                  set(range(0x9fc00,0xa0000))|set(range(0x80b30,0x80b34))|set(range(0x80a64,0x80a68)))
         for address,size,_ in r.writes:
             self.assertTrue(set(range(address,address+size))<=allowed,(hex(address),size))

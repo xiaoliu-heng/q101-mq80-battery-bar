@@ -680,7 +680,8 @@ class Runtime(m.FirmwareEmulator):
     def sleep_checkpoint(self,gate='fast'):
         if self.env.connection=='usb': raise ValueError('USB 主机挂起可单独设置；无线休眠场景不适用于 USB。')
         if self.keys or self.call_context: raise ValueError('请先松开所有键，并等待当前任务完成。')
-        if self.side_hid.state()['active'] and self.env.connection=='rf':
+        if (self.side_hid.state()['active'] and self.env.connection=='rf'
+                and not (self.metadata.get('local_effects') and self.byte(0x826cc))):
             raise ValueError('侧灯控制期间保持无线接收；请先释放控制或等待超时，再检查休眠。')
         if gate not in ['fast','normal']: raise ValueError('未知休眠场景。')
         if gate=='fast':

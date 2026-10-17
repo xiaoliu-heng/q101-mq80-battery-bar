@@ -154,7 +154,7 @@ struct LabError: LocalizedError {
     var firmwareVersionCaption: String {
         let version = runtime["firmware"]["firmware_version"]
         guard !version.isNull else { return "此镜像未提供可查询的固件版本号" }
-        let labels = ["fn_b_battery_bar":"电量条", "battery_query":"电量查询", "usb_side_rgb":"USB 控灯", "rf_side_rgb":"2.4G 控灯"]
+        let labels = ["fn_b_battery_bar":"电量条", "battery_query":"电量查询", "usb_side_rgb":"USB 控灯", "rf_side_rgb":"2.4G 控灯", "local_effects":"本地灯效"]
         let features = runtime["firmware"]["firmware_features"].values.map{labels[$0.text] ?? $0.text}.joined(separator:" / ")
         return "固件 v\(version.text) · 构建 \(runtime["firmware"]["firmware_build"].int) · \(features)"
     }

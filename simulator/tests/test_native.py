@@ -101,11 +101,12 @@ class NativeTransportTests(unittest.TestCase):
         self.assertEqual(result['transport'],'stdio-json-lines')
         self.assertEqual(len(result['layout']),84)
         self.assertEqual(len(result['scenarios']),10)
-        self.assertEqual(len(result['firmwares']),6)
+        self.assertEqual(len(result['firmwares']),7)
         self.assertTrue(any(x['side_hid'] for x in result['firmwares']))
         self.assertTrue(any(x['side_hid_rf'] for x in result['firmwares']))
         self.assertTrue(any(x['firmware_version']=='3.0.0' for x in result['firmwares']))
         self.assertTrue(any(x['firmware_version']=='3.0.1' for x in result['firmwares']))
+        self.assertTrue(any(x['firmware_version']=='3.1.0' and x['local_effects'] for x in result['firmwares']))
         self.assertNotIn('url',result)
 
     def test_query_preview_expiry_and_sleep_first_key_through_native_pipe(self):

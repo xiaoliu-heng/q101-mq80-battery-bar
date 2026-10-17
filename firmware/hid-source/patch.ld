@@ -9,6 +9,8 @@ stock_hid_dispatch_resume = 0x2000e230;
 stock_hid_reply = 0x2000e2f4;
 stock_usb_general_resume = 0x2000dfc8;
 stock_usb_direct_resume = 0x2000e1dc;
+stock_rf_fast_sleep_resume = 0x200112b0;
+stock_rf_normal_sleep_resume = 0x20012a52;
 SECTIONS {
     . = 0x2001ed50;
     .text : {

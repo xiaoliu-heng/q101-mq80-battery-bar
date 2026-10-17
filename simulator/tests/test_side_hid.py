@@ -147,7 +147,7 @@ class SideHIDRFTests(unittest.TestCase):
         self.assertEqual(state.firmware_version,r.metadata['firmware_version'])
         self.assertEqual(state.firmware_build,r.metadata['firmware_build'])
         self.assertEqual(list(state.firmware_features),r.metadata['firmware_features'])
-        self.assertEqual(state.firmware_version,'3.0.1')
+        self.assertEqual(state.firmware_version,'3.1.0')
         self.assertFalse(r.side_hid.state()['active'])
 
     def test_unversioned_rf_image_is_preserved_and_supported(self):

@@ -1,0 +1,906 @@
+{
+  "status": "PASS",
+  "started_at": "2026-10-17T11:56:52.614247+00:00",
+  "finished_at": "2026-10-17T11:57:55.944268+00:00",
+  "app_name": "Kryra",
+  "app_version": "1.0.0",
+  "transport": "usb",
+  "physical_hid_access": true,
+  "demo": false,
+  "checks": [
+    {
+      "name": "native app reads real USB battery",
+      "status": "PASS"
+    },
+    {
+      "name": "real firmware identifies as v3.0.1 build 2",
+      "status": "PASS"
+    },
+    {
+      "name": "USB accepts solid blue and brightness",
+      "status": "PASS"
+    },
+    {
+      "name": "solid keepalive continues receiving real USB replies",
+      "status": "PASS"
+    },
+    {
+      "name": "USB accepts nine independent segment colors",
+      "status": "PASS"
+    },
+    {
+      "name": "nine-segment control remains connected",
+      "status": "PASS"
+    },
+    {
+      "name": "USB starts finite rainbow",
+      "status": "PASS"
+    },
+    {
+      "name": "rainbow receives USB replies throughout measurement",
+      "status": "PASS"
+    },
+    {
+      "name": "USB rainbow reaches target of about twenty FPS",
+      "status": "PASS"
+    },
+    {
+      "name": "finite rainbow releases firmware lighting control",
+      "status": "PASS"
+    },
+    {
+      "name": "can control again after automatic restore",
+      "status": "PASS"
+    },
+    {
+      "name": "explicit release acknowledged by real USB firmware",
+      "status": "PASS"
+    },
+    {
+      "name": "fresh battery still reads after lighting acceptance",
+      "status": "PASS"
+    },
+    {
+      "name": "cleanup leaves original keyboard effect",
+      "status": "PASS"
+    },
+    {
+      "name": "native GUI blue preset controls physical USB via shared controller",
+      "status": "PASS"
+    },
+    {
+      "name": "native GUI restore button releases physical firmware control",
+      "status": "PASS"
+    }
+  ],
+  "count": 16,
+  "metrics": {
+    "rainbow_reply_confirmed_fps": 20.12,
+    "window_seconds": 4.027,
+    "window_frame_count": 81,
+    "sample_frames": [
+      30,
+      111
+    ],
+    "target_usb_fps": 20
+  },
+  "events": [
+    {
+      "command": [
+        "battery",
+        "--refresh"
+      ],
+      "elapsed_ms": 38.04,
+      "response": {
+        "connected": true,
+        "demo": false,
+        "percent": 83,
+        "stale": false,
+        "transport": "usb",
+        "updated_at": "2026-10-17T11:56:52Z"
+      }
+    },
+    {
+      "command": [
+        "status"
+      ],
+      "elapsed_ms": 14.0,
+      "response": {
+        "api_version": 1,
+        "app_version": "1.0.0",
+        "battery": {
+          "connected": true,
+          "demo": false,
+          "percent": 83,
+          "stale": false,
+          "transport": "usb",
+          "updated_at": "2026-10-17T11:56:52Z"
+        },
+        "demo": false,
+        "device": {
+          "connected": true,
+          "firmware_build": 2,
+          "firmware_version": "3.0.1",
+          "id": "usb-2120000",
+          "name": "IQUNIX MQ80 KB",
+          "transport": "usb"
+        },
+        "devices": [
+          {
+            "id": "usb-2120000",
+            "name": "IQUNIX MQ80 KB",
+            "transport": "usb"
+          }
+        ],
+        "error": null,
+        "lighting": {
+          "active": false,
+          "brightness": 100,
+          "colors": [],
+          "duration_seconds": null,
+          "frames_sent": 0,
+          "mode": "original",
+          "period_ms": 5000
+        },
+        "sleeping": false
+      }
+    },
+    {
+      "command": [
+        "solid",
+        "0080FF",
+        "--brightness",
+        "40",
+        "--seconds",
+        "6"
+      ],
+      "elapsed_ms": 40.12,
+      "response": {
+        "api_version": 1,
+        "app_version": "1.0.0",
+        "battery": {
+          "connected": true,
+          "demo": false,
+          "percent": 83,
+          "stale": false,
+          "transport": "usb",
+          "updated_at": "2026-10-17T11:56:52Z"
+        },
+        "demo": false,
+        "device": {
+          "connected": true,
+          "firmware_build": 2,
+          "firmware_version": "3.0.1",
+          "id": "usb-2120000",
+          "name": "IQUNIX MQ80 KB",
+          "transport": "usb"
+        },
+        "devices": [
+          {
+            "id": "usb-2120000",
+            "name": "IQUNIX MQ80 KB",
+            "transport": "usb"
+          }
+        ],
+        "error": null,
+        "lighting": {
+          "active": true,
+          "brightness": 40,
+          "colors": [
+            "0080FF",
+            "0080FF",
+            "0080FF",
+            "0080FF",
+            "0080FF",
+            "0080FF",
+            "0080FF",
+            "0080FF",
+            "0080FF"
+          ],
+          "duration_seconds": 6,
+          "frames_sent": 1,
+          "mode": "solid",
+          "period_ms": 5000
+        },
+        "sleeping": false
+      }
+    },
+    {
+      "command": [
+        "status"
+      ],
+      "elapsed_ms": 20.76,
+      "response": {
+        "api_version": 1,
+        "app_version": "1.0.0",
+        "battery": {
+          "connected": true,
+          "demo": false,
+          "percent": 83,
+          "stale": false,
+          "transport": "usb",
+          "updated_at": "2026-10-17T11:56:54Z"
+        },
+        "demo": false,
+        "device": {
+          "connected": true,
+          "firmware_build": 2,
+          "firmware_version": "3.0.1",
+          "id": "usb-2120000",
+          "name": "IQUNIX MQ80 KB",
+          "transport": "usb"
+        },
+        "devices": [
+          {
+            "id": "usb-2120000",
+            "name": "IQUNIX MQ80 KB",
+            "transport": "usb"
+          }
+        ],
+        "error": null,
+        "lighting": {
+          "active": true,
+          "brightness": 40,
+          "colors": [
+            "0080FF",
+            "0080FF",
+            "0080FF",
+            "0080FF",
+            "0080FF",
+            "0080FF",
+            "0080FF",
+            "0080FF",
+            "0080FF"
+          ],
+          "duration_seconds": 6,
+          "frames_sent": 1,
+          "mode": "solid",
+          "period_ms": 5000
+        },
+        "sleeping": false
+      }
+    },
+    {
+      "command": [
+        "frame",
+        "FF0000",
+        "FF8000",
+        "FFFF00",
+        "80FF00",
+        "00FF00",
+        "00FF80",
+        "00FFFF",
+        "0080FF",
+        "8000FF",
+        "--brightness",
+        "35",
+        "--seconds",
+        "6"
+      ],
+      "elapsed_ms": 58.91,
+      "response": {
+        "api_version": 1,
+        "app_version": "1.0.0",
+        "battery": {
+          "connected": true,
+          "demo": false,
+          "percent": 83,
+          "stale": false,
+          "transport": "usb",
+          "updated_at": "2026-10-17T11:56:54Z"
+        },
+        "demo": false,
+        "device": {
+          "connected": true,
+          "firmware_build": 2,
+          "firmware_version": "3.0.1",
+          "id": "usb-2120000",
+          "name": "IQUNIX MQ80 KB",
+          "transport": "usb"
+        },
+        "devices": [
+          {
+            "id": "usb-2120000",
+            "name": "IQUNIX MQ80 KB",
+            "transport": "usb"
+          }
+        ],
+        "error": null,
+        "lighting": {
+          "active": true,
+          "brightness": 35,
+          "colors": [
+            "FF0000",
+            "FF8000",
+            "FFFF00",
+            "80FF00",
+            "00FF00",
+            "00FF80",
+            "00FFFF",
+            "0080FF",
+            "8000FF"
+          ],
+          "duration_seconds": 6,
+          "frames_sent": 1,
+          "mode": "frame",
+          "period_ms": 5000
+        },
+        "sleeping": false
+      }
+    },
+    {
+      "command": [
+        "status"
+      ],
+      "elapsed_ms": 31.76,
+      "response": {
+        "api_version": 1,
+        "app_version": "1.0.0",
+        "battery": {
+          "connected": true,
+          "demo": false,
+          "percent": 84,
+          "stale": false,
+          "transport": "usb",
+          "updated_at": "2026-10-17T11:56:57Z"
+        },
+        "demo": false,
+        "device": {
+          "connected": true,
+          "firmware_build": 2,
+          "firmware_version": "3.0.1",
+          "id": "usb-2120000",
+          "name": "IQUNIX MQ80 KB",
+          "transport": "usb"
+        },
+        "devices": [
+          {
+            "id": "usb-2120000",
+            "name": "IQUNIX MQ80 KB",
+            "transport": "usb"
+          }
+        ],
+        "error": null,
+        "lighting": {
+          "active": true,
+          "brightness": 35,
+          "colors": [
+            "FF0000",
+            "FF8000",
+            "FFFF00",
+            "80FF00",
+            "00FF00",
+            "00FF80",
+            "00FFFF",
+            "0080FF",
+            "8000FF"
+          ],
+          "duration_seconds": 6,
+          "frames_sent": 1,
+          "mode": "frame",
+          "period_ms": 5000
+        },
+        "sleeping": false
+      }
+    },
+    {
+      "command": [
+        "rainbow",
+        "--period",
+        "2500",
+        "--brightness",
+        "35",
+        "--seconds",
+        "10"
+      ],
+      "elapsed_ms": 69.97,
+      "response": {
+        "api_version": 1,
+        "app_version": "1.0.0",
+        "battery": {
+          "connected": true,
+          "demo": false,
+          "percent": 84,
+          "stale": false,
+          "transport": "usb",
+          "updated_at": "2026-10-17T11:56:57Z"
+        },
+        "demo": false,
+        "device": {
+          "connected": true,
+          "firmware_build": 2,
+          "firmware_version": "3.0.1",
+          "id": "usb-2120000",
+          "name": "IQUNIX MQ80 KB",
+          "transport": "usb"
+        },
+        "devices": [
+          {
+            "id": "usb-2120000",
+            "name": "IQUNIX MQ80 KB",
+            "transport": "usb"
+          }
+        ],
+        "error": null,
+        "lighting": {
+          "active": true,
+          "brightness": 35,
+          "colors": [
+            "FF8000",
+            "FF8000",
+            "FF8000",
+            "FF8000",
+            "FF8000",
+            "FF8000",
+            "FF8000",
+            "FF8000",
+            "FF8000"
+          ],
+          "duration_seconds": 10,
+          "frames_sent": 1,
+          "mode": "rainbow",
+          "period_ms": 2500
+        },
+        "sleeping": false
+      }
+    },
+    {
+      "command": [
+        "status"
+      ],
+      "elapsed_ms": 21.07,
+      "response": {
+        "api_version": 1,
+        "app_version": "1.0.0",
+        "battery": {
+          "connected": true,
+          "demo": false,
+          "percent": 84,
+          "stale": false,
+          "transport": "usb",
+          "updated_at": "2026-10-17T11:56:58Z"
+        },
+        "demo": false,
+        "device": {
+          "connected": true,
+          "firmware_build": 2,
+          "firmware_version": "3.0.1",
+          "id": "usb-2120000",
+          "name": "IQUNIX MQ80 KB",
+          "transport": "usb"
+        },
+        "devices": [
+          {
+            "id": "usb-2120000",
+            "name": "IQUNIX MQ80 KB",
+            "transport": "usb"
+          }
+        ],
+        "error": null,
+        "lighting": {
+          "active": true,
+          "brightness": 35,
+          "colors": [
+            "FF8000",
+            "FF8000",
+            "FF8000",
+            "FF8000",
+            "FF8000",
+            "FF8000",
+            "FF8000",
+            "FF8000",
+            "FF8000"
+          ],
+          "duration_seconds": 10,
+          "frames_sent": 30,
+          "mode": "rainbow",
+          "period_ms": 2500
+        },
+        "sleeping": false
+      }
+    },
+    {
+      "command": [
+        "status"
+      ],
+      "elapsed_ms": 26.61,
+      "response": {
+        "api_version": 1,
+        "app_version": "1.0.0",
+        "battery": {
+          "connected": true,
+          "demo": false,
+          "percent": 84,
+          "stale": false,
+          "transport": "usb",
+          "updated_at": "2026-10-17T11:57:02Z"
+        },
+        "demo": false,
+        "device": {
+          "connected": true,
+          "firmware_build": 2,
+          "firmware_version": "3.0.1",
+          "id": "usb-2120000",
+          "name": "IQUNIX MQ80 KB",
+          "transport": "usb"
+        },
+        "devices": [
+          {
+            "id": "usb-2120000",
+            "name": "IQUNIX MQ80 KB",
+            "transport": "usb"
+          }
+        ],
+        "error": null,
+        "lighting": {
+          "active": true,
+          "brightness": 35,
+          "colors": [
+            "FF8000",
+            "FF8000",
+            "FF8000",
+            "FF8000",
+            "FF8000",
+            "FF8000",
+            "FF8000",
+            "FF8000",
+            "FF8000"
+          ],
+          "duration_seconds": 10,
+          "frames_sent": 111,
+          "mode": "rainbow",
+          "period_ms": 2500
+        },
+        "sleeping": false
+      }
+    },
+    {
+      "command": [
+        "status"
+      ],
+      "elapsed_ms": 31.7,
+      "response": {
+        "api_version": 1,
+        "app_version": "1.0.0",
+        "battery": {
+          "connected": true,
+          "demo": false,
+          "percent": 84,
+          "stale": false,
+          "transport": "usb",
+          "updated_at": "2026-10-17T11:57:07Z"
+        },
+        "demo": false,
+        "device": {
+          "connected": true,
+          "firmware_build": 2,
+          "firmware_version": "3.0.1",
+          "id": "usb-2120000",
+          "name": "IQUNIX MQ80 KB",
+          "transport": "usb"
+        },
+        "devices": [
+          {
+            "id": "usb-2120000",
+            "name": "IQUNIX MQ80 KB",
+            "transport": "usb"
+          }
+        ],
+        "error": null,
+        "lighting": {
+          "active": false,
+          "brightness": 100,
+          "colors": [],
+          "duration_seconds": null,
+          "frames_sent": 200,
+          "mode": "original",
+          "period_ms": 5000
+        },
+        "sleeping": false
+      }
+    },
+    {
+      "command": [
+        "solid",
+        "34D399",
+        "--brightness",
+        "30",
+        "--seconds",
+        "5"
+      ],
+      "elapsed_ms": 71.51,
+      "response": {
+        "api_version": 1,
+        "app_version": "1.0.0",
+        "battery": {
+          "connected": true,
+          "demo": false,
+          "percent": 84,
+          "stale": false,
+          "transport": "usb",
+          "updated_at": "2026-10-17T11:57:08Z"
+        },
+        "demo": false,
+        "device": {
+          "connected": true,
+          "firmware_build": 2,
+          "firmware_version": "3.0.1",
+          "id": "usb-2120000",
+          "name": "IQUNIX MQ80 KB",
+          "transport": "usb"
+        },
+        "devices": [
+          {
+            "id": "usb-2120000",
+            "name": "IQUNIX MQ80 KB",
+            "transport": "usb"
+          }
+        ],
+        "error": null,
+        "lighting": {
+          "active": true,
+          "brightness": 30,
+          "colors": [
+            "34D399",
+            "34D399",
+            "34D399",
+            "34D399",
+            "34D399",
+            "34D399",
+            "34D399",
+            "34D399",
+            "34D399"
+          ],
+          "duration_seconds": 5,
+          "frames_sent": 1,
+          "mode": "solid",
+          "period_ms": 5000
+        },
+        "sleeping": false
+      }
+    },
+    {
+      "command": [
+        "release"
+      ],
+      "elapsed_ms": 59.52,
+      "response": {
+        "api_version": 1,
+        "app_version": "1.0.0",
+        "battery": {
+          "connected": true,
+          "demo": false,
+          "percent": 84,
+          "stale": false,
+          "transport": "usb",
+          "updated_at": "2026-10-17T11:57:08Z"
+        },
+        "demo": false,
+        "device": {
+          "connected": true,
+          "firmware_build": 2,
+          "firmware_version": "3.0.1",
+          "id": "usb-2120000",
+          "name": "IQUNIX MQ80 KB",
+          "transport": "usb"
+        },
+        "devices": [
+          {
+            "id": "usb-2120000",
+            "name": "IQUNIX MQ80 KB",
+            "transport": "usb"
+          }
+        ],
+        "error": null,
+        "lighting": {
+          "active": false,
+          "brightness": 100,
+          "colors": [],
+          "duration_seconds": null,
+          "frames_sent": 1,
+          "mode": "original",
+          "period_ms": 5000
+        },
+        "sleeping": false
+      }
+    },
+    {
+      "command": [
+        "battery",
+        "--refresh"
+      ],
+      "elapsed_ms": 30.62,
+      "response": {
+        "connected": true,
+        "demo": false,
+        "percent": 84,
+        "stale": false,
+        "transport": "usb",
+        "updated_at": "2026-10-17T11:57:08Z"
+      }
+    },
+    {
+      "command": [
+        "release"
+      ],
+      "elapsed_ms": 24.57,
+      "response": {
+        "api_version": 1,
+        "app_version": "1.0.0",
+        "battery": {
+          "connected": true,
+          "demo": false,
+          "percent": 84,
+          "stale": false,
+          "transport": "usb",
+          "updated_at": "2026-10-17T11:57:08Z"
+        },
+        "demo": false,
+        "device": {
+          "connected": true,
+          "firmware_build": 2,
+          "firmware_version": "3.0.1",
+          "id": "usb-2120000",
+          "name": "IQUNIX MQ80 KB",
+          "transport": "usb"
+        },
+        "devices": [
+          {
+            "id": "usb-2120000",
+            "name": "IQUNIX MQ80 KB",
+            "transport": "usb"
+          }
+        ],
+        "error": null,
+        "lighting": {
+          "active": false,
+          "brightness": 100,
+          "colors": [],
+          "duration_seconds": null,
+          "frames_sent": 1,
+          "mode": "original",
+          "period_ms": 5000
+        },
+        "sleeping": false
+      }
+    }
+  ],
+  "final_status": {
+    "api_version": 1,
+    "app_version": "1.0.0",
+    "battery": {
+      "connected": true,
+      "demo": false,
+      "percent": 86,
+      "stale": false,
+      "transport": "usb",
+      "updated_at": "2026-10-17T11:57:55Z"
+    },
+    "demo": false,
+    "device": {
+      "connected": true,
+      "firmware_build": 2,
+      "firmware_version": "3.0.1",
+      "id": "usb-2120000",
+      "name": "IQUNIX MQ80 KB",
+      "transport": "usb"
+    },
+    "devices": [
+      {
+        "id": "usb-2120000",
+        "name": "IQUNIX MQ80 KB",
+        "transport": "usb"
+      }
+    ],
+    "error": null,
+    "lighting": {
+      "active": false,
+      "brightness": 100,
+      "colors": [],
+      "duration_seconds": null,
+      "frames_sent": 1,
+      "mode": "original",
+      "period_ms": 5000
+    },
+    "sleeping": false
+  },
+  "failure": null,
+  "visual_confirmation_by_user": false,
+  "scope": "Native CLI -> local authenticated API -> running app -> IOKit -> physical USB keyboard; colors and animation are confirmed by accepted protocol replies, not an optical measurement.",
+  "cli_sha256": "6c2e3d43e301b498ca0d3301deb36ced1102221b88870d7745dd6ab017230cdf",
+  "app_executable_sha256": "493ea0a85d94f534b8e72ec89f43bc2f607b9081410b0066bcf13012db24d681",
+  "gui_physical_test": {
+    "native_blue_preset": "PASS",
+    "color": "45B8FF",
+    "api_state_after_gui_preset": {
+      "api_version": 1,
+      "app_version": "1.0.0",
+      "battery": {
+        "connected": true,
+        "demo": false,
+        "percent": 85,
+        "stale": false,
+        "transport": "usb",
+        "updated_at": "2026-10-17T11:57:31Z"
+      },
+      "demo": false,
+      "device": {
+        "connected": true,
+        "firmware_build": 2,
+        "firmware_version": "3.0.1",
+        "id": "usb-2120000",
+        "name": "IQUNIX MQ80 KB",
+        "transport": "usb"
+      },
+      "devices": [
+        {
+          "id": "usb-2120000",
+          "name": "IQUNIX MQ80 KB",
+          "transport": "usb"
+        }
+      ],
+      "error": null,
+      "lighting": {
+        "active": true,
+        "brightness": 30,
+        "colors": [
+          "45B8FF",
+          "45B8FF",
+          "45B8FF",
+          "45B8FF",
+          "45B8FF",
+          "45B8FF",
+          "45B8FF",
+          "45B8FF",
+          "45B8FF"
+        ],
+        "duration_seconds": null,
+        "frames_sent": 1,
+        "mode": "solid",
+        "period_ms": 5000
+      },
+      "sleeping": false
+    },
+    "native_restore_button": "PASS",
+    "rainbow_status_visible_during_physical_stream": true,
+    "api_state_after_gui_restore": {
+      "api_version": 1,
+      "app_version": "1.0.0",
+      "battery": {
+        "connected": true,
+        "demo": false,
+        "percent": 86,
+        "stale": false,
+        "transport": "usb",
+        "updated_at": "2026-10-17T11:57:55Z"
+      },
+      "demo": false,
+      "device": {
+        "connected": true,
+        "firmware_build": 2,
+        "firmware_version": "3.0.1",
+        "id": "usb-2120000",
+        "name": "IQUNIX MQ80 KB",
+        "transport": "usb"
+      },
+      "devices": [
+        {
+          "id": "usb-2120000",
+          "name": "IQUNIX MQ80 KB",
+          "transport": "usb"
+        }
+      ],
+      "error": null,
+      "lighting": {
+        "active": false,
+        "brightness": 100,
+        "colors": [],
+        "duration_seconds": null,
+        "frames_sent": 1,
+        "mode": "original",
+        "period_ms": 5000
+      },
+      "sleeping": false
+    }
+  }
+}

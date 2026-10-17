@@ -28,6 +28,7 @@ def main():
         '--add-data',str(ROOT.parent/'firmware/experimental/side-hid-rf.bin')+':assets',
         '--add-data',str(ROOT.parent/'firmware/experimental/side-hid-rf-v3.0.0.bin')+':assets',
         '--add-data',str(ROOT.parent/'firmware/experimental/side-hid-rf-v3.0.1.bin')+':assets',
+        '--add-data',str(ROOT.parent/'firmware/experimental/side-hid-rf-v3.1.0.bin')+':assets',
         ROOT/'run_native.py')
     contents=APP/'Contents'
     if contents.exists():shutil.rmtree(contents)

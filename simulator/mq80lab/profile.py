@@ -19,18 +19,23 @@ SIDE_HID_V3_SHA256 = '920a7afd984c1ad6041cd4e0f6810ce6b7326bafc2b9b77c03b65132b5
 SIDE_HID_V3_IMAGE = ASSETS / 'side-hid-rf-v3.0.0.bin'
 if not SIDE_HID_V3_IMAGE.exists():
     SIDE_HID_V3_IMAGE = ROOT.parent / 'firmware/experimental/side-hid-rf-v3.0.0.bin'
-SIDE_HID_CURRENT_SHA256 = '7b800e3edab6b2e8c421c3b7729464e990edfd2e5a2647ded6059c1901006534'
-SIDE_HID_CURRENT_IMAGE = ASSETS / 'side-hid-rf-v3.0.1.bin'
+SIDE_HID_V301_SHA256 = '7b800e3edab6b2e8c421c3b7729464e990edfd2e5a2647ded6059c1901006534'
+SIDE_HID_V301_IMAGE = ASSETS / 'side-hid-rf-v3.0.1.bin'
+if not SIDE_HID_V301_IMAGE.exists():
+    SIDE_HID_V301_IMAGE = ROOT.parent / 'firmware/experimental/side-hid-rf-v3.0.1.bin'
+SIDE_HID_CURRENT_SHA256 = '5757c625adf427a4932a9fb9e8e7be0e5a4a88311e4484278d771c5c1b29cf0a'
+SIDE_HID_CURRENT_IMAGE = ASSETS / 'side-hid-rf-v3.1.0.bin'
 if not SIDE_HID_CURRENT_IMAGE.exists():
-    SIDE_HID_CURRENT_IMAGE = ROOT.parent / 'firmware/experimental/side-hid-rf-v3.0.1.bin'
-VERSIONED = {SIDE_HID_V3_SHA256: ('3.0.0', 1), SIDE_HID_CURRENT_SHA256: ('3.0.1', 2)}
+    SIDE_HID_CURRENT_IMAGE = ROOT.parent / 'firmware/experimental/side-hid-rf-v3.1.0.bin'
+VERSIONED = {SIDE_HID_V3_SHA256: ('3.0.0', 1), SIDE_HID_V301_SHA256: ('3.0.1', 2), SIDE_HID_CURRENT_SHA256: ('3.1.0', 3)}
 KNOWN = {
     'd19733978808c856db93236ea3472b2cf843493c9aa6d5320db50412431e5210': 'MQ80 官方 V0109',
     'f3e86554be1ed5faf11750fceea85980c9ccd080912be4552e8317fb09ef7719': 'Fn+B 侧灯电量条 v2',
     SIDE_HID_SHA256: '侧灯 HID + Fn+B 实验版',
     SIDE_HID_RF_SHA256: '侧灯 USB + 2.4G + Fn+B 实验版',
     SIDE_HID_V3_SHA256: 'v3.0.0 · 历史测试版（超时边界已在 3.0.1 修复）',
-    SIDE_HID_CURRENT_SHA256: 'v3.0.1 · 电量条 + USB/2.4G 侧灯',
+    SIDE_HID_V301_SHA256: 'v3.0.1 · 电量条 + USB/2.4G 侧灯',
+    SIDE_HID_CURRENT_SHA256: 'v3.1.0 · 电量条 + USB/2.4G 本地通知灯效',
 }
 
 
@@ -53,7 +58,9 @@ def inspect_image(image, name='firmware.bin'):
             'side_hid_rf': digest in [SIDE_HID_RF_SHA256, *VERSIONED],
             'firmware_version': VERSIONED.get(digest, (None, None))[0],
             'firmware_build': VERSIONED.get(digest, (None, None))[1],
-            'firmware_features': ['fn_b_battery_bar','battery_query','usb_side_rgb','rf_side_rgb']
+            'local_effects': digest == SIDE_HID_CURRENT_SHA256,
+            'firmware_features': (['fn_b_battery_bar','battery_query','usb_side_rgb','rf_side_rgb'] +
+                                 (['local_effects'] if digest == SIDE_HID_CURRENT_SHA256 else []))
                                  if digest in VERSIONED else [],
             'profile': PROFILE, 'compatibility': '已知镜像' if digest in KNOWN else '自定义镜像：固定地址兼容性待运行检查'}
 

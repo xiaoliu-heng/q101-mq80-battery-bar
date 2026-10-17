@@ -15,7 +15,7 @@ from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from pathlib import Path
 from urllib.parse import urlsplit,parse_qs,unquote
 from .engine import Runtime
-from .profile import ASSETS,ROOT,COVERAGE,layout,inspect_image,SIDE_HID_IMAGE,SIDE_HID_RF_IMAGE,SIDE_HID_V3_IMAGE,SIDE_HID_CURRENT_IMAGE
+from .profile import ASSETS,ROOT,COVERAGE,layout,inspect_image,SIDE_HID_IMAGE,SIDE_HID_RF_IMAGE,SIDE_HID_V3_IMAGE,SIDE_HID_V301_IMAGE,SIDE_HID_CURRENT_IMAGE
 from .scenarios import BUILTINS,run_scenario,validate_scenario,apply_step
 from .ota import run_ota
 
@@ -26,7 +26,7 @@ class Lab:
         for name in ['firmware','reports','scenarios']:(self.data_dir/name).mkdir(parents=True,exist_ok=True)
         self.lock=threading.RLock()
         self.firmwares={}
-        for path in [ASSETS/'stock.bin',ASSETS/'battery-bar-v2.bin',SIDE_HID_IMAGE,SIDE_HID_RF_IMAGE,SIDE_HID_V3_IMAGE,SIDE_HID_CURRENT_IMAGE,*sorted((self.data_dir/'firmware').glob('*.bin'))]:
+        for path in [ASSETS/'stock.bin',ASSETS/'battery-bar-v2.bin',SIDE_HID_IMAGE,SIDE_HID_RF_IMAGE,SIDE_HID_V3_IMAGE,SIDE_HID_V301_IMAGE,SIDE_HID_CURRENT_IMAGE,*sorted((self.data_dir/'firmware').glob('*.bin'))]:
             try:
                 image=path.read_bytes()
                 meta=inspect_image(image,path.name)

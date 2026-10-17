@@ -35,6 +35,11 @@ enum {
     OP_RELEASE = 2,
     OP_KEEPALIVE = 3,
     OP_TIMEOUT = 4,
+    OP_PLAY = 5,
+    EFFECT_SOLID = 1,
+    EFFECT_BLINK = 2,
+    EFFECT_BREATHE = 3,
+    EFFECT_RAINBOW = 4,
     OK = 0,
     BAD_VERSION = 1,
     BAD_OPCODE = 2,
@@ -53,13 +58,59 @@ struct host_state {
     uint8_t dirty;
     uint8_t usb_length;
     uint8_t owner_mode;
+    uint32_t play_id;
+    uint16_t play_period;
+    uint16_t play_duration;
+    uint8_t effect;
+    uint8_t brightness;
 };
-_Static_assert(sizeof(struct host_state) == 40, "Reserved BSS size changed");
+_Static_assert(sizeof(struct host_state) == 52, "Reserved BSS size changed");
 extern volatile struct host_state side_host;
+static void expire_host(uint32_t now);
 
 static uint32_t timeout_ticks(void) {
+    if (side_host.effect) return (uint32_t)side_host.play_duration * TICKS_PER_MS;
     uint32_t ticks = side_host.timeout_ticks;
     return ticks ? ticks : DEFAULT_TIMEOUT_MS * TICKS_PER_MS;
+}
+
+/* PLAY payload: effect, brightness, RGB, period:u16, duration:u16,
+ * request_id:u32, fourteen zero reserved bytes. IDs are nonzero and a retry
+ * of the last ID must have identical parameters. It never renews/restarts,
+ * including after expiry, cancellation, sleep or a connection-mode change.
+ */
+static uint32_t play(volatile uint8_t *p, uint32_t now, uint32_t mode) {
+    uint32_t effect = p[5], brightness = p[6];
+    uint32_t period = (uint32_t)p[10] | ((uint32_t)p[11] << 8);
+    uint32_t duration = (uint32_t)p[12] | ((uint32_t)p[13] << 8);
+    uint32_t id = (uint32_t)p[14] | ((uint32_t)p[15] << 8) |
+                  ((uint32_t)p[16] << 16) | ((uint32_t)p[17] << 24);
+    if (effect < EFFECT_SOLID || effect > EFFECT_RAINBOW || brightness > 100 ||
+        duration < 100 || duration > 60000 || !id ||
+        (effect == EFFECT_SOLID ? period != 0 : (period < 500 || period > 20000)) ||
+        (effect == EFFECT_RAINBOW && (p[7] || p[8] || p[9]))) return BAD_ARGUMENT;
+    for (uint32_t i = 18; i < 32; ++i) if (p[i]) return BAD_ARGUMENT;
+    if (id == side_host.play_id) {
+        if (effect != side_host.effect || brightness != side_host.brightness ||
+            period != side_host.play_period || duration != side_host.play_duration)
+            return BAD_ARGUMENT;
+        for (uint32_t i = 0; i < 3; ++i)
+            if (p[7 + i] != side_host.rgb[i]) return BAD_ARGUMENT;
+        expire_host(now);
+        return OK;
+    }
+    side_host.play_id = id;
+    side_host.play_period = (uint16_t)period;
+    side_host.play_duration = (uint16_t)duration;
+    side_host.effect = (uint8_t)effect;
+    side_host.brightness = (uint8_t)brightness;
+    for (uint32_t i = 0; i < 3; ++i) side_host.rgb[i] = p[7 + i];
+    side_host.last_tick = now;
+    side_host.last_sequence = p[4];
+    side_host.owner_mode = (uint8_t)mode;
+    side_host.dirty = 0;
+    side_host.active = 1;
+    return OK;
 }
 
 static uint32_t remaining_ticks(uint32_t now) {
@@ -104,10 +155,12 @@ uint32_t side_hid_process(void) {
     uint32_t length = mode == USB_MODE ? side_host.usb_length : U8(RF_LENGTH);
     if (length != 32) status = BAD_LENGTH;
     else if ((p[3] >> 4) != PROTOCOL_VERSION) status = BAD_VERSION;
-    else if ((p[3] & 8u) || command > OP_TIMEOUT) status = BAD_OPCODE;
+    else if ((p[3] & 8u) || command > OP_PLAY) status = BAD_OPCODE;
     else if (command != OP_INFO && mode != USB_MODE && mode != RF_MODE)
         status = UNSUPPORTED_TRANSPORT;
     else if (command == OP_FRAME) {
+        side_host.effect = 0;
+        side_host.play_id = 0;
         for (uint32_t i = 0; i < 27; ++i) side_host.rgb[i] = p[5 + i];
         side_host.last_tick = now;
         side_host.last_sequence = p[4];
@@ -121,7 +174,7 @@ uint32_t side_hid_process(void) {
             side_host.dirty = 1;
         }
     } else if (command == OP_KEEPALIVE) {
-        if (!remaining_ticks(now)) status = INACTIVE;
+        if (side_host.effect || !remaining_ticks(now)) status = INACTIVE;
         else {
             side_host.last_tick = now;
             keep_rf_awake();
@@ -135,10 +188,12 @@ uint32_t side_hid_process(void) {
              * task has not run yet. A shorter deadline can also expire now.
              * Only a new FRAME may reactivate an expired host picture.
              */
-            expire_host(now);
+            if (!side_host.effect) expire_host(now);
             side_host.timeout_ticks = milliseconds * TICKS_PER_MS;
-            expire_host(now);
+            if (!side_host.effect) expire_host(now);
         }
+    } else if (command == OP_PLAY) {
+        status = play(p, now, mode);
     }
 
     /* ACK: same magic/sequence, response bit in byte 3, compact status payload.
@@ -166,7 +221,7 @@ uint32_t side_hid_process(void) {
     p[16] = (uint8_t)(remaining >> 8);
     p[17] = 'Q'; p[18] = '1'; p[19] = '0'; p[20] = '1';
     p[21] = GAUGE_BRIGHTNESS;
-    p[22] = 15; /* frame, release, keepalive, configurable timeout */
+    p[22] = 31; /* frame, release, keepalive, timeout, local effects */
     for (uint32_t i = 0; i < sizeof(side_firmware_metadata); ++i)
         p[23 + i] = side_firmware_metadata[i];
     return 1;
@@ -175,7 +230,7 @@ uint32_t side_hid_process(void) {
 __attribute__((used, noinline))
 void side_host_before_frame(void) {
     if (side_host.active) expire_host(U32(SYSTEM_TIMER));
-    if (side_host.active) keep_rf_awake();
+    if (side_host.active && !side_host.effect) keep_rf_awake();
     if (side_host.dirty) {
         volatile uint8_t *rgb = (volatile uint8_t *)(uintptr_t)
                                 (RGB_FRAME + FIRST_SIDE_LED * 3);
@@ -185,6 +240,27 @@ void side_host_before_frame(void) {
     }
 }
 
+/* Called from both original RF sleep paths. Local notifications yield to the
+ * original PM decision; they never reset idle counters. Wake must not replay
+ * an interrupted notification. Original legacy FRAME behavior is retained.
+ */
+__attribute__((used, noinline))
+void side_host_before_sleep(void) {
+    if (side_host.active && side_host.effect) {
+        side_host.active = 0;
+        side_host.dirty = 1;
+    }
+}
+
+static uint32_t rainbow_channel(uint32_t hue, uint32_t channel) {
+    /* Full-saturation RGB wheel, 6 * 256 phase units. */
+    hue = (hue + (channel == 0 ? 0u : channel == 1 ? 1024u : 512u)) % 1536u;
+    if (hue < 256u || hue >= 1280u) return 255u;
+    if (hue < 512u) return 511u - hue;
+    if (hue < 1024u) return 0;
+    return hue - 1024u;
+}
+
 __attribute__((used, noinline))
 void side_host_overlay(void) {
     if (!side_host.active || (U8(STATE_FLAGS) & QUERY_MASK)) return;
@@ -192,8 +268,25 @@ void side_host_overlay(void) {
     U8(OUTPUT_FLAGS) = (uint8_t)(U8(OUTPUT_FLAGS) & ~2u);
     volatile uint8_t *rgb = (volatile uint8_t *)(uintptr_t)
                             (RGB_FRAME + FIRST_SIDE_LED * 3);
-    for (uint32_t i = 0; i < 27; ++i)
-        rgb[i] = (uint8_t)((uint32_t)side_host.rgb[i] * GAUGE_BRIGHTNESS / 255u);
+    uint32_t effect = side_host.effect;
+    uint32_t level = 255, phase = 0;
+    if (effect && effect != EFFECT_SOLID) {
+        uint32_t elapsed = (U32(SYSTEM_TIMER) - side_host.last_tick) / TICKS_PER_MS;
+        phase = elapsed % side_host.play_period;
+        if (effect == EFFECT_BLINK) level = phase * 2 < side_host.play_period ? 255u : 0u;
+        if (effect == EFFECT_BREATHE) {
+            uint32_t triangle = phase * 510u / side_host.play_period;
+            if (triangle > 255u) triangle = 510u - triangle;
+            level = triangle * triangle / 255u;
+        }
+        if (effect == EFFECT_RAINBOW) phase = phase * 1536u / side_host.play_period;
+    }
+    for (uint32_t i = 0; i < 27; ++i) {
+        uint32_t value = effect == EFFECT_RAINBOW ? rainbow_channel(phase + i / 3 * 1536u / 9u, i % 3) :
+                         side_host.rgb[effect ? i % 3 : i];
+        if (effect) value = value * side_host.brightness / 100u * level / 255u;
+        rgb[i] = (uint8_t)(value * GAUGE_BRIGHTNESS / 255u);
+    }
 }
 
 __attribute__((used, noinline, section(".text.hid_frame_entry")))

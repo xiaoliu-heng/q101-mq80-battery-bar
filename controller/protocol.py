@@ -1,11 +1,13 @@
 """Pure packet codec and guarded client; importing this module opens no device."""
 from dataclasses import dataclass
 from typing import Optional, Tuple
+import secrets
 
 MAGIC = bytes([0xfe,0x53,0x4c])
 VERSION = 1
-INFO, FRAME, RELEASE, KEEPALIVE, TIMEOUT = range(5)
-FIRMWARE_FEATURES = {1:'fn_b_battery_bar',2:'battery_query',4:'usb_side_rgb',8:'rf_side_rgb'}
+INFO, FRAME, RELEASE, KEEPALIVE, TIMEOUT, PLAY = range(6)
+EFFECTS = {'solid':1, 'blink':2, 'breathe':3, 'rainbow':4}
+FIRMWARE_FEATURES = {1:'fn_b_battery_bar',2:'battery_query',4:'usb_side_rgb',8:'rf_side_rgb',16:'local_effects'}
 STATUS = {0:'OK',1:'协议版本不支持',2:'未知命令',3:'参数无效',4:'控制已超时或尚未激活',
           5:'当前连接方式不允许侧灯控制',6:'报告长度必须为 32 字节'}
 
@@ -19,7 +21,7 @@ class UnsupportedFirmware(ProtocolError):
 
 
 def packet(command,sequence=0,payload=b''):
-    if type(command) is not int or not 0 <= command <= 4:
+    if type(command) is not int or not 0 <= command <= 5:
         raise ValueError('未知命令。')
     if type(sequence) is not int or not 0 <= sequence <= 255:
         raise ValueError('序号需要在 0～255 之间。')
@@ -28,6 +30,22 @@ def packet(command,sequence=0,payload=b''):
     if command==FRAME and len(payload)!=27:
         raise ValueError('一帧需要 9 组 RGB，共 27 字节。')
     return MAGIC+bytes([(VERSION<<4)|command,sequence])+payload+bytes(27-len(payload))
+
+
+def effect_payload(effect, color=b'\x00\x00\x00', brightness=25,
+                   duration_ms=5000, period_ms=None, request_id=None):
+    if effect not in EFFECTS or not isinstance(color,bytes) or len(color)!=3:
+        raise ValueError('需要内置灯效名称及 3 字节 RGB。')
+    if period_ms is None: period_ms=0 if effect=='solid' else 5000 if effect=='rainbow' else 1000
+    if request_id is None: request_id=secrets.randbelow(0xffffffff)+1
+    if (type(brightness) is not int or not 0 <= brightness <= 100 or
+        type(duration_ms) is not int or not 100 <= duration_ms <= 60000 or
+        type(period_ms) is not int or (period_ms!=0 if effect=='solid' else not 500 <= period_ms <= 20000) or
+        type(request_id) is not int or not 1 <= request_id <= 0xffffffff or
+        (effect=='rainbow' and color!=bytes(3))):
+        raise ValueError('灯效参数超出范围。')
+    return (bytes([EFFECTS[effect],brightness])+color+period_ms.to_bytes(2,'little')+
+            duration_ms.to_bytes(2,'little')+request_id.to_bytes(4,'little'))
 
 
 def matches_reply(request,reply):
@@ -53,6 +71,7 @@ class State:
     firmware_build:Optional[int]=None
     firmware_feature_flags:Optional[int]=None
     firmware_features:Tuple[str,...]=()
+    native_effects:bool=False
 
 
 def decode(request,reply):
@@ -73,7 +92,8 @@ def decode(request,reply):
                  bool(reply[12]&1),reply[7],reply[21],bool(reply[12]&2),
                  firmware_version,int.from_bytes(reply[30:32],'little') if metadata else None,
                  feature_flags,tuple(name for bit,name in FIRMWARE_FEATURES.items()
-                                     if feature_flags is not None and feature_flags&bit))
+                                     if feature_flags is not None and feature_flags&bit),
+                 bool(metadata and feature_flags&16 and reply[22]&16))
 
 
 class Client:
@@ -83,6 +103,7 @@ class Client:
         self.verified=False
         self.connection=None
         self.controls={}
+        self.native_effects=False
 
     def _request(self,command,payload=b''):
         self.sequence=(self.sequence+1)&255
@@ -94,6 +115,7 @@ class Client:
         self.verified=True
         self.connection=state.connection
         self.controls={'usb':state.usb_control,'rf':state.rf_control}
+        self.native_effects=state.native_effects
         return state
 
     def _require_control(self):
@@ -113,6 +135,13 @@ class Client:
     def release(self):
         self._require_control()
         return self._request(RELEASE)
+
+    def play(self,effect,**parameters):
+        payload=effect_payload(effect,**parameters)
+        self._require_control()
+        if not self.native_effects:
+            raise UnsupportedFirmware('本地灯效需要 v3.1.0 或更新的兼容固件；不会回退到逐帧发送。')
+        return self._request(PLAY,payload)
 
     def keepalive(self):
         self._require_control()

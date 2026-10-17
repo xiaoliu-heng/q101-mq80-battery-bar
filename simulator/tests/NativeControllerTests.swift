@@ -191,8 +191,8 @@ import SwiftUI
 
             lab.prepareSideHID(connection:"rf");lab.controlSideHID("rainbow");lab.pause()
             let rfStart = try await lab.capture("report")
-            try check("firmware version selects v3.0.1 instead of guessing a legacy version",rfStart["state"]["firmware"]["firmware_version"].text == "3.0.1" && rfStart["state"]["firmware"]["firmware_build"].int == 2)
-            try check("version caption lists the firmware feature flags",lab.firmwareVersionCaption.contains("v3.0.1") && lab.firmwareVersionCaption.contains("电量查询") && lab.firmwareVersionCaption.contains("2.4G 控灯"))
+            try check("firmware version selects v3.1.0 instead of guessing a legacy version",rfStart["state"]["firmware"]["firmware_version"].text == "3.1.0" && rfStart["state"]["firmware"]["firmware_build"].int == 3)
+            try check("version caption lists the firmware feature flags",lab.firmwareVersionCaption.contains("v3.1.0") && lab.firmwareVersionCaption.contains("电量查询") && lab.firmwareVersionCaption.contains("2.4G 控灯") && lab.firmwareVersionCaption.contains("本地灯效"))
             try check("2.4G setup selects capable firmware and receiver without USB cable",lab.sideHIDReady && rfStart["state"]["firmware"]["side_hid_rf"].flag && rfStart["state"]["environment"]["connection"].text == "rf" && !rfStart["state"]["environment"]["cable"].flag)
             try check("wireless rainbow defaults to ten frames per second",rfStart["state"]["side_hid"]["fps"].int == 10 && rfStart["state"]["side_hid"]["transport"].text == "virtual-rf")
             lab.setSideHIDColor(Color(red:0,green:0,blue:1));lab.pause()
