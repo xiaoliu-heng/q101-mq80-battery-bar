@@ -1,0 +1,3 @@
+<Project Sdk="Microsoft.NET.Sdk"><PropertyGroup><OutputType>Exe</OutputType></PropertyGroup>
+ <ItemGroup><ProjectReference Include="..\Kryra.Core\Kryra.Core.csproj"/><None Include="..\tests\fixtures\*.json" Link="fixtures\%(Filename)%(Extension)" CopyToOutputDirectory="PreserveNewest"/><None Include="..\skill\kryra\**\*" Link="skill-fixture\%(RecursiveDir)%(Filename)%(Extension)" CopyToOutputDirectory="PreserveNewest"/></ItemGroup>
+</Project>

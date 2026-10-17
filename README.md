@@ -4,7 +4,7 @@
 
 **项目使用者已在一台 Q101 上确认：有线、2.4G、蓝牙和 VIA 均正常使用。** 其他硬件批次及刷写失败后的强制恢复尚未验证。刷写前请阅读[风险与免责声明](DISCLAIMER.md)。
 
-新开发版 **固件 v3.1.0（构建 3）+ Kryra v1.3.0** 提供纯色、闪烁、呼吸和彩虹的固件本地播放。一次命令包含颜色、亮度、周期和时长，不需要心跳或逐帧发送；到期恢复原灯效，原有无线休眠可提前结束通知。Kryra 仅支持 3.1.0，采用连续渐变的竖向灯带、固定尺寸面板及 macOS 26 原生 Liquid Glass。使用者已反馈此前 Kryra 真机测试正常；本次 SDK 26 新包先完成离线检查，等待新系统验收。见 [本地通知协议](docs/SIDE_HID.md#本地通知灯效-v310)、[新版实验 BIN](firmware/experimental/side-hid-rf-v3.1.0.bin) 与 [Kryra 原生应用](macos/README.md)。
+**v3 预发布：固件 v3.1.0（构建 3）+ Kryra Windows 1.1.0**，下载见 [v3.1.0-rc.1](https://github.com/xiaoliu-heng/q101-mq80-battery-bar/releases/tag/v3.1.0-rc.1)。提供纯色、闪烁、呼吸和彩虹的固件本地播放，一次命令包含颜色、亮度、周期和时长，不需要心跳或逐帧发送；到期恢复原灯效，原有无线休眠可提前结束通知。[Windows 原生应用](windows/README.md)支持托盘电量、USB / 2.4G、本机 API、CLI 与 Skill 安装。macOS Kryra 源码当前为 [1.3.2](macos/README.md)，macOS 发行包后续补充。固件、两平台应用独立编号，验证范围见[发布说明](docs/RELEASE-v3.1.0-rc.1.md)与[本地通知协议](docs/SIDE_HID.md#本地通知灯效-v310)。
 
 开发分支新增 [USB / 2.4G 侧灯 HID 控制](docs/SIDE_HID.md)，已验证过真机基础功能的历史固件为 **v3.0.1，构建号 2**，支持 Fn+B 电量条、电量查询及 USB / 2.4G 控灯。可通过电脑工具的 `info` 命令查询版本和功能，下载 [v3.0.1 实验 BIN](firmware/experimental/side-hid-rf-v3.0.1.bin)。2026-10-17，使用者反馈已在真机的 USB 和 2.4G 两种连接下确认读取电量与控制灯光；[反馈记录](firmware/v3.0.1-validation/user-hardware-confirmation-20261017.json)。2.4G 持续控灯会暂缓休眠，释放或停发超时后恢复原计时。
 
@@ -20,6 +20,7 @@
 - [刷写步骤](#刷写步骤)
 - [故障与恢复](#故障与恢复)
 - [macOS 测试软件](#macos-测试软件)
+- [Windows 原生 Kryra](#windows-原生-kryra)
 - [目录与开发](#目录与开发)
 - [用途与免责声明](#用途与免责声明)
 
@@ -68,6 +69,21 @@ Kryra 是日常使用的原生 macOS 菜单栏应用，直接通过 IOKit 访问
 使用者于 2026-10-17 [反馈此前 Kryra 真机连接测试正常](macos/hardware-confirmation-20261017.json)，未指定连接方式或功耗数据。新增 SDK 26 / 查询配置的离线结果见 [1.3.0 验证记录](macos/VALIDATION-v1.3.0.json)，不据此宣称续航改善。
 
 ## 下载与校验
+
+### v3.1.0 预发布
+
+在 [v3.1.0-rc.1 的 Assets](https://github.com/xiaoliu-heng/q101-mq80-battery-bar/releases/tag/v3.1.0-rc.1) 下载：
+
+| 文件 | 用途 |
+| --- | --- |
+| `MQ80-CS836B-V0109-20241220-BatteryBar-SideHID-v3.1.0-USB-RF-EXPERIMENTAL.bin` | 完整刷机镜像，固件 3.1.0、构建 3 |
+| `Kryra-Windows-1.1.0-win-x64.zip` | Windows 10 / 11 x64 原生便携包，附运行时 |
+| `SHA256SUMS.txt` | 本次附件的 SHA-256 校验清单 |
+| `RELEASE-MANIFEST.json` | 源码提交、版本、附件大小与校验结果 |
+
+v3.1.0 固件的 **codesize 为 129732，CRC 为 F2979115**，SHA-256 为 `5757c625adf427a4932a9fb9e8e7be0e5a4a88311e4484278d771c5c1b29cf0a`。仓库中的 [`side-hid-rf-v3.1.0.bin`](firmware/experimental/side-hid-rf-v3.1.0.bin) 与上述长文件名镜像内容相同。macOS 包后续补充。
+
+### 历史电量条 v2
 
 在 [Release 的 Assets](https://github.com/xiaoliu-heng/q101-mq80-battery-bar/releases/tag/battery-bar-v2) 下载固件、macOS App 和校验清单。固件也可从仓库获取：[电量条固件](simulator/assets/battery-bar-v2.bin) · [官方 MQ80 镜像](simulator/assets/stock.bin)。测试软件源码位于 [`simulator/`](simulator/)。
 
@@ -120,14 +136,14 @@ macOS / Linux：`shasum -a 256 battery-bar-v2.bin`。全部发布文件校验值
 1. 运行解压后的 EXE，选择 **Get Device Fw Version**，确认设备有回复；官方 V0109 的预期 CRC 为 `B00C451E`。无回复或版本不符时，先排查再继续。
 2. 打开 **Debug Mode**，输入小写 **`telink`**，点击 **show Debug surface**。
 3. 点击 **open bin**，选择完整修改版 `.bin`。
-4. 核对文件路径及 **codesize = 126756、crc = 068F4D5A / 68F4D5A**。工具默认加载内嵌官方镜像，不能只看文件名或按钮状态。
+4. 核对文件路径及所选版本的校验值：**v3.1.0 为 codesize = 129732、crc = F2979115**；历史 v2 为 126756、068F4D5A / 68F4D5A。工具默认加载内嵌官方镜像，不能只看文件名或按钮状态。
 
 **导入文件不会刷写，点击 Start 才开始写入键盘。**
 
 ### 3. 刷写并检查
 
 1. 点击 **Start**，保持 USB 和供电，不拔线、不切模式、不让电脑休眠。
-2. 等待 **进度 100% 且显示 `OTA Success`**，设备重新出现后再查询 CRC，应为 `068F4D5A`。
+2. 等待 **进度 100% 且显示 `OTA Success`**，设备重新出现后再查询 CRC，应与所刷版本一致：**v3.1.0 为 F2979115**，历史 v2 为 068F4D5A。
 3. 检查有线输入、Fn+B 电量条及约 3 秒后的灯效恢复；再分别检查 2.4G、蓝牙与 VIA。2.4G 切换键在本项目设备上为 Fn+4，改过键位时以自己的配置为准。
 
 本项目 macOS 测试软件用于离线验证，不能代替官方工具刷写键盘。
@@ -163,11 +179,18 @@ macOS / Linux：`shasum -a 256 battery-bar-v2.bin`。全部发布文件校验值
 
 软件不连接或刷写实体键盘；电量和连接条件是测试输入。它不是完整芯片模拟器，不能验证真实功耗、无线首键必达或救砖能力。
 
+## Windows 原生 Kryra
+
+[Kryra Windows 1.1.0](windows/README.md) 参考 macOS 版的固定尺寸面板与连续灯带，使用 C# / WPF 和原生 Windows HID 接口实现，目标为 Windows 10 / 11 x64、键盘固件 **v3.1.0**。支持 USB / 2.4G 电量查询、系统托盘电量、四种本地提醒、颜色与亮度、定时恢复、深浅色、本机 HTTP API、原生 `kryractl.exe` 和 Codex Skill 安装／更新。
+
+运行 `python windows/build.py` 生成附带运行时的便携包，解压后打开 `Kryra.exe`；成品无需安装 Python、Node 或 .NET。预览与编辑不发送 HID，点击发送才下发一次 PLAY。验证范围和当前实机限制见 [Windows 验证记录](windows/VALIDATION.json)。
+
 ## 目录与开发
 
 ```text
 firmware/      补丁源码、构建说明和离线验证记录
 simulator/     原生 macOS 测试软件、测试和两份固件
+windows/       原生 Windows Kryra、HID 后端、CLI 与构建脚本
 docs/          实机验证记录、发布检查和图片
 scripts/       固件完整性检查
 third-party/   第三方许可及来源

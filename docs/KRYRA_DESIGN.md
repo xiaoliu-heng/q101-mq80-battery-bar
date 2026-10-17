@@ -1,6 +1,6 @@
 # Kryra 产品与技术设计
 
-版本：Kryra 1.3.2，2026-10-17。本文记录已实现的 macOS 行为，以及 Windows 移植时应保留的接口和约束。Windows 部分是移植设计，尚未实现或进行真机验证。
+版本：macOS Kryra 1.3.2 / Windows Kryra 1.1.0，2026-10-18。本文记录 macOS 行为及跨平台接口约束。Windows 已以 WPF、Win32 HID、托盘、原生 CLI 和 Skill 安装器实现，详见 [Windows 说明](../windows/README.md) 和 [验证范围](../windows/VALIDATION.json)；后文的 Windows 章节保留移植约束，不表示所有 macOS 专有集成均已移植。
 
 ## 1. 产品目标
 

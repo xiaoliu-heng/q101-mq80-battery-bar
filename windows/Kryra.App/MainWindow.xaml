@@ -1,0 +1,180 @@
+<Window x:Class="Kryra.Windows.MainWindow" xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+ xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:local="clr-namespace:Kryra.Windows"
+ Title="Kryra" Icon="Assets/Kryra.ico" SizeToContent="WidthAndHeight" ResizeMode="CanMinimize" WindowStartupLocation="CenterScreen"
+ Background="{DynamicResource Background}" Foreground="{DynamicResource Foreground}" FontFamily="Segoe UI Variable Text, Microsoft YaHei UI" FontSize="13"
+ UseLayoutRounding="True" SnapsToDevicePixels="True" Closing="WindowClosing">
+ <Window.Resources>
+  <Style TargetType="TextBlock"><Setter Property="VerticalAlignment" Value="Center"/><Setter Property="Foreground" Value="{DynamicResource Foreground}"/></Style>
+  <Style TargetType="Button">
+   <Setter Property="Background" Value="{DynamicResource Glass}"/><Setter Property="Foreground" Value="{DynamicResource Foreground}"/>
+   <Setter Property="BorderBrush" Value="{DynamicResource Edge}"/><Setter Property="BorderThickness" Value="1"/><Setter Property="Cursor" Value="Hand"/>
+   <Setter Property="Padding" Value="10,4"/><Setter Property="FontSize" Value="13"/>
+   <Setter Property="Template"><Setter.Value><ControlTemplate TargetType="Button">
+    <Border x:Name="Surface" CornerRadius="18" Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" Padding="{TemplateBinding Padding}">
+     <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+    </Border><ControlTemplate.Triggers>
+     <Trigger Property="IsMouseOver" Value="True"><Setter TargetName="Surface" Property="Opacity" Value="0.77"/></Trigger>
+     <Trigger Property="IsPressed" Value="True"><Setter TargetName="Surface" Property="Opacity" Value="0.55"/></Trigger>
+     <Trigger Property="IsEnabled" Value="False"><Setter TargetName="Surface" Property="Opacity" Value="0.40"/></Trigger>
+    </ControlTemplate.Triggers></ControlTemplate></Setter.Value></Setter>
+  </Style>
+  <Style TargetType="ComboBox">
+   <Setter Property="Height" Value="32"/><Setter Property="Padding" Value="10,0"/><Setter Property="FontSize" Value="13"/><Setter Property="VerticalContentAlignment" Value="Center"/><Setter Property="HorizontalContentAlignment" Value="Stretch"/><Setter Property="Foreground" Value="{DynamicResource Foreground}"/><Setter Property="Background" Value="{DynamicResource Glass}"/><Setter Property="BorderBrush" Value="{DynamicResource Edge}"/>
+   <Setter Property="Template"><Setter.Value><ControlTemplate TargetType="ComboBox">
+    <Grid>
+     <ToggleButton Focusable="False" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Center" IsChecked="{Binding IsDropDownOpen,Mode=TwoWay,RelativeSource={RelativeSource TemplatedParent}}">
+      <ToggleButton.Template><ControlTemplate TargetType="ToggleButton"><Border Background="{DynamicResource Glass}" BorderBrush="{DynamicResource Edge}" BorderThickness="1" CornerRadius="16"><ContentPresenter HorizontalAlignment="Stretch" VerticalAlignment="Center" Margin="10,0"/></Border></ControlTemplate></ToggleButton.Template>
+      <Grid VerticalAlignment="Center"><Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="15"/></Grid.ColumnDefinitions>
+       <TextBlock x:Name="SelectedLabel" Text="{Binding SelectedItem.Label,RelativeSource={RelativeSource AncestorType=ComboBox}}" Foreground="{DynamicResource Foreground}" FontSize="13" VerticalAlignment="Center" TextTrimming="CharacterEllipsis"/>
+       <Path Grid.Column="1" Data="M1,1 L5,5 9,1" Stroke="{DynamicResource Muted}" StrokeThickness="1.4" VerticalAlignment="Center" HorizontalAlignment="Right"/>
+      </Grid>
+     </ToggleButton>
+     <Popup x:Name="PART_Popup" Placement="Bottom" IsOpen="{TemplateBinding IsDropDownOpen}" AllowsTransparency="True" Focusable="False" PopupAnimation="None">
+      <Border Background="{DynamicResource Background}" BorderBrush="{DynamicResource Edge}" BorderThickness="1" CornerRadius="10" Padding="4" Margin="0,4,0,0" MinWidth="{Binding ActualWidth,RelativeSource={RelativeSource TemplatedParent}}">
+       <ScrollViewer MaxHeight="260" CanContentScroll="True"><ItemsPresenter KeyboardNavigation.DirectionalNavigation="Contained"/></ScrollViewer>
+      </Border>
+     </Popup>
+    </Grid>
+    <ControlTemplate.Triggers><Trigger Property="IsEnabled" Value="False"><Setter Property="Opacity" Value="0.45"/></Trigger></ControlTemplate.Triggers>
+   </ControlTemplate></Setter.Value></Setter>
+  </Style>
+  <Style TargetType="ComboBoxItem">
+   <Setter Property="Foreground" Value="{DynamicResource Foreground}"/><Setter Property="Background" Value="Transparent"/><Setter Property="Padding" Value="8,4"/><Setter Property="MinHeight" Value="32"/><Setter Property="FontSize" Value="13"/><Setter Property="VerticalContentAlignment" Value="Center"/><Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+   <Setter Property="Template"><Setter.Value><ControlTemplate TargetType="ComboBoxItem">
+    <Border x:Name="ItemSurface" Background="{TemplateBinding Background}" CornerRadius="7" Padding="{TemplateBinding Padding}"><ContentPresenter VerticalAlignment="Center" HorizontalAlignment="Stretch"/></Border>
+    <ControlTemplate.Triggers><Trigger Property="IsHighlighted" Value="True"><Setter TargetName="ItemSurface" Property="Background" Value="{DynamicResource AccentSurface}"/></Trigger><Trigger Property="IsSelected" Value="True"><Setter Property="FontWeight" Value="SemiBold"/><Setter TargetName="ItemSurface" Property="Background" Value="{DynamicResource Card}"/></Trigger></ControlTemplate.Triggers>
+   </ControlTemplate></Setter.Value></Setter>
+  </Style>
+  <Style TargetType="TextBox"><Setter Property="Foreground" Value="{DynamicResource Foreground}"/><Setter Property="Background" Value="{DynamicResource Glass}"/><Setter Property="BorderBrush" Value="{DynamicResource Edge}"/><Setter Property="Padding" Value="5,3"/><Setter Property="VerticalContentAlignment" Value="Center"/></Style>
+  <Style TargetType="Slider">
+   <Setter Property="IsMoveToPointEnabled" Value="True"/>
+   <Setter Property="Template"><Setter.Value><ControlTemplate TargetType="Slider">
+    <Grid Height="26" Background="Transparent">
+     <Track x:Name="PART_Track" Minimum="{TemplateBinding Minimum}" Maximum="{TemplateBinding Maximum}" Value="{TemplateBinding Value}" Orientation="Horizontal">
+      <Track.DecreaseRepeatButton><RepeatButton Command="Slider.DecreaseLarge"><RepeatButton.Template><ControlTemplate TargetType="RepeatButton"><Border Height="3" CornerRadius="2" Background="{DynamicResource Muted}" Opacity="0.40"/></ControlTemplate></RepeatButton.Template></RepeatButton></Track.DecreaseRepeatButton>
+      <Track.Thumb><Thumb Width="19" Height="19"><Thumb.Template><ControlTemplate TargetType="Thumb"><Ellipse Fill="{DynamicResource Glass}" Stroke="{DynamicResource Edge}" StrokeThickness="1"/></ControlTemplate></Thumb.Template></Thumb></Track.Thumb>
+      <Track.IncreaseRepeatButton><RepeatButton Command="Slider.IncreaseLarge"><RepeatButton.Template><ControlTemplate TargetType="RepeatButton"><Border Height="3" CornerRadius="2" Background="{DynamicResource Muted}" Opacity="0.23"/></ControlTemplate></RepeatButton.Template></RepeatButton></Track.IncreaseRepeatButton>
+     </Track>
+    </Grid>
+   </ControlTemplate></Setter.Value></Setter>
+  </Style>
+ </Window.Resources>
+ <Grid x:Name="PanelRoot" Width="368" Height="584" Background="{DynamicResource Background}">
+  <Grid x:Name="LightingPage" Margin="22,16">
+   <Grid.RowDefinitions>
+    <RowDefinition Height="36"/><RowDefinition Height="12"/><RowDefinition Height="218"/><RowDefinition Height="14"/>
+    <RowDefinition Height="38"/><RowDefinition Height="12"/><RowDefinition Height="34"/><RowDefinition Height="8"/>
+    <RowDefinition Height="32"/><RowDefinition Height="8"/><RowDefinition Height="32"/><RowDefinition Height="14"/>
+    <RowDefinition Height="44"/><RowDefinition Height="12"/><RowDefinition Height="36"/>
+   </Grid.RowDefinitions>
+   <Grid>
+    <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+     <Path Data="M0,12 L5,12 8,3 11,22 14,0 17,25 20,7 23,18 26,12 30,12" Stroke="#13B8AC" StrokeThickness="1.8" Width="28" Height="26" Stretch="Fill" Margin="0,0,9,0"/>
+     <TextBlock Text="Kryra" FontSize="23" FontWeight="SemiBold"/>
+     <TextBlock x:Name="DemoBadge" Text="演示" Foreground="#D38B16" Margin="9,0,0,0" Visibility="Collapsed" FontSize="11"/>
+    </StackPanel>
+    <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+     <Button x:Name="RefreshButton" Content="↻" FontSize="22" Width="34" Height="34" Padding="0" ToolTip="刷新电量" AutomationProperties.Name="刷新电量" Click="RefreshClick"/>
+     <Button Content="☷" FontSize="21" Width="34" Height="34" Padding="0" Margin="7,0,0,0" ToolTip="设置" AutomationProperties.Name="设置" Click="SettingsClick"/>
+    </StackPanel>
+   </Grid>
+   <Grid Grid.Row="2">
+    <Grid.ColumnDefinitions><ColumnDefinition Width="98"/><ColumnDefinition Width="*"/></Grid.ColumnDefinitions>
+    <local:LightPreview x:Name="Preview" Width="72" Height="218" HorizontalAlignment="Center"/>
+    <StackPanel Grid.Column="1" VerticalAlignment="Center" Margin="14,0,0,0">
+     <TextBlock Text="键盘电量" Foreground="{DynamicResource Muted}" FontSize="13"/>
+     <StackPanel Orientation="Horizontal" Margin="0,1,0,6">
+      <TextBlock x:Name="BatteryText" Text="—" FontSize="57" FontWeight="Light" LineHeight="70"/>
+      <TextBlock Text="%" FontSize="23" Foreground="{DynamicResource Muted}" VerticalAlignment="Bottom" Margin="4,0,0,12"/>
+     </StackPanel>
+     <ComboBox x:Name="DevicePicker" Width="194" HorizontalAlignment="Left" DisplayMemberPath="Label" SelectedValuePath="Value" SelectionChanged="DeviceChanged" AutomationProperties.Name="连接方式"/>
+     <TextBlock x:Name="BatteryDetail" Text="正在连接设备" FontSize="13" Foreground="{DynamicResource Muted}" Margin="0,10,0,0" TextTrimming="CharacterEllipsis"/>
+     <TextBlock x:Name="LightingState" Text="● 灯带预览" FontSize="13" Foreground="{DynamicResource Muted}" Margin="0,12,0,0"/>
+    </StackPanel>
+   </Grid>
+   <Border Grid.Row="4" CornerRadius="19" Background="{DynamicResource Card}" Padding="3">
+    <UniformGrid Rows="1">
+     <Button x:Name="SolidButton" Content="纯色" Tag="solid" Click="EffectClick" Padding="0" BorderThickness="0"/>
+     <Button x:Name="BlinkButton" Content="闪烁" Tag="blink" Click="EffectClick" Padding="0" BorderThickness="0"/>
+     <Button x:Name="BreatheButton" Content="呼吸" Tag="breathe" Click="EffectClick" Padding="0" BorderThickness="0"/>
+     <Button x:Name="RainbowButton" Content="彩虹" Tag="rainbow" Click="EffectClick" Padding="0" BorderThickness="0"/>
+    </UniformGrid>
+   </Border>
+   <Grid Grid.Row="6">
+    <StackPanel x:Name="RainbowColors" Orientation="Horizontal" VerticalAlignment="Center">
+     <Border Width="66" Height="9" CornerRadius="5" Margin="0,0,10,0"><Border.Background><LinearGradientBrush StartPoint="0,0" EndPoint="1,0"><GradientStop Color="#7BE42F" Offset="0"/><GradientStop Color="#F9CB32" Offset="0.2"/><GradientStop Color="#FD6E6E" Offset="0.45"/><GradientStop Color="#B974EC" Offset="0.7"/><GradientStop Color="#3D91FF" Offset="1"/></LinearGradientBrush></Border.Background></Border>
+     <TextBlock Text="整条渐变，自然流动" FontSize="12" Foreground="{DynamicResource Muted}"/>
+    </StackPanel>
+    <Grid x:Name="SolidColors" Visibility="Collapsed">
+     <Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="76"/><ColumnDefinition Width="34"/></Grid.ColumnDefinitions>
+     <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+      <Button Background="#34D399" Width="22" Height="22" Margin="0,0,5,0" Padding="0" Tag="34D399" Click="PresetClick" AutomationProperties.Name="薄荷绿"/>
+      <Button Background="#38BDF8" Width="22" Height="22" Margin="0,0,5,0" Padding="0" Tag="38BDF8" Click="PresetClick" AutomationProperties.Name="晴空蓝"/>
+      <Button Background="#C084FC" Width="22" Height="22" Margin="0,0,5,0" Padding="0" Tag="C084FC" Click="PresetClick" AutomationProperties.Name="紫罗兰"/>
+      <Button Background="#FB7185" Width="22" Height="22" Margin="0,0,5,0" Padding="0" Tag="FB7185" Click="PresetClick" AutomationProperties.Name="珊瑚粉"/>
+      <Button Background="#FBBF24" Width="22" Height="22" Margin="0,0,5,0" Padding="0" Tag="FBBF24" Click="PresetClick" AutomationProperties.Name="暖金色"/>
+     </StackPanel>
+     <TextBox Grid.Column="1" x:Name="HexColor" Text="34D399" FontSize="11" MaxLength="7" Margin="0,3,7,3" KeyDown="HexKeyDown" LostFocus="HexLostFocus" AutomationProperties.Name="十六进制颜色"/>
+     <Button Grid.Column="2" Content="◉" Padding="0" Height="29" Click="PickColorClick" AutomationProperties.Name="自定义颜色" ToolTip="系统颜色选择器"/>
+    </Grid>
+   </Grid>
+   <Grid Grid.Row="8">
+    <Grid.ColumnDefinitions><ColumnDefinition Width="25"/><ColumnDefinition Width="*"/><ColumnDefinition Width="48"/></Grid.ColumnDefinitions>
+    <TextBlock Text="☼" FontSize="20" Foreground="{DynamicResource Muted}"/>
+    <Slider x:Name="Brightness" Grid.Column="1" Minimum="0" Maximum="100" Value="25" VerticalAlignment="Center" IsSnapToTickEnabled="True" TickFrequency="1" ValueChanged="BrightnessChanged" AutomationProperties.Name="灯光亮度"/>
+    <TextBlock x:Name="BrightnessText" Grid.Column="2" Text="25%" HorizontalAlignment="Right" Foreground="{DynamicResource Muted}"/>
+   </Grid>
+   <Grid Grid.Row="10">
+    <ComboBox x:Name="DurationPicker" Width="148" HorizontalAlignment="Left" DisplayMemberPath="Label" SelectedValuePath="Value" SelectionChanged="DurationChanged" AutomationProperties.Name="通知持续时间"/>
+    <ComboBox x:Name="PeriodPicker" Width="116" HorizontalAlignment="Right" DisplayMemberPath="Label" SelectedValuePath="Value" SelectionChanged="PeriodChanged" AutomationProperties.Name="动画周期"/>
+   </Grid>
+   <Grid Grid.Row="12"><Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="10"/><ColumnDefinition Width="44"/></Grid.ColumnDefinitions>
+    <Button x:Name="SendButton" Content="✦  发送提醒" FontSize="15" FontWeight="SemiBold" Background="{DynamicResource AccentSurface}" Click="SendClick"/>
+    <Button x:Name="RestoreButton" Grid.Column="2" Content="↶" FontSize="24" Padding="0" ToolTip="恢复键盘原灯效" AutomationProperties.Name="恢复原灯效" Click="RestoreClick"/>
+   </Grid>
+   <TextBlock x:Name="Hint" Grid.Row="14" Text="调整预览后发送，届时自动恢复原灯效。" Foreground="{DynamicResource Foreground}" FontSize="13" LineHeight="18" LineStackingStrategy="BlockLineHeight" TextAlignment="Center" TextWrapping="Wrap" TextTrimming="CharacterEllipsis" MaxHeight="36"/>
+  </Grid>
+  <Grid x:Name="SettingsPage" Margin="22,16" Visibility="Collapsed">
+   <Grid.RowDefinitions><RowDefinition Height="42"/><RowDefinition Height="*"/><RowDefinition Height="34"/></Grid.RowDefinitions>
+   <Grid><TextBlock Text="设置" FontSize="22" FontWeight="SemiBold"/><Button Content="完成" HorizontalAlignment="Right" Width="63" Height="31" Click="DoneClick"/></Grid>
+   <StackPanel Grid.Row="1" Margin="0,10,0,0">
+    <TextBlock Text="设备与电量" FontWeight="SemiBold" FontSize="14" Margin="0,0,0,9"/>
+    <TextBlock x:Name="FirmwareLabel" Text="正在读取固件版本…" FontSize="12" Foreground="{DynamicResource Muted}" Margin="0,0,0,10"/>
+    <TextBlock Text="电量更新间隔" Foreground="{DynamicResource Muted}" FontSize="11" Margin="0,0,0,5"/>
+    <ComboBox x:Name="PollPicker" DisplayMemberPath="Label" SelectedValuePath="Value" SelectionChanged="PollChanged" AutomationProperties.Name="电量更新间隔"/>
+    <TextBlock Text="外观" Foreground="{DynamicResource Muted}" FontSize="11" Margin="0,14,0,5"/>
+    <ComboBox x:Name="ThemePicker" DisplayMemberPath="Label" SelectedValuePath="Value" SelectionChanged="ThemeChanged" AutomationProperties.Name="外观"/>
+    <TextBlock Text="本机集成" FontWeight="SemiBold" FontSize="14" Margin="0,14,0,9"/>
+    <TextBlock x:Name="ApiAddress" Text="本机 API" Foreground="{DynamicResource Muted}" FontSize="12" TextTrimming="CharacterEllipsis"/>
+    <TextBlock Text="API 仅接受当前用户凭证；CLI 自动读取。" FontSize="11" Foreground="{DynamicResource Muted}" Margin="0,5,0,10"/>
+    <UniformGrid Rows="1"><Button Content="复制 CLI 命令" Margin="0,0,5,0" Click="CopyCliClick"/><Button Content="打开使用说明" Margin="5,0,0,0" Click="HelpClick"/></UniformGrid>
+    <Border Background="{DynamicResource Card}" CornerRadius="12" Padding="10,9" Margin="0,14,0,0">
+     <Grid><Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="76"/></Grid.ColumnDefinitions>
+      <StackPanel><TextBlock Text="Codex Skill" FontWeight="SemiBold" FontSize="14"/><TextBlock x:Name="SkillSummary" Text="尚未安装" FontSize="12" Foreground="{DynamicResource Muted}" Margin="0,3,0,0" TextTrimming="CharacterEllipsis"/></StackPanel>
+      <Button Grid.Column="1" Content="管理" Height="32" Click="SkillManageClick" AutomationProperties.Name="管理 Codex Skill"/>
+     </Grid>
+    </Border>
+    <CheckBox x:Name="LoginStartup" Content="登录 Windows 时启动" Margin="1,14,0,0" Foreground="{DynamicResource Foreground}" Checked="StartupChanged" Unchecked="StartupChanged"/>
+    <TextBlock Text="关闭窗口后继续驻留系统托盘。" FontSize="12" Foreground="{DynamicResource Muted}" Margin="1,6,0,12"/>
+    <Button Content="退出 Kryra" Click="QuitClick" Height="32"/>
+   </StackPanel>
+   <TextBlock x:Name="VersionFooter" Grid.Row="2" Foreground="{DynamicResource Muted}" FontSize="12" TextAlignment="Center"/>
+  </Grid>
+  <Grid x:Name="SkillPage" Margin="22,16" Visibility="Collapsed">
+   <Grid.RowDefinitions><RowDefinition Height="42"/><RowDefinition Height="*"/><RowDefinition Height="36"/></Grid.RowDefinitions>
+   <Grid><TextBlock Text="Codex Skill" FontSize="22" FontWeight="SemiBold"/><Button Content="返回" Width="63" Height="31" HorizontalAlignment="Right" Click="SkillBackClick"/></Grid>
+   <StackPanel Grid.Row="1" Margin="0,15,0,0">
+    <TextBlock Text="让 Codex 使用键盘" FontSize="15" FontWeight="SemiBold"/>
+    <TextBlock Text="查询电量，或发送几秒钟的灯光提醒。" Foreground="{DynamicResource Muted}" FontSize="13" TextWrapping="Wrap" Margin="0,8,0,18"/>
+    <TextBlock Text="安装位置" FontSize="13" Foreground="{DynamicResource Muted}"/>
+    <TextBlock x:Name="SkillPath" FontSize="13" TextWrapping="Wrap" TextTrimming="CharacterEllipsis" MaxHeight="54" Margin="0,8,0,12"/>
+    <UniformGrid Rows="1"><Button Content="选择安装位置" Margin="0,0,5,0" Click="SkillChooseClick"/><Button Content="恢复默认位置" Margin="5,0,0,0" Click="SkillDefaultClick"/></UniformGrid>
+    <Button x:Name="SkillInstallButton" Content="安装 Skill" Height="40" FontSize="15" FontWeight="SemiBold" Background="{DynamicResource AccentSurface}" Margin="0,18,0,10" Click="SkillInstallClick"/>
+    <TextBlock x:Name="SkillMessage" FontSize="13" TextWrapping="Wrap" LineHeight="19" LineStackingStrategy="BlockLineHeight" MinHeight="38" MaxHeight="76"/>
+    <TextBlock Text="安装后可使用 $kryra 查询电量或控制灯光。若移动了应用目录，再点更新即可。" FontSize="13" Foreground="{DynamicResource Muted}" TextWrapping="Wrap" Margin="0,10,0,18"/>
+    <UniformGrid Rows="1"><Button x:Name="SkillOpenButton" Content="打开安装目录" Margin="0,0,5,0" Click="SkillOpenClick"/><Button Content="复制示例提示" Margin="5,0,0,0" Click="SkillCopyClick"/></UniformGrid>
+   </StackPanel>
+   <TextBlock Grid.Row="2" Text="Skill 通过本机应用控制，需保留应用目录。" FontSize="12" Foreground="{DynamicResource Muted}" TextAlignment="Center" TextWrapping="Wrap"/>
+  </Grid>
+ </Grid>
+</Window>
