@@ -4,7 +4,7 @@
 
 **项目使用者已在一台 Q101 上确认：有线、2.4G、蓝牙和 VIA 均正常使用。** 其他硬件批次及刷写失败后的强制恢复尚未验证。刷写前请阅读[风险与免责声明](DISCLAIMER.md)。
 
-**v3 预发布：固件 v3.1.0（构建 3）+ Kryra Windows 1.1.0**，下载见 [v3.1.0-rc.1](https://github.com/xiaoliu-heng/q101-mq80-battery-bar/releases/tag/v3.1.0-rc.1)。提供纯色、闪烁、呼吸和彩虹的固件本地播放，一次命令包含颜色、亮度、周期和时长，不需要心跳或逐帧发送；到期恢复原灯效，原有无线休眠可提前结束通知。[Windows 原生应用](windows/README.md)支持托盘电量、USB / 2.4G、本机 API、CLI 与 Skill 安装。macOS Kryra 源码当前为 [1.3.2](macos/README.md)，macOS 发行包后续补充。固件、两平台应用独立编号，验证范围见[发布说明](docs/RELEASE-v3.1.0-rc.1.md)与[本地通知协议](docs/SIDE_HID.md#本地通知灯效-v310)。
+**v3 预发布：固件 v3.1.0（构建 3）+ Kryra Windows 1.1.0 + Kryra macOS 1.3.2**，下载见 [v3.1.0-rc.1](https://github.com/xiaoliu-heng/q101-mq80-battery-bar/releases/tag/v3.1.0-rc.1)。提供纯色、闪烁、呼吸和彩虹的固件本地播放，一次命令包含颜色、亮度、周期和时长，不需要心跳或逐帧发送；到期恢复原灯效，原有无线休眠可提前结束通知。[Windows 原生应用](windows/README.md)支持托盘电量、USB / 2.4G、本机 API、CLI 与 Skill 安装。[macOS Kryra 1.3.2](macos/README.md) 已提供 Apple Silicon / Intel 通用 DMG 与 ZIP。固件、两平台应用独立编号，验证范围见[发布说明](docs/RELEASE-v3.1.0-rc.1.md)与[本地通知协议](docs/SIDE_HID.md#本地通知灯效-v310)。
 
 开发分支新增 [USB / 2.4G 侧灯 HID 控制](docs/SIDE_HID.md)，已验证过真机基础功能的历史固件为 **v3.0.1，构建号 2**，支持 Fn+B 电量条、电量查询及 USB / 2.4G 控灯。可通过电脑工具的 `info` 命令查询版本和功能，下载 [v3.0.1 实验 BIN](firmware/experimental/side-hid-rf-v3.0.1.bin)。2026-10-17，使用者反馈已在真机的 USB 和 2.4G 两种连接下确认读取电量与控制灯光；[反馈记录](firmware/v3.0.1-validation/user-hardware-confirmation-20261017.json)。2.4G 持续控灯会暂缓休眠，释放或停发超时后恢复原计时。
 
@@ -53,7 +53,7 @@
 
 ## Kryra 控制应用
 
-Kryra 是日常使用的原生 macOS 菜单栏应用，直接通过 IOKit 访问键盘，不依赖 Python 或云服务。运行支持 macOS 13+；**1.3.0 使用 SDK 26.5 / Swift 6.3.3 构建，在 macOS 26+ 使用原生 Liquid Glass**，旧系统使用 Material。
+Kryra 是日常使用的原生 macOS 菜单栏应用，直接通过 IOKit 访问键盘，不依赖 Python 或云服务。运行支持 macOS 13+；**1.3.2 使用 SDK 26.5 / Swift 6.3.3 构建，在 macOS 26+ 使用原生 Liquid Glass**，旧系统使用 Material。
 
 - 菜单栏显示键盘电量，支持 USB 与 2.4G；默认每分钟查询，可设为 30 秒～1 小时，重启保留。
 - 连续渐变的竖向灯带预览；纯色、闪烁、呼吸和彩虹均由固件自行播放，默认亮度 25%、持续 5 秒。编辑只预览，点击发送才下发一次通知。
@@ -64,7 +64,7 @@ Kryra 是日常使用的原生 macOS 菜单栏应用，直接通过 IOKit 访问
 
 截图为 SDK 26.5 构建在当前 macOS 15.7.4 上的兼容外观，数据来自演示模式；macOS 26 的原生玻璃效果待新系统实测。[深色预览](macos/previews/kryra-v1.3.0-dark.png)。
 
-安装、构建、API 与 skill 用法见 [Kryra README](macos/README.md)；后续 Windows 版本可参考保存的 [产品与技术设计文档](docs/KRYRA_DESIGN.md)，其中包括 UI、轮询规则、USB/RF 协议、平台 HID 适配与验收清单。
+安装、构建、API 与 skill 用法见 [Kryra README](macos/README.md)；Windows 版见 [Windows README](windows/README.md)。跨平台行为记录在 [产品与技术设计文档](docs/KRYRA_DESIGN.md)，其中包括 UI、轮询规则、USB/RF 协议、平台 HID 适配与验收清单。
 
 使用者于 2026-10-17 [反馈此前 Kryra 真机连接测试正常](macos/hardware-confirmation-20261017.json)，未指定连接方式或功耗数据。新增 SDK 26 / 查询配置的离线结果见 [1.3.0 验证记录](macos/VALIDATION-v1.3.0.json)，不据此宣称续航改善。
 
@@ -78,10 +78,14 @@ Kryra 是日常使用的原生 macOS 菜单栏应用，直接通过 IOKit 访问
 | --- | --- |
 | `MQ80-CS836B-V0109-20241220-BatteryBar-SideHID-v3.1.0-USB-RF-EXPERIMENTAL.bin` | 完整刷机镜像，固件 3.1.0、构建 3 |
 | `Kryra-Windows-1.1.0-win-x64.zip` | Windows 10 / 11 x64 原生便携包，附运行时 |
-| `SHA256SUMS.txt` | 本次附件的 SHA-256 校验清单 |
-| `RELEASE-MANIFEST.json` | 源码提交、版本、附件大小与校验结果 |
+| [Kryra-1.3.2-universal.dmg](https://github.com/xiaoliu-heng/q101-mq80-battery-bar/releases/download/v3.1.0-rc.1/Kryra-1.3.2-universal.dmg) | macOS 13+ 安装镜像，Apple Silicon / Intel 通用版 |
+| [Kryra-1.3.2-universal.zip](https://github.com/xiaoliu-heng/q101-mq80-battery-bar/releases/download/v3.1.0-rc.1/Kryra-1.3.2-universal.zip) | 相同 macOS 应用的 ZIP 归档 |
+| `Kryra-1.3.2-universal-SHA256SUMS.txt` | Mac DMG / ZIP 的 SHA-256 校验清单 |
+| `Kryra-1.3.2-universal-manifest.json` | Mac 版本、架构、源码对应关系与验证信息 |
+| `SHA256SUMS.txt` | 固件与 Windows 附件的 SHA-256 校验清单 |
+| `RELEASE-MANIFEST.json` | 固件与 Windows 的源码提交、版本、附件大小与校验结果 |
 
-v3.1.0 固件的 **codesize 为 129732，CRC 为 F2979115**，SHA-256 为 `5757c625adf427a4932a9fb9e8e7be0e5a4a88311e4484278d771c5c1b29cf0a`。仓库中的 [`side-hid-rf-v3.1.0.bin`](firmware/experimental/side-hid-rf-v3.1.0.bin) 与上述长文件名镜像内容相同。macOS 包后续补充。
+v3.1.0 固件的 **codesize 为 129732，CRC 为 F2979115**，SHA-256 为 `5757c625adf427a4932a9fb9e8e7be0e5a4a88311e4484278d771c5c1b29cf0a`。仓库中的 [`side-hid-rf-v3.1.0.bin`](firmware/experimental/side-hid-rf-v3.1.0.bin) 与上述长文件名镜像内容相同。Mac 安装时将 `Kryra.app` 拖入 `Applications`；软件包采用本地 ad-hoc 签名，未经过 Developer ID 公证。本次上传的包已通过解压后 61 项应用 / CLI 检查，四个附件均完成回下载与 SHA-256 核对，见 [Mac 发布核对记录](macos/release-v3.1.0-rc.1.json)。
 
 ### 历史电量条 v2
 
