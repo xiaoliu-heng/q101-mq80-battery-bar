@@ -24,3 +24,16 @@ enum PanelMetrics {
     host.frame = NSRect(origin:.zero,size:PanelMetrics.size)
     return host
 }
+
+/// Keep the system titlebar painted: content starts below it, not at the window's top edge.
+@MainActor func fixedPanelWindow<Content: View>(_ content: Content, title: String) -> NSWindow {
+    let window = NSWindow(contentRect:NSRect(origin:.zero,size:PanelMetrics.size),
+                          styleMask:[.titled,.closable,.miniaturizable],backing:.buffered,defer:false)
+    window.title = title; window.isReleasedWhenClosed = false
+    window.titleVisibility = .hidden
+    window.titlebarAppearsTransparent = false
+    window.isOpaque = true; window.backgroundColor = .windowBackgroundColor
+    window.contentMinSize = PanelMetrics.size; window.contentMaxSize = PanelMetrics.size
+    window.contentView = fixedPanelView(content); window.setContentSize(PanelMetrics.size)
+    return window
+}

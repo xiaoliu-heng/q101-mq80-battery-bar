@@ -25,7 +25,6 @@ enum PanelPage { case lighting, settings }
         .padding(.horizontal,22).padding(.top,18).padding(.bottom,14)
         .frame(width:PanelMetrics.width,height:PanelMetrics.height)
         .background(PanelBackdrop())
-        .clipShape(RoundedRectangle(cornerRadius:24,style:.continuous))
         .onAppear(perform:syncControls)
         .onChange(of:keyboard.command) { _ in syncControls() }
     }

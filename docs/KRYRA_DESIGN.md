@@ -1,6 +1,6 @@
 # Kryra 产品与技术设计
 
-版本：Kryra 1.3.0，2026-10-17。本文记录已实现的 macOS 行为，以及 Windows 移植时应保留的接口和约束。Windows 部分是移植设计，尚未实现或进行真机验证。
+版本：Kryra 1.3.2，2026-10-17。本文记录已实现的 macOS 行为，以及 Windows 移植时应保留的接口和约束。Windows 部分是移植设计，尚未实现或进行真机验证。
 
 ## 1. 产品目标
 
@@ -50,6 +50,8 @@ Kryra 是 Q101 / MQ80 的常驻桌面控制应用：在菜单栏显示电量，�
 在 macOS 26+，按钮和选中的灯效胶囊使用原生 `glassEffect`，同一面板使用一个 `GlassEffectContainer` 组织玻璃控件。内容背景仍使用适合弹出窗口的原生材质；灯带本身保留清晰的颜色。低版本系统使用 Material，减弱透明度时使用实色表面。
 
 固定内容 `frame`、关闭 `NSHostingView` / `NSHostingController` 的自动尺寸推导、固定窗口内容最小/最大尺寸共同保证布局稳定。不要只隐藏滚动条，也不要让错误文本或设置内容决定窗口高度。
+
+外边缘由系统 `NSWindow` / `NSPopover` 统一裁剪和描边，内容背景铺满容器。1.3.0 内容层还叠加了 24 点圆角和描边，与系统较小的圆角在角部夹出弧形空隙；1.3.1 已移除这套内容外框。独立窗口另有系统标题栏，面板内容从标题栏下方开始；1.3.2 恢复系统标题栏背景，不再把它设为透明并清空窗口背景，避免上部内容看似直角。正式应用与布局检查共用 `fixedPanelWindow` 创建窗口。视觉验收须分别检查实际弹窗和独立窗口，裸 `NSHostingView` 的渲染不能覆盖系统边框及标题栏问题。
 
 界面参考：[Apple 材质规范](https://developer.apple.com/design/human-interface-guidelines/materials)、[自定义视图应用 Liquid Glass](https://developer.apple.com/documentation/SwiftUI/Applying-Liquid-Glass-to-custom-views)。
 

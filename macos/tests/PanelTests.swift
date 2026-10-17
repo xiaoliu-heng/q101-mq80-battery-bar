@@ -55,12 +55,9 @@ final class PanelBackend: HIDBackend {
                         var draft = LightingDraft(); draft.select(effect)
                         let content = ControlPanel(app:app,keyboard:keyboard,initialPage:page,initialDraft:draft)
                             .environment(\.colorScheme,scheme)
-                        let host = fixedPanelView(content)
-                        let window = NSWindow(contentRect:NSRect(origin:.zero,size:PanelMetrics.size),styleMask:[.titled],backing:.buffered,defer:false)
-                        window.isReleasedWhenClosed = false
+                        let window = fixedPanelWindow(AnyView(content),title:"Kryra · 演示")
+                        let host = window.contentView as! NSHostingView<AnyView>
                         window.appearance = NSAppearance(named:scheme == .light ? .aqua : .darkAqua)
-                        window.contentMinSize = PanelMetrics.size; window.contentMaxSize = PanelMetrics.size
-                        window.contentView = host; window.setContentSize(PanelMetrics.size)
                         await settle(); host.layoutSubtreeIfNeeded()
                         let key = "\(theme)-\(pageName)-\(effect.rawValue)"
                         try check("\(key) fixed content bounds",host.bounds.size == PanelMetrics.size)

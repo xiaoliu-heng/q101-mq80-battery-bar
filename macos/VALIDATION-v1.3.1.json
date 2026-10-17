@@ -1,0 +1,116 @@
+{
+  "status": "PASS_OFFLINE_MACOS26_RUNTIME_PENDING",
+  "app_version": "1.3.1",
+  "app_build": 6,
+  "date_utc": "2026-10-17T15:26:38.268213+00:00",
+  "physical_hid_access": false,
+  "change": "Remove the duplicate content-level corner clip and outer stroke. Native NSPopover/NSWindow owns the exterior shape.",
+  "build": {
+    "sdk": "26.5",
+    "compiler": "Apple Swift version 6.3.3 (swiftlang-6.3.3.1.3 clang-2100.1.1.101)",
+    "architectures": [
+      "arm64",
+      "x86_64"
+    ],
+    "native_glass_compiled": true,
+    "linked_sdks": {
+      "app": [
+        "26.5",
+        "26.5"
+      ],
+      "cli": [
+        "26.5",
+        "26.5"
+      ]
+    }
+  },
+  "ui": {
+    "content_size_points": {
+      "width": 368,
+      "height": 584
+    },
+    "scroll_view": false,
+    "outer_boundary_owner": "native NSPopover / NSWindow",
+    "actual_host_chrome_inspected": true,
+    "gui_report": "gui-tests-v1.3.1.json"
+  },
+  "tests": {
+    "panel": {
+      "status": "PASS",
+      "count": 61,
+      "report": "panel-tests-v1.3.1.json",
+      "freshly_run": true
+    },
+    "e2e": {
+      "status": "PASS",
+      "count": 61,
+      "report": "e2e-v1.3.1.json",
+      "freshly_run": true,
+      "mode": "isolated explicit demo, real loopback HTTP server and native CLI"
+    },
+    "fresh_automated_checks": 122,
+    "core_baseline": {
+      "status": "PASS",
+      "count": 188,
+      "report": "core-tests-v1.3.0.json",
+      "freshly_run": false,
+      "reason": "Core protocol, polling and controller code unchanged by corner fix."
+    }
+  },
+  "firmware": {
+    "version": "3.1.0",
+    "build": 3,
+    "sha256": "5757c625adf427a4932a9fb9e8e7be0e5a4a88311e4484278d771c5c1b29cf0a",
+    "modified": false,
+    "flashed": false
+  },
+  "release": {
+    "status": "PASS",
+    "version": "1.3.1",
+    "architectures": [
+      "arm64",
+      "x86_64"
+    ],
+    "build_sdk": "26.5",
+    "native_liquid_glass_compiled": true,
+    "app_executable_sha256": "2c888bc3114970af635a9b4a2357e6ae6e7dd47be877142909f3f2bf5c132a96",
+    "cli_sha256": "4f28b3db6a35b6b76b514fd1aec52d1b09f3665aba140981c7a528873b0f9b81",
+    "artifacts": [
+      {
+        "path": "dist/Kryra-1.3.1-universal.zip",
+        "size": 1056194,
+        "sha256": "ae767ba480262762eddee5ff1c9fec78423b677e68e5328f165c2fb7adc6e19f"
+      },
+      {
+        "path": "dist/Kryra-1.3.1-universal.dmg",
+        "size": 1488836,
+        "sha256": "763b3e8f96620901950533188e58c071ac719106a42096929718a69ed8aa5c9e"
+      }
+    ],
+    "signing": "local ad-hoc; not Developer ID notarized",
+    "published": false
+  },
+  "source_sha256": {
+    "macos/Kryra/App.swift": "d64bceb8466417afa757d02bbdb90727cf2e04f3ea26b2ca83b8c223ef88846f",
+    "macos/Kryra/Glass.swift": "a7f717f8ad886c958c38d80af2adc7b77bece9f56586fde591045076d577302a",
+    "macos/Kryra/Views.swift": "c745e3490d4b992f6290afa4a288a3d7111a85a5704920f3f48b8b86a25cfbf5",
+    "macos/Kryra/RuntimeFiles.swift": "aefffc378c102fdb021e3ffeb53a5d7685f6d4aa811ab828ac874ca990f95dc9",
+    "macos/build.py": "badce12e9e45d5e95d00986601976c21b5f526a536bbcacd0aae9d5d4163588d",
+    "scripts/check_kryra_panel.py": "582c63089339f964b5bfcb475818ac87b3beea9ed695af7fee033638d5a08da6",
+    "macos/API.html": "6fdc3626d2391cb6fa9c8108c208fff5ef79180d394eae4eaf7e8b1a2e759205",
+    "macos/README.md": "7e934c7330eeb2a7c1c20e3fb99a8604a9d57727cd40008ed46944e2552a9326",
+    "docs/KRYRA_DESIGN.md": "e87f8960047e724c1932220a4f24eb9990c91fe4d238a38978bfe866464733a2"
+  },
+  "limitations": [
+    "Native macOS 26 Liquid Glass rendering awaits testing on macOS 26. Actual popover and window inspected on macOS 15.7.4 in demo mode.",
+    "No physical HID or new power/battery measurements.",
+    "Universal build; no Intel hardware execution.",
+    "Local ad-hoc signing; not Developer ID notarized."
+  ],
+  "follow_up": {
+    "status": "USER_REPORTED_WINDOW_TITLEBAR_ISSUE",
+    "issue": "The transparent independent-window titlebar leaves the upper content edge looking square. Earlier visual inspection did not flag this.",
+    "fixed_in": "1.3.2",
+    "report": "VALIDATION-v1.3.2.json"
+  }
+}

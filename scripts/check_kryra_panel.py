@@ -15,4 +15,4 @@ subprocess.run(toolchain.swift('-swift-version','5','-warnings-as-errors','-O','
                 '-target','arm64-apple-macosx13.0',*flags,*map(str,sources),str(ROOT/'macos/tests/PanelTests.swift'),
                 '-framework','AppKit','-framework','SwiftUI','-framework','IOKit','-framework','Network',
                 '-framework','Security','-framework','ServiceManagement','-o',str(BUILD/'panel-tests')),check=True,cwd=ROOT)
-subprocess.run([str(BUILD/'panel-tests'),str(ROOT/'test-results/kryra-panel-v1.3.0')],check=True,cwd=ROOT)
+subprocess.run([str(BUILD/'panel-tests'),str(ROOT/'test-results/kryra-panel-v1.3.2')],check=True,cwd=ROOT)

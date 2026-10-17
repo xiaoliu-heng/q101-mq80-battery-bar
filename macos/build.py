@@ -56,7 +56,7 @@ def main():
     run('iconutil','-c','icns',BUILD/'Kryra.iconset','-o',resources/'Kryra.icns')
     info={'CFBundleExecutable':'Kryra','CFBundleIdentifier':'local.xiaoliu.kryra',
           'CFBundleName':'Kryra','CFBundleDisplayName':'Kryra','CFBundlePackageType':'APPL',
-          'CFBundleVersion':'5','CFBundleShortVersionString':'1.3.0','LSMinimumSystemVersion':'13.0',
+          'CFBundleVersion':'7','CFBundleShortVersionString':'1.3.2','LSMinimumSystemVersion':'13.0',
           'LSUIElement':True,'NSHighResolutionCapable':True,'NSSupportsAutomaticTermination':False,'CFBundleIconFile':'Kryra',
           'DTSDKName':'macosx'+sdk_version,'KryraNativeGlassCompiled':True,
           'NSHumanReadableCopyright':'Kryra · Q101 / MQ80 community project'}
@@ -73,7 +73,7 @@ def main():
         linked_sdks[name]=versions
     metadata={'version':info['CFBundleShortVersionString'],'architectures':architectures,
               **toolchain.metadata(),'linked_sdks':linked_sdks,'signing':'local ad-hoc'}
-    (BUILD/'build-info-v1.3.0.json').write_text(json.dumps(metadata,indent=2)+'\n')
+    (BUILD/('build-info-v'+info['CFBundleShortVersionString']+'.json')).write_text(json.dumps(metadata,indent=2)+'\n')
     print(json.dumps({'app':str(app),'architectures':architectures,'version':info['CFBundleShortVersionString'],
                       **metadata,'glass_sdk_compiled':glass_sdk},ensure_ascii=False))
 

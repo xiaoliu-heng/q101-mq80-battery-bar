@@ -14,8 +14,7 @@ struct PanelBackdrop: View {
             LinearGradient(colors:[Color.mint.opacity(scheme == .dark ? 0.07 : 0.035),.clear,Color.pink.opacity(0.025)],
                            startPoint:.topLeading,endPoint:.bottomTrailing)
         }
-        .overlay(RoundedRectangle(cornerRadius:24,style:.continuous)
-            .strokeBorder(.white.opacity(scheme == .dark ? 0.12 : 0.55),lineWidth:1))
+        // NSWindow / NSPopover supplies the outer corner mask and border.
     }
 }
 

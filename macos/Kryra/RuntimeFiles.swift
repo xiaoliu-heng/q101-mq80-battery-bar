@@ -3,7 +3,7 @@ import Security
 import Darwin
 
 enum AppIdentity {
-    static let version = "1.3.0"
+    static let version = "1.3.2"
     static let bundleID = "local.xiaoliu.kryra"
     static let name = "Kryra"
 }

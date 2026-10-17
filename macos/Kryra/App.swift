@@ -32,7 +32,10 @@ import SwiftUI
         })
         installMenu()
         Task { await model.start() }
-        if !UserDefaults.standard.bool(forKey:"hasOpenedControlPanel") || CommandLine.arguments.contains("--show-window") {
+        if model.demo && ProcessInfo.processInfo.environment["KRYRA_DEMO_POPOVER"] == "1" {
+            // Visual QA exercises the same native chrome as a menu-bar click.
+            DispatchQueue.main.async { [weak self] in self?.togglePopover() }
+        } else if !UserDefaults.standard.bool(forKey:"hasOpenedControlPanel") || CommandLine.arguments.contains("--show-window") {
             showPanel()
             if !model.demo { UserDefaults.standard.set(true,forKey:"hasOpenedControlPanel") }
         }
@@ -61,12 +64,7 @@ import SwiftUI
     @objc func showPanel() {
         popover?.performClose(nil)
         if window == nil {
-            let panel = NSWindow(contentRect:NSRect(origin:.zero,size:PanelMetrics.size),styleMask:[.titled,.closable,.miniaturizable],backing:.buffered,defer:false)
-            panel.title = "Kryra\(model.demo ? " · 演示" : "")"; panel.isReleasedWhenClosed = false
-            panel.titleVisibility = .hidden; panel.titlebarAppearsTransparent = true
-            panel.isOpaque = false; panel.backgroundColor = .clear
-            panel.contentMinSize = PanelMetrics.size; panel.contentMaxSize = PanelMetrics.size
-            panel.contentView = fixedPanelView(self.panel); panel.setContentSize(PanelMetrics.size)
+            let panel = fixedPanelWindow(self.panel,title:"Kryra\(model.demo ? " · 演示" : "")")
             panel.center(); window = panel
         }
         window?.makeKeyAndOrderFront(nil); NSApp.activate(ignoringOtherApps:true)

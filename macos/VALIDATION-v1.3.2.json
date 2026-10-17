@@ -1,0 +1,114 @@
+{
+  "status": "PASS_OFFLINE_MACOS26_RUNTIME_PENDING",
+  "app_version": "1.3.2",
+  "app_build": 7,
+  "date_utc": "2026-10-17T15:29:47.267978+00:00",
+  "physical_hid_access": false,
+  "change": "Restore the native standalone-window titlebar and background. App and panel checks share fixedPanelWindow; the content remains below the native titlebar.",
+  "build": {
+    "sdk": "26.5",
+    "compiler": "Apple Swift version 6.3.3 (swiftlang-6.3.3.1.3 clang-2100.1.1.101)",
+    "architectures": [
+      "arm64",
+      "x86_64"
+    ],
+    "native_glass_compiled": true,
+    "linked_sdks": {
+      "app": [
+        "26.5",
+        "26.5"
+      ],
+      "cli": [
+        "26.5",
+        "26.5"
+      ]
+    }
+  },
+  "ui": {
+    "content_size_points": {
+      "width": 368,
+      "height": 584
+    },
+    "scroll_view": false,
+    "outer_boundary_owner": "native NSWindow / NSPopover",
+    "independent_window_titlebar": "native, painted, outside fixed panel content",
+    "production_window_factory_shared_with_layout_checks": true,
+    "actual_host_chrome_inspected": true,
+    "gui_report": "gui-tests-v1.3.2.json"
+  },
+  "tests": {
+    "panel": {
+      "status": "PASS",
+      "count": 61,
+      "report": "panel-tests-v1.3.2.json",
+      "freshly_run": true
+    },
+    "e2e": {
+      "status": "PASS",
+      "count": 61,
+      "report": "e2e-v1.3.2.json",
+      "freshly_run": true,
+      "mode": "isolated explicit demo, real HTTP server and native CLI"
+    },
+    "fresh_automated_checks": 122,
+    "core_baseline": {
+      "status": "PASS",
+      "count": 188,
+      "report": "core-tests-v1.3.0.json",
+      "freshly_run": false,
+      "reason": "No protocol, controller, battery polling or firmware changes."
+    }
+  },
+  "firmware": {
+    "version": "3.1.0",
+    "build": 3,
+    "sha256": "5757c625adf427a4932a9fb9e8e7be0e5a4a88311e4484278d771c5c1b29cf0a",
+    "modified": false,
+    "flashed": false
+  },
+  "release": {
+    "status": "PASS",
+    "version": "1.3.2",
+    "architectures": [
+      "arm64",
+      "x86_64"
+    ],
+    "build_sdk": "26.5",
+    "native_liquid_glass_compiled": true,
+    "app_executable_sha256": "bf2385c3bc804d2028439d45be1a00264bd8e5724218278a454cfe7d60641fc9",
+    "cli_sha256": "29f99b0c0a3018fae8367186034c684e83e782b124c00593801e05bea64bab33",
+    "artifacts": [
+      {
+        "path": "dist/Kryra-1.3.2-universal.zip",
+        "size": 1056259,
+        "sha256": "d3e3649d345ebb548e4516c07dc7389e1dbff1ce05eccfecdbff69310b1cea05"
+      },
+      {
+        "path": "dist/Kryra-1.3.2-universal.dmg",
+        "size": 1489705,
+        "sha256": "58cc4a8476cd8894d8c2d705ecfa15926937a0465509140b77a076c66f626d60"
+      }
+    ],
+    "signing": "local ad-hoc; not Developer ID notarized",
+    "published": false
+  },
+  "source_sha256": {
+    "macos/Kryra/App.swift": "c31ec2aa5d69a9eb06d00b248756a5d99ee5fbbd8e4b152d48f027d25d621395",
+    "macos/Kryra/PanelHost.swift": "aec15defaa4f3aeca7c8b13db0a16bc02bb1c175fbb57a0dae5e99209591f6b4",
+    "macos/Kryra/Glass.swift": "a7f717f8ad886c958c38d80af2adc7b77bece9f56586fde591045076d577302a",
+    "macos/Kryra/Views.swift": "c745e3490d4b992f6290afa4a288a3d7111a85a5704920f3f48b8b86a25cfbf5",
+    "macos/Kryra/RuntimeFiles.swift": "f70a999c2a2e38f02730f6c9d0d9dc76b89bdb46c555a4c505766104262ba9bf",
+    "macos/tests/PanelTests.swift": "c10272bf0bd96a037088935e93fdadfe815740207102c561879ef4a5c9a81ca4",
+    "macos/build.py": "ce6db9e1b5f5d21a4b6d9d959e2295fb2ef8e00ecab95e4974eee915f6994fc9",
+    "scripts/check_kryra_panel.py": "9026090650d874e4aba4a7d99e62496fe37331079c5a219b841a582e7c21ff6c",
+    "macos/README.md": "c716d739aadf52b491cf3d23b983926fb0b51f43ed824ab6606a1864b366b1e0",
+    "macos/API.html": "470e1bb7ff83aa752afa3f9225f56e11a3175a6109c07d275005e1443bde6f9e",
+    "docs/KRYRA_DESIGN.md": "f2b2d7ac27797dd99c803fae13167a54f0c06db96ef64677c4c677810c18c417"
+  },
+  "limitations": [
+    "Actual menu-bar popover and standalone window inspected on macOS 15.7.4 in forced demo mode; native macOS 26 glass rendering awaits macOS 26 testing.",
+    "No physical HID or new power/battery measurement.",
+    "Universal build; no Intel hardware execution.",
+    "Local ad-hoc signing; not Developer ID notarized."
+  ]
+}
