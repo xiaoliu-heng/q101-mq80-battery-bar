@@ -1,0 +1,14 @@
+{
+  "time_utc": "2026-10-16T10:25:26.092175+00:00",
+  "pid": "0x5088",
+  "request_purpose": "read-only capability query with 27-byte nonce; stock fallback verified offline",
+  "request": "fe534c108a000102030405060708090a0b0c0d0e0f101112131415161718191a",
+  "reply": "015309108a000102030405060708090a0b0c0d0e0f101112131415161718191a",
+  "all_27_payload_bytes_echoed": true,
+  "matches_keyboard_default_fallback": true,
+  "extension_firmware_installed": false,
+  "lighting_write_sent": false,
+  "ota_sent": false,
+  "receiver_flash_performed": false,
+  "interpretation": "full report forwarding is strongly supported; extension end-to-end still requires new firmware hardware test"
+}

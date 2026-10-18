@@ -1,0 +1,4 @@
+interface:
+  display_name: "Kryra Windows 键盘控制"
+  short_description: "通过 Windows 原生应用查询键盘电量，发送 USB 或 2.4G 侧灯提醒"
+  default_prompt: "使用 $kryra 查询键盘电量，或发送三秒侧灯提醒。"

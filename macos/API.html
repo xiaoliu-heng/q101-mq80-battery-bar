@@ -1,0 +1,31 @@
+<!doctype html><html lang="zh-CN"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Kryra · 本机 API</title>
+<style>body{font:16px/1.7 -apple-system,BlinkMacSystemFont,sans-serif;max-width:780px;margin:56px auto;padding:0 24px;color:#22313b}h1{letter-spacing:-1px}code,pre{font:13px/1.7 ui-monospace,monospace;background:#f1f6f5;border-radius:8px}code{padding:2px 5px}pre{padding:18px;overflow:auto}table{border-collapse:collapse;width:100%}td,th{padding:10px;text-align:left;border-bottom:1px solid #ddd}a{color:#087f65}@media(prefers-color-scheme:dark){body{background:#171b1f;color:#e4ebe9}code,pre{background:#252e30}td,th{border-color:#46514d}}</style>
+<h1>Kryra</h1><p>电量与侧灯的本机接口。Kryra v1.3.2 仅支持键盘固件 3.1.0，包括电量查询；其他版本会提示升级。应用需保持运行；USB 与 2.4G 使用同一 API。</p>
+<h2>命令行</h2><p>在应用的“设置”中复制查询命令，或安装 Codex skill 后使用其 <code>scripts/kryractl</code>。工具为原生二进制，不依赖 Python。</p>
+<pre>kryractl battery
+kryractl battery --refresh
+kryractl settings
+kryractl settings --poll-interval 60
+kryractl solid 0080FF --brightness 25 --seconds 5
+kryractl blink FFAA33 --period 1000 --seconds 3
+kryractl breathe 34D399 --period 1000 --seconds 3
+kryractl rainbow --period 5000 --seconds 5
+kryractl frame FF0000 FF8000 FFFF00 80FF00 00FF00 00FF80 00FFFF 0080FF 8000FF
+kryractl release</pre>
+<h2>HTTP</h2><p>仅监听 <code>127.0.0.1</code> 的动态端口。地址和 Bearer token 存于当前用户的 <code>~/Library/Application Support/Kryra/api.json</code>（权限 0600）。每次应用启动重新生成 token。请求需要 <code>Authorization: Bearer TOKEN</code>；POST 使用 <code>Content-Type: application/json</code>。不接受网页 Origin 请求，不提供 CORS。</p>
+<table><tr><th>方法与路径</th><th>用途</th></tr><tr><td>GET /v1/health</td><td>应用状态；同样需要鉴权</td></tr><tr><td>GET /v1/status</td><td>设备、固件、电量、灯光和设置</td></tr><tr><td>GET /v1/battery</td><td>缓存电量；加 ?refresh=true 主动读取</td></tr><tr><td>POST /v1/refresh</td><td>刷新连接和电量</td></tr><tr><td>GET /v1/settings</td><td>读取电量查询间隔</td></tr><tr><td>POST /v1/settings</td><td>保存电量查询间隔，不发送 HID</td></tr><tr><td>POST /v1/lighting</td><td>设置侧灯</td></tr><tr><td>POST /v1/lighting/release</td><td>恢复键盘原灯效；请求体可为空或 {}</td></tr></table>
+<pre>{"mode":"solid","color":"0080FF","brightness":25,"duration_seconds":5}
+{"mode":"frame","colors":["FF0000","FF8000","FFFF00","80FF00","00FF00","00FF80","00FFFF","0080FF","8000FF"]}
+{"mode":"rainbow","period_ms":5000,"brightness":25,"duration_seconds":5}
+{"mode":"blink","color":"FFAA33","period_ms":1000,"duration_seconds":3}
+{"mode":"breathe","color":"34D399","period_ms":1000,"duration_seconds":3}
+{"mode":"release"}</pre>
+<p>默认亮度 25%、时长 5 秒。四种内置灯效使用固件 3.1.0 的一次 PLAY 命令，亮度 0–100、duration_seconds 为 0.1–60 秒、周期 500–20000 毫秒；闪烁和呼吸默认周期 1000，彩虹默认 5000。高级 frame 命令接受九个 RGB 渐变采样点，物理扩散罩使它们呈现为连续灯带；时长 0.5–10 秒，同样仅支持 3.1.0。continuous: true 已停用，必须使用有限时长。未知字段和无效值返回 400，鉴权错误 401，接口不存在 404，连接不可用或固件不支持返回 503。不会回退为逐帧发送。UI 编辑和预览不发送命令，点击“发送提醒”才下发。</p>
+<p>可选 request_id 为 1–4294967295 的整数；同一请求重试使用相同编号与参数，不能续期或重启已结束的通知。省略时应用生成随机编号，CLI 可用 --request-id N。该去重仅保留最近一次 PLAY，重启或使用旧 FRAME 后不保证保留；它不是全局请求历史。</p>
+<h2>电量更新设置</h2><pre>POST /v1/settings
+{"battery_poll_interval_seconds":120}</pre>
+<p>默认 60 秒；仅接受 30–3600 的整数秒。GET /v1/settings 返回相同字段，状态的 settings 也包含它；电量结果包含 poll_interval_seconds。保存后取消旧等待并重新计时，重启保留；修改设置不触发 INFO。设置页提供常用间隔，CLI 使用 settings --poll-interval N。非法值、未知字段返回 400，不改变已有设置。无设备时每 5 秒尝试枚举；接收器不响应时逐渐退避，最高 max(300, 配置间隔) 秒。自己的通知播放期间跳过自动查询；手动刷新与发送前的能力查询仍可主动进行。</p>
+<h2>读数与休眠</h2><p>电量来自键盘固件缓存，默认每分钟查询；休眠或断连时保留上次读数，并标为 stale，已连接读数超过两倍配置间隔加 5 秒也标为 stale。percent 为 null 表示尚无可用读数。demo: true 为演示，不能视为真机结果。内置灯效由键盘计时和渲染，无心跳、无 RGB 帧流，到期无需电脑再发送取消；新命令替换旧通知。原有无线休眠可以提前结束内置通知，唤醒不重播；不会远程唤醒键盘。自定义渐变的 FRAME 租约在有效期内仍保持接收。电脑休眠、切换设备或退出应用时尝试取消自身的通知，唤醒后仅恢复电量查询。lighting.execution 表示 firmware 或 static_frame，commands_sent 记录本次发送的效果/颜色命令数；frames_sent 为同值字段，不是键盘本地动画帧数。状态是最近回复与本机时限推算，查询可确认键盘是否提前结束。</p>
+<h2>Codex skill</h2><p>“一键安装 Skill”默认安装至 <code>~/.agents/skills/kryra</code>；可选择其他技能父目录。安装器只更新本应用创建的 skill，不覆盖其他同名内容。新技能若未出现，可重新打开 Codex。<a href="https://learn.chatgpt.com/docs/build-skills">Codex 官方技能说明</a>。</p>
+</html>

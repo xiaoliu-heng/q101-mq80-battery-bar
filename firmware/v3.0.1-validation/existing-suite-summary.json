@@ -1,0 +1,10 @@
+{
+  "status": "PASS",
+  "python_tests": 62,
+  "native_controller_checks": 56,
+  "native_builtin_scenarios": 10,
+  "packaged_engine_checks": 25,
+  "app_version": "2.4.1",
+  "firmware_sha256": "7b800e3edab6b2e8c421c3b7729464e990edfd2e5a2647ded6059c1901006534",
+  "device_access": "NONE"
+}

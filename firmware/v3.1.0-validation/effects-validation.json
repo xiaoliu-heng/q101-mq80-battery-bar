@@ -1,0 +1,9 @@
+{
+  "status": "PASS",
+  "tests": 13,
+  "failures": 0,
+  "errors": 0,
+  "device_access": "NONE",
+  "firmware_sha256": "5757c625adf427a4932a9fb9e8e7be0e5a4a88311e4484278d771c5c1b29cf0a",
+  "scope": "Real RV32/Andes code; GPIO, RF delivery and silicon PM are models. No current, voltage or physical refresh measurement."
+}

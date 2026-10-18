@@ -1,0 +1,727 @@
+{
+  "checks" : [
+    {
+      "name" : "firmware packet fixture 0",
+      "status" : "PASS"
+    },
+    {
+      "name" : "firmware reply fixture 0",
+      "status" : "PASS"
+    },
+    {
+      "name" : "reject reply corruption at 0",
+      "status" : "PASS"
+    },
+    {
+      "name" : "reject reply corruption at 1",
+      "status" : "PASS"
+    },
+    {
+      "name" : "reject reply corruption at 2",
+      "status" : "PASS"
+    },
+    {
+      "name" : "reject reply corruption at 3",
+      "status" : "PASS"
+    },
+    {
+      "name" : "reject reply corruption at 4",
+      "status" : "PASS"
+    },
+    {
+      "name" : "reject reply corruption at 6",
+      "status" : "PASS"
+    },
+    {
+      "name" : "reject reply corruption at 7",
+      "status" : "PASS"
+    },
+    {
+      "name" : "reject reply corruption at 17",
+      "status" : "PASS"
+    },
+    {
+      "name" : "reject reply corruption at 18",
+      "status" : "PASS"
+    },
+    {
+      "name" : "reject reply corruption at 19",
+      "status" : "PASS"
+    },
+    {
+      "name" : "reject reply corruption at 20",
+      "status" : "PASS"
+    },
+    {
+      "name" : "reject reply corruption at 21",
+      "status" : "PASS"
+    },
+    {
+      "name" : "reply length 0",
+      "status" : "PASS"
+    },
+    {
+      "name" : "reply length 1",
+      "status" : "PASS"
+    },
+    {
+      "name" : "reply length 31",
+      "status" : "PASS"
+    },
+    {
+      "name" : "reply length 33",
+      "status" : "PASS"
+    },
+    {
+      "name" : "firmware packet fixture 1",
+      "status" : "PASS"
+    },
+    {
+      "name" : "firmware reply fixture 1",
+      "status" : "PASS"
+    },
+    {
+      "name" : "firmware packet fixture 2",
+      "status" : "PASS"
+    },
+    {
+      "name" : "firmware reply fixture 2",
+      "status" : "PASS"
+    },
+    {
+      "name" : "firmware packet fixture 3",
+      "status" : "PASS"
+    },
+    {
+      "name" : "firmware reply fixture 3",
+      "status" : "PASS"
+    },
+    {
+      "name" : "firmware packet fixture 4",
+      "status" : "PASS"
+    },
+    {
+      "name" : "firmware reply fixture 4",
+      "status" : "PASS"
+    },
+    {
+      "name" : "firmware packet fixture 5",
+      "status" : "PASS"
+    },
+    {
+      "name" : "firmware reply fixture 5",
+      "status" : "PASS"
+    },
+    {
+      "name" : "firmware packet fixture 6",
+      "status" : "PASS"
+    },
+    {
+      "name" : "firmware reply fixture 6",
+      "status" : "PASS"
+    },
+    {
+      "name" : "firmware packet fixture 7",
+      "status" : "PASS"
+    },
+    {
+      "name" : "firmware reply fixture 7",
+      "status" : "PASS"
+    },
+    {
+      "name" : "firmware packet fixture 8",
+      "status" : "PASS"
+    },
+    {
+      "name" : "firmware reply fixture 8",
+      "status" : "PASS"
+    },
+    {
+      "name" : "firmware packet fixture 9",
+      "status" : "PASS"
+    },
+    {
+      "name" : "firmware reply fixture 9",
+      "status" : "PASS"
+    },
+    {
+      "name" : "firmware packet fixture 10",
+      "status" : "PASS"
+    },
+    {
+      "name" : "firmware reply fixture 10",
+      "status" : "PASS"
+    },
+    {
+      "name" : "firmware packet fixture 11",
+      "status" : "PASS"
+    },
+    {
+      "name" : "firmware reply fixture 11",
+      "status" : "PASS"
+    },
+    {
+      "name" : "firmware packet fixture 12",
+      "status" : "PASS"
+    },
+    {
+      "name" : "firmware reply fixture 12",
+      "status" : "PASS"
+    },
+    {
+      "name" : "firmware packet fixture 13",
+      "status" : "PASS"
+    },
+    {
+      "name" : "firmware reply fixture 13",
+      "status" : "PASS"
+    },
+    {
+      "name" : "firmware packet fixture 14",
+      "status" : "PASS"
+    },
+    {
+      "name" : "firmware reply fixture 14",
+      "status" : "PASS"
+    },
+    {
+      "name" : "firmware packet fixture 15",
+      "status" : "PASS"
+    },
+    {
+      "name" : "firmware reply fixture 15",
+      "status" : "PASS"
+    },
+    {
+      "name" : "firmware packet fixture 16",
+      "status" : "PASS"
+    },
+    {
+      "name" : "firmware reply fixture 16",
+      "status" : "PASS"
+    },
+    {
+      "name" : "firmware packet fixture 17",
+      "status" : "PASS"
+    },
+    {
+      "name" : "firmware reply fixture 17",
+      "status" : "PASS"
+    },
+    {
+      "name" : "firmware packet fixture 18",
+      "status" : "PASS"
+    },
+    {
+      "name" : "firmware reply fixture 18",
+      "status" : "PASS"
+    },
+    {
+      "name" : "firmware packet fixture 19",
+      "status" : "PASS"
+    },
+    {
+      "name" : "firmware reply fixture 19",
+      "status" : "PASS"
+    },
+    {
+      "name" : "firmware packet fixture 20",
+      "status" : "PASS"
+    },
+    {
+      "name" : "firmware reply fixture 20",
+      "status" : "PASS"
+    },
+    {
+      "name" : "native payload matches executed firmware 20",
+      "status" : "PASS"
+    },
+    {
+      "name" : "firmware packet fixture 21",
+      "status" : "PASS"
+    },
+    {
+      "name" : "firmware reply fixture 21",
+      "status" : "PASS"
+    },
+    {
+      "name" : "native payload matches executed firmware 21",
+      "status" : "PASS"
+    },
+    {
+      "name" : "firmware packet fixture 22",
+      "status" : "PASS"
+    },
+    {
+      "name" : "firmware reply fixture 22",
+      "status" : "PASS"
+    },
+    {
+      "name" : "native payload matches executed firmware 22",
+      "status" : "PASS"
+    },
+    {
+      "name" : "firmware packet fixture 23",
+      "status" : "PASS"
+    },
+    {
+      "name" : "firmware reply fixture 23",
+      "status" : "PASS"
+    },
+    {
+      "name" : "native payload matches executed firmware 23",
+      "status" : "PASS"
+    },
+    {
+      "name" : "firmware packet fixture 24",
+      "status" : "PASS"
+    },
+    {
+      "name" : "firmware reply fixture 24",
+      "status" : "PASS"
+    },
+    {
+      "name" : "firmware packet fixture 25",
+      "status" : "PASS"
+    },
+    {
+      "name" : "firmware reply fixture 25",
+      "status" : "PASS"
+    },
+    {
+      "name" : "firmware packet fixture 26",
+      "status" : "PASS"
+    },
+    {
+      "name" : "firmware reply fixture 26",
+      "status" : "PASS"
+    },
+    {
+      "name" : "firmware packet fixture 27",
+      "status" : "PASS"
+    },
+    {
+      "name" : "firmware reply fixture 27",
+      "status" : "PASS"
+    },
+    {
+      "name" : "firmware packet fixture 28",
+      "status" : "PASS"
+    },
+    {
+      "name" : "firmware reply fixture 28",
+      "status" : "PASS"
+    },
+    {
+      "name" : "firmware packet fixture 29",
+      "status" : "PASS"
+    },
+    {
+      "name" : "firmware reply fixture 29",
+      "status" : "PASS"
+    },
+    {
+      "name" : "native payload matches executed firmware 29",
+      "status" : "PASS"
+    },
+    {
+      "name" : "firmware packet fixture 30",
+      "status" : "PASS"
+    },
+    {
+      "name" : "firmware reply fixture 30",
+      "status" : "PASS"
+    },
+    {
+      "name" : "native payload matches executed firmware 30",
+      "status" : "PASS"
+    },
+    {
+      "name" : "firmware packet fixture 31",
+      "status" : "PASS"
+    },
+    {
+      "name" : "firmware reply fixture 31",
+      "status" : "PASS"
+    },
+    {
+      "name" : "native payload matches executed firmware 31",
+      "status" : "PASS"
+    },
+    {
+      "name" : "firmware packet fixture 32",
+      "status" : "PASS"
+    },
+    {
+      "name" : "firmware reply fixture 32",
+      "status" : "PASS"
+    },
+    {
+      "name" : "native payload matches executed firmware 32",
+      "status" : "PASS"
+    },
+    {
+      "name" : "firmware packet fixture 33",
+      "status" : "PASS"
+    },
+    {
+      "name" : "firmware reply fixture 33",
+      "status" : "PASS"
+    },
+    {
+      "name" : "firmware packet fixture 34",
+      "status" : "PASS"
+    },
+    {
+      "name" : "firmware reply fixture 34",
+      "status" : "PASS"
+    },
+    {
+      "name" : "firmware packet fixture 35",
+      "status" : "PASS"
+    },
+    {
+      "name" : "firmware reply fixture 35",
+      "status" : "PASS"
+    },
+    {
+      "name" : "firmware packet fixture 36",
+      "status" : "PASS"
+    },
+    {
+      "name" : "firmware reply fixture 36",
+      "status" : "PASS"
+    },
+    {
+      "name" : "firmware packet fixture 37",
+      "status" : "PASS"
+    },
+    {
+      "name" : "firmware reply fixture 37",
+      "status" : "PASS"
+    },
+    {
+      "name" : "firmware packet fixture 38",
+      "status" : "PASS"
+    },
+    {
+      "name" : "firmware reply fixture 38",
+      "status" : "PASS"
+    },
+    {
+      "name" : "native payload matches executed firmware 38",
+      "status" : "PASS"
+    },
+    {
+      "name" : "firmware packet fixture 39",
+      "status" : "PASS"
+    },
+    {
+      "name" : "firmware reply fixture 39",
+      "status" : "PASS"
+    },
+    {
+      "name" : "native payload matches executed firmware 39",
+      "status" : "PASS"
+    },
+    {
+      "name" : "firmware packet fixture 40",
+      "status" : "PASS"
+    },
+    {
+      "name" : "firmware reply fixture 40",
+      "status" : "PASS"
+    },
+    {
+      "name" : "native payload matches executed firmware 40",
+      "status" : "PASS"
+    },
+    {
+      "name" : "firmware packet fixture 41",
+      "status" : "PASS"
+    },
+    {
+      "name" : "firmware reply fixture 41",
+      "status" : "PASS"
+    },
+    {
+      "name" : "native payload matches executed firmware 41",
+      "status" : "PASS"
+    },
+    {
+      "name" : "nine colors and brightness preserve byte order",
+      "status" : "PASS"
+    },
+    {
+      "name" : "rainbow phase repeats",
+      "status" : "PASS"
+    },
+    {
+      "name" : "invalid lighting parameters 114",
+      "status" : "PASS"
+    },
+    {
+      "name" : "invalid lighting parameters 115",
+      "status" : "PASS"
+    },
+    {
+      "name" : "invalid lighting parameters 116",
+      "status" : "PASS"
+    },
+    {
+      "name" : "invalid lighting parameters 117",
+      "status" : "PASS"
+    },
+    {
+      "name" : "invalid lighting parameters 118",
+      "status" : "PASS"
+    },
+    {
+      "name" : "invalid lighting parameters 119",
+      "status" : "PASS"
+    },
+    {
+      "name" : "invalid lighting parameters 120",
+      "status" : "PASS"
+    },
+    {
+      "name" : "invalid lighting parameters 121",
+      "status" : "PASS"
+    },
+    {
+      "name" : "invalid lighting parameters 122",
+      "status" : "PASS"
+    },
+    {
+      "name" : "invalid lighting parameters 123",
+      "status" : "PASS"
+    },
+    {
+      "name" : "invalid lighting parameters 124",
+      "status" : "PASS"
+    },
+    {
+      "name" : "invalid lighting parameters 125",
+      "status" : "PASS"
+    },
+    {
+      "name" : "invalid native request ID true",
+      "status" : "PASS"
+    },
+    {
+      "name" : "invalid native request ID 0",
+      "status" : "PASS"
+    },
+    {
+      "name" : "invalid native request ID -1",
+      "status" : "PASS"
+    },
+    {
+      "name" : "invalid native request ID 4294967296",
+      "status" : "PASS"
+    },
+    {
+      "name" : "partial HTTP read 1",
+      "status" : "PASS"
+    },
+    {
+      "name" : "partial HTTP read 15",
+      "status" : "PASS"
+    },
+    {
+      "name" : "partial HTTP read 210",
+      "status" : "PASS"
+    },
+    {
+      "name" : "HTTP request body and token",
+      "status" : "PASS"
+    },
+    {
+      "name" : "wrong token refused",
+      "status" : "PASS"
+    },
+    {
+      "name" : "browser Origin refused",
+      "status" : "PASS"
+    },
+    {
+      "name" : "HTTP bounds and ambiguity 136",
+      "status" : "PASS"
+    },
+    {
+      "name" : "HTTP bounds and ambiguity 137",
+      "status" : "PASS"
+    },
+    {
+      "name" : "HTTP bounds and ambiguity 138",
+      "status" : "PASS"
+    },
+    {
+      "name" : "HTTP bounds and ambiguity 139",
+      "status" : "PASS"
+    },
+    {
+      "name" : "HTTP bounds and ambiguity 140",
+      "status" : "PASS"
+    },
+    {
+      "name" : "controls cannot precede INFO",
+      "status" : "PASS"
+    },
+    {
+      "name" : "old firmware rejected before control",
+      "status" : "PASS"
+    },
+    {
+      "name" : "legacy received only INFO",
+      "status" : "PASS"
+    },
+    {
+      "name" : "battery reads never acquire lighting",
+      "status" : "PASS"
+    },
+    {
+      "name" : "firmware deadline clears UI without a release packet",
+      "status" : "PASS"
+    },
+    {
+      "name" : "native controller sends color and brightness as parameters",
+      "status" : "PASS"
+    },
+    {
+      "name" : "superseded timer cannot cancel newer effect",
+      "status" : "PASS"
+    },
+    {
+      "name" : "native effects never stream or renew",
+      "status" : "PASS"
+    },
+    {
+      "name" : "computer sleep stops lighting traffic",
+      "status" : "PASS"
+    },
+    {
+      "name" : "disconnect preserves stale battery without restarting control",
+      "status" : "PASS"
+    },
+    {
+      "name" : "reconnect only reads state",
+      "status" : "PASS"
+    },
+    {
+      "name" : "all HID work stays on named serial thread",
+      "status" : "PASS"
+    },
+    {
+      "name" : "shutdown releases owned lighting",
+      "status" : "PASS"
+    },
+    {
+      "name" : "legacy RF can read battery without claiming control",
+      "status" : "PASS"
+    },
+    {
+      "name" : "legacy RF cannot receive lighting frame",
+      "status" : "PASS"
+    },
+    {
+      "name" : "unsupported RF only received INFO",
+      "status" : "PASS"
+    },
+    {
+      "name" : "RF rainbow sends one local effect command",
+      "status" : "PASS"
+    },
+    {
+      "name" : "RF finite animation needs no finishing traffic",
+      "status" : "PASS"
+    },
+    {
+      "name" : "external lighting is recognized",
+      "status" : "PASS"
+    },
+    {
+      "name" : "selecting and quitting do not release another controller",
+      "status" : "PASS"
+    },
+    {
+      "name" : "in-flight refresh cannot undo computer sleep",
+      "status" : "PASS"
+    },
+    {
+      "name" : "cancelled request cannot apply queued lighting",
+      "status" : "PASS"
+    },
+    {
+      "name" : "a cancelled queued HID frame never runs",
+      "status" : "PASS"
+    },
+    {
+      "name" : "default notification sends brightness and five-second lifetime atomically",
+      "status" : "PASS"
+    },
+    {
+      "name" : "native RF notification reports that it yields to idle sleep",
+      "status" : "PASS"
+    },
+    {
+      "name" : "native notification holds beyond former two-second lease without traffic",
+      "status" : "PASS"
+    },
+    {
+      "name" : "firmware-owned deadline finishes without more HID packets",
+      "status" : "PASS"
+    },
+    {
+      "name" : "blink completes with one INFO and one PLAY",
+      "status" : "PASS"
+    },
+    {
+      "name" : "breathe completes with one INFO and one PLAY",
+      "status" : "PASS"
+    },
+    {
+      "name" : "rainbow completes with one INFO and one PLAY",
+      "status" : "PASS"
+    },
+    {
+      "name" : "unbounded continuous control is rejected",
+      "status" : "PASS"
+    },
+    {
+      "name" : "retry preserves firmware phase in the local preview",
+      "status" : "PASS"
+    },
+    {
+      "name" : "retry does not postpone local expiry",
+      "status" : "PASS"
+    },
+    {
+      "name" : "notifications over one minute are rejected",
+      "status" : "PASS"
+    },
+    {
+      "name" : "old firmware receives only INFO and no streaming fallback",
+      "status" : "PASS"
+    },
+    {
+      "name" : "installer copies executable and metadata",
+      "status" : "PASS"
+    },
+    {
+      "name" : "managed skill can be updated",
+      "status" : "PASS"
+    },
+    {
+      "name" : "unmanaged skill is preserved",
+      "status" : "PASS"
+    },
+    {
+      "name" : "foreign skill contents unchanged",
+      "status" : "PASS"
+    }
+  ],
+  "count" : 180,
+  "device_access" : "NONE",
+  "status" : "PASS"
+}

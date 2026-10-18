@@ -1,0 +1,83 @@
+{
+  "version": "2.3.0",
+  "status": "PASS_OFFLINE_ONLY",
+  "created_at_utc": "2026-10-16T16:06:38.832665+00:00",
+  "scope": "USB and 2.4G side-light firmware, guarded CLI, native virtual RF host; no hardware flashing or physical RF lighting test.",
+  "python_tests": {
+    "passed": 60
+  },
+  "swift_controller": {
+    "passed": 54,
+    "built_in_suite_passed": 10
+  },
+  "packaged_engine": {
+    "passed": 24
+  },
+  "final_bundle_isolation_smoke": {
+    "status": "PASS",
+    "cwd_outside_repository": true,
+    "without_pythonpath": true,
+    "checks": [
+      "isolated bundle includes all four exact firmware images",
+      "isolated codec and real RF transactions stream rainbow at ten virtual FPS",
+      "RF snapshot resumes negotiated capabilities and host phase",
+      "release restores side lights without Flash writes"
+    ],
+    "no_device_access": true
+  },
+  "firmware_hid_tests": {
+    "passed": 34,
+    "battery_regression_groups": 6
+  },
+  "ota": {
+    "passed": 16,
+    "dual_bank": true,
+    "directions": [
+      "stock to USB/RF",
+      "USB/RF to stock"
+    ]
+  },
+  "reproducibility": {
+    "status": "PASS",
+    "independent_output_directories": [
+      "build/side-hid-rf",
+      "build/side-hid-rf-repro"
+    ],
+    "compiler": "riscv-none-elf-gcc (xPack GNU RISC-V Embedded GCC arm64) 15.2.0",
+    "sha256": "200b27e312debb8125ff0cb480efe6e208df0dabe36f298ee43854af039d7a83",
+    "same_bytes": true,
+    "old_usb_image_unchanged": true
+  },
+  "native_gui": {
+    "status": "PASS",
+    "app_version": "2.3.0",
+    "qa_bundle_id": "local.xiaoliu.mq80-firmware-lab.native.qa23rf",
+    "qa_accessibility_hidden": true,
+    "standard_app_accessibility_hidden": false,
+    "qa_native_text_section_matches_standard": true,
+    "checks": [
+      "New USB/RF bundled firmware and virtual receiver loaded through native menu",
+      "Nine side pixels respond to the blue preset over RF",
+      "Live wireless rainbow shows 10 FPS and an increasing frame count",
+      "Fn+B battery bar overrides wireless animation and rainbow resumes",
+      "Final executable shows version 2.3 and live wireless rainbow"
+    ],
+    "voiceover_acceptance": "unverified"
+  },
+  "app": "dist/MQ80 Firmware Lab 2.3.app",
+  "firmware_sha256": {
+    "simulator/assets/stock.bin": "d19733978808c856db93236ea3472b2cf843493c9aa6d5320db50412431e5210",
+    "simulator/assets/battery-bar-v2.bin": "f3e86554be1ed5faf11750fceea85980c9ccd080912be4552e8317fb09ef7719",
+    "firmware/experimental/side-hid.bin": "f380297767d86cba31d4264b1b419a69a17e7e6b7370413992eeb3b47d92a61c",
+    "firmware/experimental/side-hid-rf.bin": "200b27e312debb8125ff0cb480efe6e208df0dabe36f298ee43854af039d7a83"
+  },
+  "native_executable_sha256": "d471a6ef352b99f3f0219b4d48054db074426983493f6d81aa84d88802b0be4a",
+  "engine_executable_sha256": "3512fbc7e0df9cd96fde5ea0116fa28c10a4a72209657617054c2119ab7b08ca",
+  "limits": [
+    "RF configuration receiver delivery and ACKs are immediate model inputs; RF IRQ, air timing, retransmission and receiver firmware are not emulated.",
+    "Keyboard report delay/drop injection does not validate configuration packet loss behavior.",
+    "A live RF lighting lease holds stock idle counters at zero; release/expiry resumes original idle timing. No physical current measurement.",
+    "Sleeping keyboard requires a key wake before control; no radio-wake guarantee.",
+    "INFO already returns cached battery percentage at offset 9; real receiver access to the new firmware remains untested."
+  ]
+}

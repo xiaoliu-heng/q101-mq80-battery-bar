@@ -1,0 +1,354 @@
+{
+  "status": "PASS_OFFLINE_ONLY",
+  "python": {
+    "passed": 62,
+    "log": "test-results/firmware-v3-python-tests.log"
+  },
+  "native_controller": {
+    "passed": 56,
+    "suite_passed": 10,
+    "checks": [
+      {
+        "name": "bundled engine starts through Swift transport",
+        "status": "PASS"
+      },
+      {
+        "name": "both immutable bundled firmware images are selectable",
+        "status": "PASS"
+      },
+      {
+        "name": "immediate Fn+B then snapshot includes completed input",
+        "status": "PASS"
+      },
+      {
+        "name": "pause prevents queued query from restarting clock",
+        "status": "PASS"
+      },
+      {
+        "name": "query and export flush debounced battery input",
+        "status": "PASS"
+      },
+      {
+        "name": "native clock expires overlay and restores side off",
+        "status": "PASS"
+      },
+      {
+        "name": "rapid key intents preserve order and release",
+        "status": "PASS"
+      },
+      {
+        "name": "native controller preserves first key after PM",
+        "status": "PASS"
+      },
+      {
+        "name": "mouse chord sends modifiers and releases after tap",
+        "status": "PASS"
+      },
+      {
+        "name": "release button immediately clears visible chord selection",
+        "status": "PASS"
+      },
+      {
+        "name": "release button clears matrix and HID with visible feedback",
+        "status": "PASS"
+      },
+      {
+        "name": "unchecking chord mode clears selection and releases an actual held key",
+        "status": "PASS"
+      },
+      {
+        "name": "physical Shift+A reaches real firmware as a held chord",
+        "status": "PASS"
+      },
+      {
+        "name": "macOS repeat does not duplicate firmware keydown",
+        "status": "PASS"
+      },
+      {
+        "name": "physical keyup and modifier release produce zero HID",
+        "status": "PASS"
+      },
+      {
+        "name": "modifier flags on first key work without prior flagsChanged",
+        "status": "PASS"
+      },
+      {
+        "name": "releasing left Shift preserves held right Shift",
+        "status": "PASS"
+      },
+      {
+        "name": "release-all suppresses still-held physical key until keyup",
+        "status": "PASS"
+      },
+      {
+        "name": "released physical key can be pressed normally again",
+        "status": "PASS"
+      },
+      {
+        "name": "right Command+B invokes real Fn+B without typing b",
+        "status": "PASS"
+      },
+      {
+        "name": "virtual Fn latch permits battery query using an ordinary B key",
+        "status": "PASS"
+      },
+      {
+        "name": "release-all clears virtual Fn latch",
+        "status": "PASS"
+      },
+      {
+        "name": "capture stop releases held input and ignores later events",
+        "status": "PASS"
+      },
+      {
+        "name": "leaving the workbench automatically releases keyboard capture",
+        "status": "PASS"
+      },
+      {
+        "name": "Command-period exits capture and releases the modifier",
+        "status": "PASS"
+      },
+      {
+        "name": "reset cancels keyboard capture and pending held state",
+        "status": "PASS"
+      },
+      {
+        "name": "AppKit observer releases input for NSWindowDidResignKeyNotification",
+        "status": "PASS"
+      },
+      {
+        "name": "AppKit observer releases input for NSWindowWillBeginSheetNotification",
+        "status": "PASS"
+      },
+      {
+        "name": "AppKit observer releases input for NSApplicationDidResignActiveNotification",
+        "status": "PASS"
+      },
+      {
+        "name": "removing AppKit capture view releases input and observers",
+        "status": "PASS"
+      },
+      {
+        "name": "rejected input is surfaced",
+        "status": "PASS"
+      },
+      {
+        "name": "reset recovers controller after rejected input",
+        "status": "PASS"
+      },
+      {
+        "name": "native job controller completes 10/10 suite",
+        "status": "PASS"
+      },
+      {
+        "name": "one-click HID setup selects bundled image and virtual USB",
+        "status": "PASS"
+      },
+      {
+        "name": "immediate pause freezes a queued rainbow start",
+        "status": "PASS"
+      },
+      {
+        "name": "paused HID animation sends no background frames",
+        "status": "PASS"
+      },
+      {
+        "name": "coalesced color edits drive nine independent real firmware pixels",
+        "status": "PASS"
+      },
+      {
+        "name": "live brightness is scaled by host and firmware",
+        "status": "PASS"
+      },
+      {
+        "name": "native clock streams changing rainbow frames",
+        "status": "PASS"
+      },
+      {
+        "name": "Fn+B has priority over native HID animation",
+        "status": "PASS"
+      },
+      {
+        "name": "native rainbow survives the full battery override",
+        "status": "PASS"
+      },
+      {
+        "name": "release cancels pending edits and restores original off state",
+        "status": "PASS"
+      },
+      {
+        "name": "stop-sending action lets the firmware watchdog expire",
+        "status": "PASS"
+      },
+      {
+        "name": "native HID controls never write Flash",
+        "status": "PASS"
+      },
+      {
+        "name": "reset cancels pending HID edits and animation",
+        "status": "PASS"
+      },
+      {
+        "name": "firmware version selects v3.0.0 instead of guessing a legacy version",
+        "status": "PASS"
+      },
+      {
+        "name": "version caption lists the firmware feature flags",
+        "status": "PASS"
+      },
+      {
+        "name": "2.4G setup selects capable firmware and receiver without USB cable",
+        "status": "PASS"
+      },
+      {
+        "name": "wireless rainbow defaults to ten frames per second",
+        "status": "PASS"
+      },
+      {
+        "name": "wireless color runs real receive reply and closing ACKs",
+        "status": "PASS"
+      },
+      {
+        "name": "native clock streams wireless animation and holds stock idle gate",
+        "status": "PASS"
+      },
+      {
+        "name": "Fn+B retains priority during wireless control",
+        "status": "PASS"
+      },
+      {
+        "name": "wireless sender timeout permits original sleep",
+        "status": "PASS"
+      },
+      {
+        "name": "first key still works after wireless lighting timeout and sleep",
+        "status": "PASS"
+      },
+      {
+        "name": "rapid transport switches cancel stale edits and preserve intent order",
+        "status": "PASS"
+      },
+      {
+        "name": "wireless controls never write Flash",
+        "status": "PASS"
+      }
+    ]
+  },
+  "packaged_engine": {
+    "passed": 25,
+    "checks": [
+      {
+        "name": "native bootstrap",
+        "status": "PASS"
+      },
+      {
+        "name": "Fn+B real pipeline",
+        "status": "PASS"
+      },
+      {
+        "name": "three-second expiry restores off",
+        "status": "PASS"
+      },
+      {
+        "name": "real main lighting animates",
+        "status": "PASS"
+      },
+      {
+        "name": "inferred physical mapping stays explicit",
+        "status": "PASS"
+      },
+      {
+        "name": "first key after PM wake",
+        "status": "PASS"
+      },
+      {
+        "name": "sleeping snapshot restores caller and report",
+        "status": "PASS"
+      },
+      {
+        "name": "memory reads real HID",
+        "status": "PASS"
+      },
+      {
+        "name": "recording export",
+        "status": "PASS"
+      },
+      {
+        "name": "report declares offline scope",
+        "status": "PASS"
+      },
+      {
+        "name": "10 built-in scenarios",
+        "status": "PASS"
+      },
+      {
+        "name": "stock/v2 first-key comparison",
+        "status": "PASS"
+      },
+      {
+        "name": "virtual OTA valid_image",
+        "status": "PASS"
+      },
+      {
+        "name": "virtual OTA incomplete",
+        "status": "PASS"
+      },
+      {
+        "name": "virtual OTA crc_error",
+        "status": "PASS"
+      },
+      {
+        "name": "virtual OTA header_readback_error",
+        "status": "PASS"
+      },
+      {
+        "name": "bundled side HID codec and firmware",
+        "status": "PASS"
+      },
+      {
+        "name": "packaged rainbow sends real USB frames",
+        "status": "PASS"
+      },
+      {
+        "name": "packaged HID release restores side off",
+        "status": "PASS"
+      },
+      {
+        "name": "bundled RF control executes real receive and closing ACKs",
+        "status": "PASS"
+      },
+      {
+        "name": "packaged firmware emits version and build in real INFO reply",
+        "status": "PASS"
+      },
+      {
+        "name": "packaged wireless rainbow ten FPS",
+        "status": "PASS"
+      },
+      {
+        "name": "wireless Fn+B overrides active control",
+        "status": "PASS"
+      },
+      {
+        "name": "wireless timeout permits original sleep",
+        "status": "PASS"
+      },
+      {
+        "name": "wireless lighting preserves first key after wake",
+        "status": "PASS"
+      }
+    ]
+  },
+  "isolation": {
+    "status": "PASS",
+    "cwd_outside_repository": true,
+    "without_pythonpath": true,
+    "checks": [
+      "bundled version/build/features and five firmware images outside source tree",
+      "real machine INFO metadata survives packaged codec, with active RF rainbow",
+      "version query and control require no Flash writes"
+    ],
+    "no_device_access": true
+  },
+  "device_access": "NONE"
+}

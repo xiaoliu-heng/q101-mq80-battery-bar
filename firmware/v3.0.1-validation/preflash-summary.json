@@ -1,0 +1,110 @@
+{
+  "status": "PASS_OFFLINE_ONLY_NOT_FLASHED",
+  "date": "2026-10-17",
+  "timezone": "Asia/Shanghai",
+  "firmware_version": "3.0.1",
+  "firmware_build": 2,
+  "firmware_file": "firmware/experimental/side-hid-rf-v3.0.1.bin",
+  "firmware_size": 128372,
+  "firmware_sha256": "7b800e3edab6b2e8c421c3b7729464e990edfd2e5a2647ded6059c1901006534",
+  "telink_crc32": "47D6766F",
+  "finding_and_fix": {
+    "previous_version": "3.0.0 build 1",
+    "problem": "控制刚过期但灯光任务尚未处理时，延长 TIMEOUT 会重新激活旧颜色；缩短后再延长同样会发生。",
+    "fixed_behavior": "TIMEOUT 在应用新时限前后都确认并记录过期；只有新 FRAME 能重新激活颜色。",
+    "reproduced_on_previous_binary": true,
+    "old_and_new_comparisons": 6,
+    "regression_tests_added": 3
+  },
+  "checks": {
+    "firmware_hid_tests": 43,
+    "original_battery_regression_groups": 6,
+    "independent_parser_calls": 2669,
+    "independent_battery_initialization_cases": 256,
+    "independent_battery_color_cases": 1024,
+    "original_render_state_comparisons": 855,
+    "rf_single_bit_corruption_cases": 344,
+    "continuous_stream": {
+      "status": "PASS",
+      "rows": [
+        {
+          "connection": "usb",
+          "status": "PASS",
+          "virtual_seconds": 300,
+          "frames": 6001,
+          "target_fps": 20,
+          "sequence_wraps": 23,
+          "timer_wraps": 1,
+          "stopped_sender_expired": true,
+          "flash_operations": 0
+        },
+        {
+          "connection": "rf",
+          "status": "PASS",
+          "virtual_seconds": 300,
+          "frames": 3001,
+          "target_fps": 10,
+          "sequence_wraps": 11,
+          "timer_wraps": 1,
+          "stopped_sender_expired": true,
+          "flash_operations": 0
+        }
+      ],
+      "scope": "Packet transactions and rendering at modeled timestamps; idle IRQs and radio timing are not simulated here."
+    },
+    "ota_end_crc_cases": 32,
+    "status": "PASS",
+    "python_tests": 62,
+    "native_controller_checks": 56,
+    "native_builtin_scenarios": 10,
+    "packaged_engine_checks": 25,
+    "app_version": "2.4.1",
+    "firmware_sha256": "7b800e3edab6b2e8c421c3b7729464e990edfd2e5a2647ded6059c1901006534",
+    "device_access": "NONE"
+  },
+  "reproducibility": {
+    "status": "PASS",
+    "modified_sha256": "7b800e3edab6b2e8c421c3b7729464e990edfd2e5a2647ded6059c1901006534",
+    "independent_output_directories": [
+      "build/side-hid-rf-v3.0.1",
+      "build/side-hid-rf-v3.0.1-repro"
+    ],
+    "binary_and_version_header_identical": true,
+    "previous_images_unchanged": {
+      "simulator/assets/stock.bin": "d19733978808c856db93236ea3472b2cf843493c9aa6d5320db50412431e5210",
+      "simulator/assets/battery-bar-v2.bin": "f3e86554be1ed5faf11750fceea85980c9ccd080912be4552e8317fb09ef7719",
+      "firmware/experimental/side-hid.bin": "f380297767d86cba31d4264b1b419a69a17e7e6b7370413992eeb3b47d92a61c",
+      "firmware/experimental/side-hid-rf.bin": "200b27e312debb8125ff0cb480efe6e208df0dabe36f298ee43854af039d7a83",
+      "firmware/experimental/side-hid-rf-v3.0.0.bin": "920a7afd984c1ad6041cd4e0f6810ce6b7326bafc2b9b77c03b65132b5450aee"
+    }
+  },
+  "scope": {
+    "device_access": "NONE",
+    "physical_flash_performed": false,
+    "cpu_execution": "实际 BIN 的已覆盖 RV32/Andes 路径；新增解析器另由独立 RV32IM 解释器交叉验证。",
+    "ota": "官方 / 电量 v2 与新版双向，两个 bank，各含正常、缺包、CRC 错误和头部回读错误。"
+  },
+  "not_verified": [
+    "完整上电、PLL、配对和任意中断交错。",
+    "真实 USB / RF 接收器固件、空口时序、LED 物理帧率。",
+    "休眠电流、耗电量及真实电池测量。",
+    "真实 Flash 掉电、启动失败后的强制恢复或自动回滚。"
+  ],
+  "evidence_files": [
+    "hid-validation.json",
+    "independent-battery.json",
+    "preflash-core.json",
+    "preflash-soak.json",
+    "preflash-ota.json",
+    "ota-validation.json",
+    "reproducibility.json",
+    "existing-suite-summary.json"
+  ],
+  "source_sha256": {
+    "firmware/hid-source/side_hid.c": "42dd1c745545f000f4c57b6600dc9bbf9125b1d07344b29406bc66dfdc135291",
+    "firmware/hid-source/version.json": "daed9fb6bcea289604c0ed31a3fc911270a49196cbe5f2b6eac355264673ad66",
+    "firmware/hid-source/build_hid.py": "e0c86f318fcaaa4842d7719f98a6fa5e91dcdb88d6c387712e8a5e6086d9e5b8",
+    "firmware/hid-source/validate_hid.py": "85114c95b460fa536c23b7a1c97bdc1dfd75a56f4528dcddbac3b0e3227be874",
+    "firmware/hid-source/validate_preflash.py": "3389c6de917c5821dabfccb05744b4d973e9de683595023ceeb94155e55a12c0"
+  }
+}

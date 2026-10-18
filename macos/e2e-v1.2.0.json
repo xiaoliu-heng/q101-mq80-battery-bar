@@ -1,0 +1,196 @@
+{
+  "status": "PASS",
+  "app_version": "1.2.0",
+  "checks": [
+    {
+      "name": "headless explicit demo starts",
+      "status": "PASS"
+    },
+    {
+      "name": "credential file is private",
+      "status": "PASS"
+    },
+    {
+      "name": "state directory is private",
+      "status": "PASS"
+    },
+    {
+      "name": "token has 256 random bits",
+      "status": "PASS"
+    },
+    {
+      "name": "unauthenticated request refused",
+      "status": "PASS"
+    },
+    {
+      "name": "wrong token refused",
+      "status": "PASS"
+    },
+    {
+      "name": "browser Origin refused",
+      "status": "PASS"
+    },
+    {
+      "name": "foreign Host refused",
+      "status": "PASS"
+    },
+    {
+      "name": "API health",
+      "status": "PASS"
+    },
+    {
+      "name": "API version matches bundle",
+      "status": "PASS"
+    },
+    {
+      "name": "duplicate instance leaves active API untouched",
+      "status": "PASS"
+    },
+    {
+      "name": "unknown route",
+      "status": "PASS"
+    },
+    {
+      "name": "native CLI battery",
+      "status": "PASS"
+    },
+    {
+      "name": "native CLI active refresh",
+      "status": "PASS"
+    },
+    {
+      "name": "CLI solid reaches shared controller",
+      "status": "PASS"
+    },
+    {
+      "name": "API and CLI observe same state",
+      "status": "PASS"
+    },
+    {
+      "name": "CLI default is a dim five-second notification",
+      "status": "PASS"
+    },
+    {
+      "name": "CLI refuses unlimited notifications",
+      "status": "PASS"
+    },
+    {
+      "name": "continuous and duration cannot be combined",
+      "status": "PASS"
+    },
+    {
+      "name": "API refuses nonboolean continuous option",
+      "status": "PASS"
+    },
+    {
+      "name": "bad brightness rejected",
+      "status": "PASS"
+    },
+    {
+      "name": "invalid request leaves current effect",
+      "status": "PASS"
+    },
+    {
+      "name": "CLI validates before contacting API",
+      "status": "PASS"
+    },
+    {
+      "name": "native CLI rainbow",
+      "status": "PASS"
+    },
+    {
+      "name": "rainbow runs in firmware without further commands",
+      "status": "PASS"
+    },
+    {
+      "name": "finite effect restores original",
+      "status": "PASS"
+    },
+    {
+      "name": "blink CLI uses firmware playback",
+      "status": "PASS"
+    },
+    {
+      "name": "blink ends independently",
+      "status": "PASS"
+    },
+    {
+      "name": "breathe CLI uses firmware playback",
+      "status": "PASS"
+    },
+    {
+      "name": "breathe ends independently",
+      "status": "PASS"
+    },
+    {
+      "name": "excessive duration is refused",
+      "status": "PASS"
+    },
+    {
+      "name": "HTTP retry ID preserves the original firmware deadline",
+      "status": "PASS"
+    },
+    {
+      "name": "replaying an expired ID does not restart",
+      "status": "PASS"
+    },
+    {
+      "name": "CLI preserves the full unsigned request ID",
+      "status": "PASS"
+    },
+    {
+      "name": "zero CLI request ID is rejected",
+      "status": "PASS"
+    },
+    {
+      "name": "nine independent colors",
+      "status": "PASS"
+    },
+    {
+      "name": "CLI release",
+      "status": "PASS"
+    },
+    {
+      "name": "concurrent requests are bounded",
+      "status": "PASS"
+    },
+    {
+      "name": "final command wins after concurrent callers",
+      "status": "PASS"
+    },
+    {
+      "name": "listener binds only IPv4 loopback",
+      "status": "PASS"
+    },
+    {
+      "name": "oversized body rejected",
+      "status": "PASS"
+    },
+    {
+      "name": "ambiguous framing rejected",
+      "status": "PASS"
+    },
+    {
+      "name": "copied skill helper needs no repo or Python",
+      "status": "PASS"
+    },
+    {
+      "name": "installed skill helper sends a native notification",
+      "status": "PASS"
+    },
+    {
+      "name": "graceful quit",
+      "status": "PASS"
+    },
+    {
+      "name": "API token rotates on restart",
+      "status": "PASS"
+    }
+  ],
+  "count": 46,
+  "mode": "explicit-demo",
+  "physical_hid_access": false,
+  "tested": "native built app, real loopback listener and native CLI",
+  "app_executable_sha256": "0621f16729e0ed469e599af1c3bf92c46aec60a5ca5b24dfa2f8c67d3c235621",
+  "cli_sha256": "965fcf9c8dd932b49ab9efcae87b3856002806a7eef61582b228054b168fd854"
+}

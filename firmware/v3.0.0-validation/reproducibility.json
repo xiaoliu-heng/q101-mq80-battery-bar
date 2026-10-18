@@ -1,0 +1,19 @@
+{
+  "status": "PASS",
+  "firmware_version": "3.0.0",
+  "firmware_build": 1,
+  "sha256": "920a7afd984c1ad6041cd4e0f6810ce6b7326bafc2b9b77c03b65132b5450aee",
+  "independent_output_directories": [
+    "build/side-hid-rf-v3.0.0",
+    "build/side-hid-rf-v3.0.0-repro"
+  ],
+  "same_binary": true,
+  "same_generated_version_header": true,
+  "legacy_images_unchanged": {
+    "simulator/assets/stock.bin": "d19733978808c856db93236ea3472b2cf843493c9aa6d5320db50412431e5210",
+    "simulator/assets/battery-bar-v2.bin": "f3e86554be1ed5faf11750fceea85980c9ccd080912be4552e8317fb09ef7719",
+    "firmware/experimental/side-hid.bin": "f380297767d86cba31d4264b1b419a69a17e7e6b7370413992eeb3b47d92a61c",
+    "firmware/experimental/side-hid-rf.bin": "200b27e312debb8125ff0cb480efe6e208df0dabe36f298ee43854af039d7a83"
+  },
+  "compiler": "riscv-none-elf-gcc (xPack GNU RISC-V Embedded GCC arm64) 15.2.0"
+}

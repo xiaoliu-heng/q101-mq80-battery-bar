@@ -1,0 +1,13 @@
+{
+  "time_utc": "2026-10-16T10:19:20.341810+00:00",
+  "pid": "0x5088",
+  "request_purpose": "read-only extension capability query; stock fallback verified offline",
+  "request": "fe534c1089000000000000000000000000000000000000000000000000000000",
+  "reply": "0153091089000000000000000000000000000000000000000000000000000000",
+  "matches_keyboard_default_fallback": true,
+  "extension_firmware_installed": false,
+  "lighting_write_sent": false,
+  "ota_sent": false,
+  "receiver_flash_performed": false,
+  "interpretation": "compatible with arbitrary command forwarding; new extension end-to-end not proven"
+}

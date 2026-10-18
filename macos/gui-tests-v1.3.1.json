@@ -1,0 +1,28 @@
+{
+  "status": "PASS_ON_MACOS15_MACOS26_RUNTIME_PENDING",
+  "date_utc": "2026-10-17T15:26:24.432908+00:00",
+  "app_version": "1.3.1",
+  "host_macos": "15.7.4",
+  "mode": "explicit demo; separate preview bundle ID, runtime directory and preferences suite",
+  "surfaces_visually_inspected": [
+    "actual menu-bar NSPopover",
+    "actual independent NSWindow"
+  ],
+  "observations": [
+    "Only the native container draws the outer corner mask and border.",
+    "The inner curved gaps and duplicate outline are no longer present.",
+    "Popover arrow joins the native surface.",
+    "Panel remains fixed in size without a scroll bar."
+  ],
+  "physical_hid_access": false,
+  "lighting_commands_sent": 0,
+  "qa_app_exited": true,
+  "runtime_file_removed": true,
+  "macos26_native_glass_visual_acceptance": false,
+  "follow_up": {
+    "status": "USER_REPORTED_WINDOW_TITLEBAR_ISSUE",
+    "issue": "The transparent independent-window titlebar leaves the upper content edge looking square. Earlier visual inspection did not flag this.",
+    "fixed_in": "1.3.2",
+    "report": "VALIDATION-v1.3.2.json"
+  }
+}

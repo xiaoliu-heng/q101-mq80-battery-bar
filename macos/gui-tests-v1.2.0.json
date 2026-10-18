@@ -1,0 +1,19 @@
+{
+  "status": "PASS",
+  "app_version": "1.2.0",
+  "mode": "explicit-demo GUI, native app, CUA interaction",
+  "checks": [
+    "all four effect buttons work in the same window",
+    "native color well opens system palette",
+    "custom palette selection updates the local preview",
+    "editing before Send leaves commands_sent at zero",
+    "Send uses one firmware command with chosen FF6A00 color and five-second duration",
+    "settings page and return preserve complete main layout",
+    "no visible scrollbar or width jump",
+    "demo process exited and removed its isolated API credential"
+  ],
+  "hardware_lighting_commands_sent": false,
+  "global_skill_modified": false,
+  "login_item_modified": false,
+  "note": "An incidental normal app launch reported no detected device and its lighting controls were disabled; it was closed before further GUI tests."
+}

@@ -1,0 +1,660 @@
+{
+  "status": "PASS_NATIVE_APP_DEMO_AND_USB_CONTROL",
+  "date": "2026-10-17",
+  "timezone": "Asia/Shanghai",
+  "app_name": "Kryra",
+  "app_version": "1.0.0",
+  "bundle_identifier": "local.xiaoliu.kryra",
+  "cli": "kryractl",
+  "skill": "kryra",
+  "firmware_protocol": 1,
+  "minimum_macos": "13.0",
+  "architectures": [
+    "arm64",
+    "x86_64"
+  ],
+  "host_runtime_tested": "arm64 macOS 15.7.4",
+  "native_core_checks": 94,
+  "end_to_end_checks": 31,
+  "firmware_interop_fixtures": 15,
+  "native_checks": [
+    {
+      "name": "firmware packet fixture 0",
+      "status": "PASS"
+    },
+    {
+      "name": "firmware reply fixture 0",
+      "status": "PASS"
+    },
+    {
+      "name": "reject reply corruption at 0",
+      "status": "PASS"
+    },
+    {
+      "name": "reject reply corruption at 1",
+      "status": "PASS"
+    },
+    {
+      "name": "reject reply corruption at 2",
+      "status": "PASS"
+    },
+    {
+      "name": "reject reply corruption at 3",
+      "status": "PASS"
+    },
+    {
+      "name": "reject reply corruption at 4",
+      "status": "PASS"
+    },
+    {
+      "name": "reject reply corruption at 6",
+      "status": "PASS"
+    },
+    {
+      "name": "reject reply corruption at 7",
+      "status": "PASS"
+    },
+    {
+      "name": "reject reply corruption at 17",
+      "status": "PASS"
+    },
+    {
+      "name": "reject reply corruption at 18",
+      "status": "PASS"
+    },
+    {
+      "name": "reject reply corruption at 19",
+      "status": "PASS"
+    },
+    {
+      "name": "reject reply corruption at 20",
+      "status": "PASS"
+    },
+    {
+      "name": "reject reply corruption at 21",
+      "status": "PASS"
+    },
+    {
+      "name": "reply length 0",
+      "status": "PASS"
+    },
+    {
+      "name": "reply length 1",
+      "status": "PASS"
+    },
+    {
+      "name": "reply length 31",
+      "status": "PASS"
+    },
+    {
+      "name": "reply length 33",
+      "status": "PASS"
+    },
+    {
+      "name": "firmware packet fixture 1",
+      "status": "PASS"
+    },
+    {
+      "name": "firmware reply fixture 1",
+      "status": "PASS"
+    },
+    {
+      "name": "firmware packet fixture 2",
+      "status": "PASS"
+    },
+    {
+      "name": "firmware reply fixture 2",
+      "status": "PASS"
+    },
+    {
+      "name": "firmware packet fixture 3",
+      "status": "PASS"
+    },
+    {
+      "name": "firmware reply fixture 3",
+      "status": "PASS"
+    },
+    {
+      "name": "firmware packet fixture 4",
+      "status": "PASS"
+    },
+    {
+      "name": "firmware reply fixture 4",
+      "status": "PASS"
+    },
+    {
+      "name": "firmware packet fixture 5",
+      "status": "PASS"
+    },
+    {
+      "name": "firmware reply fixture 5",
+      "status": "PASS"
+    },
+    {
+      "name": "firmware packet fixture 6",
+      "status": "PASS"
+    },
+    {
+      "name": "firmware reply fixture 6",
+      "status": "PASS"
+    },
+    {
+      "name": "firmware packet fixture 7",
+      "status": "PASS"
+    },
+    {
+      "name": "firmware reply fixture 7",
+      "status": "PASS"
+    },
+    {
+      "name": "firmware packet fixture 8",
+      "status": "PASS"
+    },
+    {
+      "name": "firmware reply fixture 8",
+      "status": "PASS"
+    },
+    {
+      "name": "firmware packet fixture 9",
+      "status": "PASS"
+    },
+    {
+      "name": "firmware reply fixture 9",
+      "status": "PASS"
+    },
+    {
+      "name": "firmware packet fixture 10",
+      "status": "PASS"
+    },
+    {
+      "name": "firmware reply fixture 10",
+      "status": "PASS"
+    },
+    {
+      "name": "firmware packet fixture 11",
+      "status": "PASS"
+    },
+    {
+      "name": "firmware reply fixture 11",
+      "status": "PASS"
+    },
+    {
+      "name": "firmware packet fixture 12",
+      "status": "PASS"
+    },
+    {
+      "name": "firmware reply fixture 12",
+      "status": "PASS"
+    },
+    {
+      "name": "firmware packet fixture 13",
+      "status": "PASS"
+    },
+    {
+      "name": "firmware reply fixture 13",
+      "status": "PASS"
+    },
+    {
+      "name": "firmware packet fixture 14",
+      "status": "PASS"
+    },
+    {
+      "name": "firmware reply fixture 14",
+      "status": "PASS"
+    },
+    {
+      "name": "nine colors and brightness preserve byte order",
+      "status": "PASS"
+    },
+    {
+      "name": "rainbow phase repeats",
+      "status": "PASS"
+    },
+    {
+      "name": "invalid lighting parameters 48",
+      "status": "PASS"
+    },
+    {
+      "name": "invalid lighting parameters 49",
+      "status": "PASS"
+    },
+    {
+      "name": "invalid lighting parameters 50",
+      "status": "PASS"
+    },
+    {
+      "name": "invalid lighting parameters 51",
+      "status": "PASS"
+    },
+    {
+      "name": "invalid lighting parameters 52",
+      "status": "PASS"
+    },
+    {
+      "name": "invalid lighting parameters 53",
+      "status": "PASS"
+    },
+    {
+      "name": "invalid lighting parameters 54",
+      "status": "PASS"
+    },
+    {
+      "name": "invalid lighting parameters 55",
+      "status": "PASS"
+    },
+    {
+      "name": "invalid lighting parameters 56",
+      "status": "PASS"
+    },
+    {
+      "name": "partial HTTP read 1",
+      "status": "PASS"
+    },
+    {
+      "name": "partial HTTP read 15",
+      "status": "PASS"
+    },
+    {
+      "name": "partial HTTP read 210",
+      "status": "PASS"
+    },
+    {
+      "name": "HTTP request body and token",
+      "status": "PASS"
+    },
+    {
+      "name": "wrong token refused",
+      "status": "PASS"
+    },
+    {
+      "name": "browser Origin refused",
+      "status": "PASS"
+    },
+    {
+      "name": "HTTP bounds and ambiguity 63",
+      "status": "PASS"
+    },
+    {
+      "name": "HTTP bounds and ambiguity 64",
+      "status": "PASS"
+    },
+    {
+      "name": "HTTP bounds and ambiguity 65",
+      "status": "PASS"
+    },
+    {
+      "name": "HTTP bounds and ambiguity 66",
+      "status": "PASS"
+    },
+    {
+      "name": "HTTP bounds and ambiguity 67",
+      "status": "PASS"
+    },
+    {
+      "name": "controls cannot precede INFO",
+      "status": "PASS"
+    },
+    {
+      "name": "old firmware rejected before control",
+      "status": "PASS"
+    },
+    {
+      "name": "legacy received only INFO",
+      "status": "PASS"
+    },
+    {
+      "name": "battery reads never acquire lighting",
+      "status": "PASS"
+    },
+    {
+      "name": "timed lighting releases",
+      "status": "PASS"
+    },
+    {
+      "name": "native controller sends scaled RGB",
+      "status": "PASS"
+    },
+    {
+      "name": "superseded effect cannot release newer effect",
+      "status": "PASS"
+    },
+    {
+      "name": "computer sleep stops lighting traffic",
+      "status": "PASS"
+    },
+    {
+      "name": "disconnect preserves stale battery without restarting control",
+      "status": "PASS"
+    },
+    {
+      "name": "reconnect only reads state",
+      "status": "PASS"
+    },
+    {
+      "name": "all HID work stays on named serial thread",
+      "status": "PASS"
+    },
+    {
+      "name": "shutdown releases owned lighting",
+      "status": "PASS"
+    },
+    {
+      "name": "legacy RF can read battery without claiming control",
+      "status": "PASS"
+    },
+    {
+      "name": "legacy RF cannot receive lighting frame",
+      "status": "PASS"
+    },
+    {
+      "name": "unsupported RF only received INFO",
+      "status": "PASS"
+    },
+    {
+      "name": "RF rainbow uses bounded ten FPS schedule",
+      "status": "PASS"
+    },
+    {
+      "name": "RF finite animation releases",
+      "status": "PASS"
+    },
+    {
+      "name": "external lighting is recognized",
+      "status": "PASS"
+    },
+    {
+      "name": "selecting and quitting do not release another controller",
+      "status": "PASS"
+    },
+    {
+      "name": "in-flight refresh cannot undo computer sleep",
+      "status": "PASS"
+    },
+    {
+      "name": "cancelled request cannot apply queued lighting",
+      "status": "PASS"
+    },
+    {
+      "name": "a cancelled queued HID frame never runs",
+      "status": "PASS"
+    },
+    {
+      "name": "installer copies executable and metadata",
+      "status": "PASS"
+    },
+    {
+      "name": "managed skill can be updated",
+      "status": "PASS"
+    },
+    {
+      "name": "unmanaged skill is preserved",
+      "status": "PASS"
+    },
+    {
+      "name": "foreign skill contents unchanged",
+      "status": "PASS"
+    }
+  ],
+  "end_to_end_checks_detail": [
+    {
+      "name": "headless explicit demo starts",
+      "status": "PASS"
+    },
+    {
+      "name": "credential file is private",
+      "status": "PASS"
+    },
+    {
+      "name": "state directory is private",
+      "status": "PASS"
+    },
+    {
+      "name": "token has 256 random bits",
+      "status": "PASS"
+    },
+    {
+      "name": "unauthenticated request refused",
+      "status": "PASS"
+    },
+    {
+      "name": "wrong token refused",
+      "status": "PASS"
+    },
+    {
+      "name": "browser Origin refused",
+      "status": "PASS"
+    },
+    {
+      "name": "foreign Host refused",
+      "status": "PASS"
+    },
+    {
+      "name": "API health",
+      "status": "PASS"
+    },
+    {
+      "name": "duplicate instance leaves active API untouched",
+      "status": "PASS"
+    },
+    {
+      "name": "unknown route",
+      "status": "PASS"
+    },
+    {
+      "name": "native CLI battery",
+      "status": "PASS"
+    },
+    {
+      "name": "native CLI active refresh",
+      "status": "PASS"
+    },
+    {
+      "name": "CLI solid reaches shared controller",
+      "status": "PASS"
+    },
+    {
+      "name": "API and CLI observe same state",
+      "status": "PASS"
+    },
+    {
+      "name": "bad brightness rejected",
+      "status": "PASS"
+    },
+    {
+      "name": "invalid request leaves current effect",
+      "status": "PASS"
+    },
+    {
+      "name": "CLI validates before contacting API",
+      "status": "PASS"
+    },
+    {
+      "name": "native CLI rainbow",
+      "status": "PASS"
+    },
+    {
+      "name": "rainbow keeps streaming",
+      "status": "PASS"
+    },
+    {
+      "name": "finite effect restores original",
+      "status": "PASS"
+    },
+    {
+      "name": "nine independent colors",
+      "status": "PASS"
+    },
+    {
+      "name": "CLI release",
+      "status": "PASS"
+    },
+    {
+      "name": "concurrent requests are bounded",
+      "status": "PASS"
+    },
+    {
+      "name": "final command wins after concurrent callers",
+      "status": "PASS"
+    },
+    {
+      "name": "listener binds only IPv4 loopback",
+      "status": "PASS"
+    },
+    {
+      "name": "oversized body rejected",
+      "status": "PASS"
+    },
+    {
+      "name": "ambiguous framing rejected",
+      "status": "PASS"
+    },
+    {
+      "name": "copied skill helper needs no repo or Python",
+      "status": "PASS"
+    },
+    {
+      "name": "graceful quit",
+      "status": "PASS"
+    },
+    {
+      "name": "API token rotates on restart",
+      "status": "PASS"
+    }
+  ],
+  "gui_checks": {
+    "status": "PASS",
+    "renamed_window_header_and_app_menu": true,
+    "default_skill_path": "~/.agents/skills/kryra",
+    "native_button_installed_skill_in_isolated_directory": true,
+    "installer_confirmation_mentions": "$kryra",
+    "installed_kryractl_queried_normal_running_app": true,
+    "restart_resets_test_destination_to_default": true,
+    "normal_app_api_and_private_runtime_config": true,
+    "login_item_registration_exercised": false,
+    "previous_lighting_gui_checks": "VALIDATION-Q101-Control-v1.0.0.json; prior product name and binary",
+    "physical_battery_display_matches_native_cli": true,
+    "physical_usb_blue_preset_and_restore_buttons": true,
+    "physical_usb_rainbow_status_visible": true
+  },
+  "release": {
+    "status": "PASS",
+    "version": "1.0.0",
+    "architectures": [
+      "arm64",
+      "x86_64"
+    ],
+    "app_executable_sha256": "493ea0a85d94f534b8e72ec89f43bc2f607b9081410b0066bcf13012db24d681",
+    "cli_sha256": "6c2e3d43e301b498ca0d3301deb36ced1102221b88870d7745dd6ab017230cdf",
+    "artifacts": [
+      {
+        "path": "dist/Kryra-1.0.0-universal.zip",
+        "size": 842491,
+        "sha256": "bf1c8eabb59812ac4071f490a5a7ddd8a1f7f7e0cb047a8757903012b2808478"
+      },
+      {
+        "path": "dist/Kryra-1.0.0-universal.dmg",
+        "size": 1211654,
+        "sha256": "9330fb95058b45ae404de4fca46de0e47f463f47af3976eb6aa1305999503bc5"
+      }
+    ],
+    "signing": "local ad-hoc; not Developer ID notarized",
+    "published": false
+  },
+  "final_runtime_read_only_status": {
+    "api_version": 1,
+    "app_version": "1.0.0",
+    "battery": {
+      "connected": true,
+      "demo": false,
+      "percent": 86,
+      "stale": false,
+      "transport": "usb",
+      "updated_at": "2026-10-17T11:57:55Z"
+    },
+    "demo": false,
+    "device": {
+      "connected": true,
+      "firmware_build": 2,
+      "firmware_version": "3.0.1",
+      "id": "usb-2120000",
+      "name": "IQUNIX MQ80 KB",
+      "transport": "usb"
+    },
+    "devices": [
+      {
+        "id": "usb-2120000",
+        "name": "IQUNIX MQ80 KB",
+        "transport": "usb"
+      }
+    ],
+    "error": null,
+    "lighting": {
+      "active": false,
+      "brightness": 100,
+      "colors": [],
+      "duration_seconds": null,
+      "frames_sent": 1,
+      "mode": "original",
+      "period_ms": 5000
+    },
+    "sleeping": false
+  },
+  "boundaries": {
+    "physical_device_detected_at_validation": true,
+    "physical_lighting_test_of_new_app": true,
+    "firmware_usb_rf_confirmation": "Separate direct user report; see ../firmware/v3.0.1-validation/user-hardware-confirmation-20261017.json",
+    "demo_result_is_not_physical_battery_data": true,
+    "intel_runtime_tested": false,
+    "developer_id_notarized": false,
+    "cloud_published": false,
+    "physical_battery_read_of_new_app": {
+      "status": "PASS",
+      "transport": "usb",
+      "percent": 86,
+      "updated_at": "2026-10-17T11:57:55Z",
+      "demo": false,
+      "firmware_version": "3.0.1",
+      "firmware_build": 2
+    },
+    "physical_rf_read_of_new_app": false,
+    "physical_lighting_test_transport": "usb",
+    "physical_rf_lighting_test_of_new_app": false,
+    "physical_led_optical_measurement": false
+  },
+  "previous_validation": "VALIDATION-Q101-Control-v1.0.0.json",
+  "source_sha256": {
+    "macos/API.html": "3b71bda491e959d6af444b78619d54515f8ffd253198b07687fb56f827b98667",
+    "macos/Icon.swift": "a4d56fc22a8d1ade4ffe50b6fdd6bcaf269539fd9fd504d59fecb4572d4e4692",
+    "macos/Kryra/App.swift": "caed12bee0bb5c62a6a911ecc373d4c6ec38caa9938703b1fdebc7b31eb3c889",
+    "macos/Kryra/AppModel.swift": "bf263f0fd5cec311bb9c910372af5d0a62916dc6355159d14d90dfd0676297e5",
+    "macos/Kryra/Controller.swift": "0d771ea9c335436f52d0efdb1eacad687333ab859f7526be98136c32a8d01ff7",
+    "macos/Kryra/HID.swift": "9752cf2ada888effdcfb13ec47e1fad9604df29b72e181a3e9fee0e60f3db43d",
+    "macos/Kryra/HTTP.swift": "0cc175cff59833cfbc450fd72635fdffb311f879326e2035468c80e80caca64f",
+    "macos/Kryra/Protocol.swift": "1592292bdaa9b27d46db65c8fbc1c6960dc7ae42bf207ffd2e8674aef5253827",
+    "macos/Kryra/RuntimeFiles.swift": "da60be49cab850178bfa574a5ef48aa2d036290904466468b2db9a4296574ad8",
+    "macos/Kryra/SkillInstaller.swift": "387e0ca9ff6a66e515990af4d5d576fa444e42b32c142caca25d2923d4700250",
+    "macos/Kryra/Views.swift": "d2b530f7fde78f8c9b256531d54706687ef5b968fcf1dc3f07f9235bd88d055c",
+    "macos/README.md": "4c1d9651e7f4755fd788fb40c764fa4d92801045ddde671214ee6a1cc9b5e6f3",
+    "macos/build.py": "351f11c4afa0db34dd856a172b546d21ac97ad013354c7bdfad30dee9252e0b8",
+    "macos/kryractl/Main.swift": "ac4e736e6f2774f5ba2efd37117f5ede5fd5f976a5833c4954d361f3038f0890",
+    "macos/skill/kryra/SKILL.md": "a85f31a7b62044b80e32d1c4f3a3d44ff4baa3197bb3595da5604fe508a6b899",
+    "macos/skill/kryra/agents/openai.yaml": "9c791117caad1080f4cb947a117422b6d5c97be9f4b41a238653f3e569a0c641",
+    "macos/tests/CoreTests.swift": "ec33a899157b868698736adf551264b30d5ea18929bd88b67cd4047427a7ed4e",
+    "macos/tests/fixtures.py": "d9c0aaf5dccc417a67df47278ddf48cf50d0830e56cdd38847b306a46f455cfc",
+    "macos/tests/validate_app.py": "7414b9fc4b4a837d61afe991ecd590922ce0bd939d4247d3b1ba2159902faa21",
+    "scripts/check_macos.py": "36ffdef74470f801e56ab283824514dcf4baa6c1669988f71712b35912a94570",
+    "scripts/package_macos.py": "3f0ca244df0bda29976302c8aebbf68574b0eb2b3a0fcf384086430c2db9c2cc"
+  },
+  "notes": [
+    "应用、CLI、Skill、本机运行目录、资源和文档统一采用 Kryra 名称。",
+    "125 项自动化检查在隔离演示环境中执行；另有 16 项 USB 真机检查通过，包含电量、灯光协议收发、定时释放及原生界面按钮。彩虹收发约 20.1 FPS；结束时已恢复原灯效。",
+    "此前 Q101 Control 安装包与验证记录保留原样；原 v3.0.1 固件未修改。"
+  ],
+  "physical_usb_acceptance": {
+    "status": "PASS",
+    "checks": 16,
+    "report": "VALIDATION-USB-20261017.json",
+    "rainbow_reply_confirmed_fps": 20.12,
+    "visual_confirmation_by_user": false
+  }
+}

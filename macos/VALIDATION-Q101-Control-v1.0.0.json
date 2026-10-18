@@ -1,0 +1,622 @@
+{
+  "status": "PASS_NATIVE_APP_AND_DEMO_TESTS",
+  "date": "2026-10-17",
+  "timezone": "Asia/Shanghai",
+  "app_version": "1.0.0",
+  "firmware_protocol": 1,
+  "minimum_macos": "13.0",
+  "architectures": [
+    "arm64",
+    "x86_64"
+  ],
+  "host_runtime_tested": "arm64 macOS 15.7.4",
+  "native_core_checks": 94,
+  "end_to_end_checks": 31,
+  "firmware_interop_fixtures": 15,
+  "native_checks": [
+    {
+      "name": "firmware packet fixture 0",
+      "status": "PASS"
+    },
+    {
+      "name": "firmware reply fixture 0",
+      "status": "PASS"
+    },
+    {
+      "name": "reject reply corruption at 0",
+      "status": "PASS"
+    },
+    {
+      "name": "reject reply corruption at 1",
+      "status": "PASS"
+    },
+    {
+      "name": "reject reply corruption at 2",
+      "status": "PASS"
+    },
+    {
+      "name": "reject reply corruption at 3",
+      "status": "PASS"
+    },
+    {
+      "name": "reject reply corruption at 4",
+      "status": "PASS"
+    },
+    {
+      "name": "reject reply corruption at 6",
+      "status": "PASS"
+    },
+    {
+      "name": "reject reply corruption at 7",
+      "status": "PASS"
+    },
+    {
+      "name": "reject reply corruption at 17",
+      "status": "PASS"
+    },
+    {
+      "name": "reject reply corruption at 18",
+      "status": "PASS"
+    },
+    {
+      "name": "reject reply corruption at 19",
+      "status": "PASS"
+    },
+    {
+      "name": "reject reply corruption at 20",
+      "status": "PASS"
+    },
+    {
+      "name": "reject reply corruption at 21",
+      "status": "PASS"
+    },
+    {
+      "name": "reply length 0",
+      "status": "PASS"
+    },
+    {
+      "name": "reply length 1",
+      "status": "PASS"
+    },
+    {
+      "name": "reply length 31",
+      "status": "PASS"
+    },
+    {
+      "name": "reply length 33",
+      "status": "PASS"
+    },
+    {
+      "name": "firmware packet fixture 1",
+      "status": "PASS"
+    },
+    {
+      "name": "firmware reply fixture 1",
+      "status": "PASS"
+    },
+    {
+      "name": "firmware packet fixture 2",
+      "status": "PASS"
+    },
+    {
+      "name": "firmware reply fixture 2",
+      "status": "PASS"
+    },
+    {
+      "name": "firmware packet fixture 3",
+      "status": "PASS"
+    },
+    {
+      "name": "firmware reply fixture 3",
+      "status": "PASS"
+    },
+    {
+      "name": "firmware packet fixture 4",
+      "status": "PASS"
+    },
+    {
+      "name": "firmware reply fixture 4",
+      "status": "PASS"
+    },
+    {
+      "name": "firmware packet fixture 5",
+      "status": "PASS"
+    },
+    {
+      "name": "firmware reply fixture 5",
+      "status": "PASS"
+    },
+    {
+      "name": "firmware packet fixture 6",
+      "status": "PASS"
+    },
+    {
+      "name": "firmware reply fixture 6",
+      "status": "PASS"
+    },
+    {
+      "name": "firmware packet fixture 7",
+      "status": "PASS"
+    },
+    {
+      "name": "firmware reply fixture 7",
+      "status": "PASS"
+    },
+    {
+      "name": "firmware packet fixture 8",
+      "status": "PASS"
+    },
+    {
+      "name": "firmware reply fixture 8",
+      "status": "PASS"
+    },
+    {
+      "name": "firmware packet fixture 9",
+      "status": "PASS"
+    },
+    {
+      "name": "firmware reply fixture 9",
+      "status": "PASS"
+    },
+    {
+      "name": "firmware packet fixture 10",
+      "status": "PASS"
+    },
+    {
+      "name": "firmware reply fixture 10",
+      "status": "PASS"
+    },
+    {
+      "name": "firmware packet fixture 11",
+      "status": "PASS"
+    },
+    {
+      "name": "firmware reply fixture 11",
+      "status": "PASS"
+    },
+    {
+      "name": "firmware packet fixture 12",
+      "status": "PASS"
+    },
+    {
+      "name": "firmware reply fixture 12",
+      "status": "PASS"
+    },
+    {
+      "name": "firmware packet fixture 13",
+      "status": "PASS"
+    },
+    {
+      "name": "firmware reply fixture 13",
+      "status": "PASS"
+    },
+    {
+      "name": "firmware packet fixture 14",
+      "status": "PASS"
+    },
+    {
+      "name": "firmware reply fixture 14",
+      "status": "PASS"
+    },
+    {
+      "name": "nine colors and brightness preserve byte order",
+      "status": "PASS"
+    },
+    {
+      "name": "rainbow phase repeats",
+      "status": "PASS"
+    },
+    {
+      "name": "invalid lighting parameters 48",
+      "status": "PASS"
+    },
+    {
+      "name": "invalid lighting parameters 49",
+      "status": "PASS"
+    },
+    {
+      "name": "invalid lighting parameters 50",
+      "status": "PASS"
+    },
+    {
+      "name": "invalid lighting parameters 51",
+      "status": "PASS"
+    },
+    {
+      "name": "invalid lighting parameters 52",
+      "status": "PASS"
+    },
+    {
+      "name": "invalid lighting parameters 53",
+      "status": "PASS"
+    },
+    {
+      "name": "invalid lighting parameters 54",
+      "status": "PASS"
+    },
+    {
+      "name": "invalid lighting parameters 55",
+      "status": "PASS"
+    },
+    {
+      "name": "invalid lighting parameters 56",
+      "status": "PASS"
+    },
+    {
+      "name": "partial HTTP read 1",
+      "status": "PASS"
+    },
+    {
+      "name": "partial HTTP read 15",
+      "status": "PASS"
+    },
+    {
+      "name": "partial HTTP read 210",
+      "status": "PASS"
+    },
+    {
+      "name": "HTTP request body and token",
+      "status": "PASS"
+    },
+    {
+      "name": "wrong token refused",
+      "status": "PASS"
+    },
+    {
+      "name": "browser Origin refused",
+      "status": "PASS"
+    },
+    {
+      "name": "HTTP bounds and ambiguity 63",
+      "status": "PASS"
+    },
+    {
+      "name": "HTTP bounds and ambiguity 64",
+      "status": "PASS"
+    },
+    {
+      "name": "HTTP bounds and ambiguity 65",
+      "status": "PASS"
+    },
+    {
+      "name": "HTTP bounds and ambiguity 66",
+      "status": "PASS"
+    },
+    {
+      "name": "HTTP bounds and ambiguity 67",
+      "status": "PASS"
+    },
+    {
+      "name": "controls cannot precede INFO",
+      "status": "PASS"
+    },
+    {
+      "name": "old firmware rejected before control",
+      "status": "PASS"
+    },
+    {
+      "name": "legacy received only INFO",
+      "status": "PASS"
+    },
+    {
+      "name": "battery reads never acquire lighting",
+      "status": "PASS"
+    },
+    {
+      "name": "timed lighting releases",
+      "status": "PASS"
+    },
+    {
+      "name": "native controller sends scaled RGB",
+      "status": "PASS"
+    },
+    {
+      "name": "superseded effect cannot release newer effect",
+      "status": "PASS"
+    },
+    {
+      "name": "computer sleep stops lighting traffic",
+      "status": "PASS"
+    },
+    {
+      "name": "disconnect preserves stale battery without restarting control",
+      "status": "PASS"
+    },
+    {
+      "name": "reconnect only reads state",
+      "status": "PASS"
+    },
+    {
+      "name": "all HID work stays on named serial thread",
+      "status": "PASS"
+    },
+    {
+      "name": "shutdown releases owned lighting",
+      "status": "PASS"
+    },
+    {
+      "name": "legacy RF can read battery without claiming control",
+      "status": "PASS"
+    },
+    {
+      "name": "legacy RF cannot receive lighting frame",
+      "status": "PASS"
+    },
+    {
+      "name": "unsupported RF only received INFO",
+      "status": "PASS"
+    },
+    {
+      "name": "RF rainbow uses bounded ten FPS schedule",
+      "status": "PASS"
+    },
+    {
+      "name": "RF finite animation releases",
+      "status": "PASS"
+    },
+    {
+      "name": "external lighting is recognized",
+      "status": "PASS"
+    },
+    {
+      "name": "selecting and quitting do not release another controller",
+      "status": "PASS"
+    },
+    {
+      "name": "in-flight refresh cannot undo computer sleep",
+      "status": "PASS"
+    },
+    {
+      "name": "cancelled request cannot apply queued lighting",
+      "status": "PASS"
+    },
+    {
+      "name": "a cancelled queued HID frame never runs",
+      "status": "PASS"
+    },
+    {
+      "name": "installer copies executable and metadata",
+      "status": "PASS"
+    },
+    {
+      "name": "managed skill can be updated",
+      "status": "PASS"
+    },
+    {
+      "name": "unmanaged skill is preserved",
+      "status": "PASS"
+    },
+    {
+      "name": "foreign skill contents unchanged",
+      "status": "PASS"
+    }
+  ],
+  "end_to_end_checks_detail": [
+    {
+      "name": "headless explicit demo starts",
+      "status": "PASS"
+    },
+    {
+      "name": "credential file is private",
+      "status": "PASS"
+    },
+    {
+      "name": "state directory is private",
+      "status": "PASS"
+    },
+    {
+      "name": "token has 256 random bits",
+      "status": "PASS"
+    },
+    {
+      "name": "unauthenticated request refused",
+      "status": "PASS"
+    },
+    {
+      "name": "wrong token refused",
+      "status": "PASS"
+    },
+    {
+      "name": "browser Origin refused",
+      "status": "PASS"
+    },
+    {
+      "name": "foreign Host refused",
+      "status": "PASS"
+    },
+    {
+      "name": "API health",
+      "status": "PASS"
+    },
+    {
+      "name": "duplicate instance leaves active API untouched",
+      "status": "PASS"
+    },
+    {
+      "name": "unknown route",
+      "status": "PASS"
+    },
+    {
+      "name": "native CLI battery",
+      "status": "PASS"
+    },
+    {
+      "name": "native CLI active refresh",
+      "status": "PASS"
+    },
+    {
+      "name": "CLI solid reaches shared controller",
+      "status": "PASS"
+    },
+    {
+      "name": "API and CLI observe same state",
+      "status": "PASS"
+    },
+    {
+      "name": "bad brightness rejected",
+      "status": "PASS"
+    },
+    {
+      "name": "invalid request leaves current effect",
+      "status": "PASS"
+    },
+    {
+      "name": "CLI validates before contacting API",
+      "status": "PASS"
+    },
+    {
+      "name": "native CLI rainbow",
+      "status": "PASS"
+    },
+    {
+      "name": "rainbow keeps streaming",
+      "status": "PASS"
+    },
+    {
+      "name": "finite effect restores original",
+      "status": "PASS"
+    },
+    {
+      "name": "nine independent colors",
+      "status": "PASS"
+    },
+    {
+      "name": "CLI release",
+      "status": "PASS"
+    },
+    {
+      "name": "concurrent requests are bounded",
+      "status": "PASS"
+    },
+    {
+      "name": "final command wins after concurrent callers",
+      "status": "PASS"
+    },
+    {
+      "name": "listener binds only IPv4 loopback",
+      "status": "PASS"
+    },
+    {
+      "name": "oversized body rejected",
+      "status": "PASS"
+    },
+    {
+      "name": "ambiguous framing rejected",
+      "status": "PASS"
+    },
+    {
+      "name": "copied skill helper needs no repo or Python",
+      "status": "PASS"
+    },
+    {
+      "name": "graceful quit",
+      "status": "PASS"
+    },
+    {
+      "name": "API token rotates on restart",
+      "status": "PASS"
+    }
+  ],
+  "gui_checks": {
+    "status": "PASS",
+    "control_panel_and_disconnected_state": true,
+    "normal_app_api_and_private_runtime_config": true,
+    "skill_installed_with_native_button_into_isolated_test_directory": true,
+    "installed_skill_helper_queried_running_app": true,
+    "pure_color": true,
+    "one_segment_changes_without_overwriting_other_eight": true,
+    "rainbow_and_ten_second_automatic_release": true,
+    "api_available_after_panel_close": true,
+    "lighting_gui_session": "explicit demo; not physical HID",
+    "login_item_registration_exercised": false
+  },
+  "release": {
+    "status": "PASS",
+    "version": "1.0.0",
+    "architectures": [
+      "arm64",
+      "x86_64"
+    ],
+    "app_executable_sha256": "63417813f0867e40943f38524fcc86f758d2a59c9811f3ac21dcf99a8d882034",
+    "cli_sha256": "b0b22673961e90e4a3e5cc6d87409a5431a3b0d51d0250fe6e966a49d9f07e94",
+    "artifacts": [
+      {
+        "path": "dist/Q101-Control-1.0.0-universal.zip",
+        "size": 843629,
+        "sha256": "d281d80147b404d306948d85176f7c30a916af11d6c118cf49ca6f0378458b1a"
+      },
+      {
+        "path": "dist/Q101-Control-1.0.0-universal.dmg",
+        "size": 1211578,
+        "sha256": "750715322cd90e3d657ad964360b2a67be525224777f03b40699760ccd5cb1fd"
+      }
+    ],
+    "signing": "local ad-hoc; not Developer ID notarized",
+    "published": false
+  },
+  "final_runtime_read_only_status": {
+    "api_version": 1,
+    "app_version": "1.0.0",
+    "battery": {
+      "connected": false,
+      "demo": false,
+      "percent": null,
+      "stale": true,
+      "transport": null,
+      "updated_at": null
+    },
+    "demo": false,
+    "device": {
+      "connected": false,
+      "firmware_build": null,
+      "firmware_version": null
+    },
+    "devices": [],
+    "error": "未检测到 Q101 / MQ80，请连接 USB 数据线或 2.4G 接收器。",
+    "lighting": {
+      "active": false,
+      "brightness": 100,
+      "colors": [],
+      "duration_seconds": null,
+      "frames_sent": 0,
+      "mode": "original",
+      "period_ms": 5000
+    },
+    "sleeping": false
+  },
+  "boundaries": {
+    "physical_device_detected_at_validation": false,
+    "physical_lighting_test_of_new_app": false,
+    "firmware_usb_rf_confirmation": "Separate direct user report; see ../firmware/v3.0.1-validation/user-hardware-confirmation-20261017.json",
+    "demo_result_is_not_physical_battery_data": true,
+    "intel_runtime_tested": false,
+    "developer_id_notarized": false,
+    "cloud_published": false
+  },
+  "source_sha256": {
+    "macos/API.html": "9e1adc11fb0149bcfde74bdb981065197aa98b460281526360d19ac526d7ace2",
+    "macos/Icon.swift": "a4d56fc22a8d1ade4ffe50b6fdd6bcaf269539fd9fd504d59fecb4572d4e4692",
+    "macos/Q101Control/App.swift": "944faaef0293995f8c27a69dddcd5a9c3c71dda8cde3b7c0484a8f15eba4d7d2",
+    "macos/Q101Control/AppModel.swift": "aa00a7fa6c9b28b18a9ba8b4a6c1545dae95012d3f21bb5f0081bfbfe1b57b51",
+    "macos/Q101Control/Controller.swift": "0d771ea9c335436f52d0efdb1eacad687333ab859f7526be98136c32a8d01ff7",
+    "macos/Q101Control/HID.swift": "56e421ee1065df2465efb961c0ddbdeb7b3e7c5249025adf567b17bbcc0ef7ce",
+    "macos/Q101Control/HTTP.swift": "a9ade2710d87f4e9fb60364f0d03ff8e9aba9f7e65809f7513c840cc556a82c7",
+    "macos/Q101Control/Protocol.swift": "1592292bdaa9b27d46db65c8fbc1c6960dc7ae42bf207ffd2e8674aef5253827",
+    "macos/Q101Control/RuntimeFiles.swift": "c1957041db28555c8b7a40f6d70405ff9f6c1b3ae52f1599d88ce041dde50476",
+    "macos/Q101Control/SkillInstaller.swift": "036c630e8e29f54a7fb7e2323ced1e5256867118a220e8437d486c2a59d00dc8",
+    "macos/Q101Control/Views.swift": "9cbaa37f9d98083aaa69d22fbaa6e52b31dccdf249cf9c08f36792a82cec9b31",
+    "macos/README.md": "954e3dc0e28f1091a42371e97eea2717bdeb0414ad39d350cfd49aa0f0ca14b7",
+    "macos/build.py": "25625a0be856e8daea319ad6efa6a25ff2f6f3d8729b192b9a39d54b990ba0e1",
+    "macos/q101ctl/Main.swift": "948d7f9b5eeb224e208b58dc3baad23fa88ab17f386b72983c1a488ff3e53ab3",
+    "macos/skill/q101-control/SKILL.md": "1f84c9a3252ed4b179b9f9a4f0910feb8d47d638e2c549af1d2bf7dd5fa2eb72",
+    "macos/skill/q101-control/agents/openai.yaml": "e23350d274f7961ba70383baa13e4ee50414f03081f9cd92a1134789f8f8320b",
+    "macos/tests/CoreTests.swift": "f8c96d8440a32cc7ad05ccd57ade0499df7e972b82116442a159c6d771ff3187",
+    "macos/tests/fixtures.py": "d9c0aaf5dccc417a67df47278ddf48cf50d0830e56cdd38847b306a46f455cfc",
+    "macos/tests/validate_app.py": "ea6d4442dfa0a7c65a57f2c6b92443c74ff251faaaca1f1b88dba1435e373cd4"
+  },
+  "notes": [
+    "正式应用默认真实 IOKit；仅演示与自动化检查使用 DemoBackend。",
+    "所有自动化收发和 GUI 控灯测试未访问真实键盘；当前主机没有目标接口。",
+    "新应用不修改固件；原 v3.0.1 BIN 校验值保持不变。"
+  ]
+}

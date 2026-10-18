@@ -16,7 +16,7 @@ def main():
     parser.add_argument('engine',type=Path)
     parser.add_argument('--out',type=Path,required=True)
     args=parser.parse_args()
-    result={'version':'2.0.0','engine':str(args.engine.resolve()),'transport':'stdio-json-lines',
+    result={'version':'2.4.1','engine':str(args.engine.resolve()),'transport':'stdio-json-lines',
             'no_device_access':True,'checks':[],'jobs':[]}
     with tempfile.TemporaryDirectory(prefix='mq80-native-acceptance-') as folder:
         process=subprocess.Popen([str(args.engine.resolve()),'--data-dir',folder],stdin=subprocess.PIPE,
@@ -44,7 +44,7 @@ def main():
         try:
             boot=call('bootstrap');initial=call('state');image=initial['firmware']['id']
             stock=next(x['id'] for x in boot['firmwares'] if x['id']!=image)
-            check('native bootstrap',boot['version']=='2.0.0' and len(boot['layout'])==84 and len(boot['scenarios'])==10)
+            check('native bootstrap',boot['version']=='2.4.1' and len(boot['layout'])==84 and len(boot['scenarios'])==10 and len(boot['firmwares'])==6)
             check('Fn+B real pipeline',call('action',{'action':'query'})['battery']['query_active'])
             state=call('action',{'action':'preview','ms':3100})
             check('three-second expiry restores off',not state['battery']['query_active'] and state['rgb']['side']==[[0,0,0]]*9)
@@ -73,6 +73,34 @@ def main():
             for case in ['valid_image','incomplete','crc_error','header_readback_error']:
                 ota=job({'kind':'ota','firmware':stock,'other':image,'ota_case':case})
                 check('virtual OTA '+case,ota['status']=='PASS' and ota['no_device_access'])
+            side=next(x['id'] for x in boot['firmwares'] if x['side_hid'])
+            call('action',{'action':'reset','firmware':side,'environment':{'connection':'usb','cable':True}})
+            state=call('action',{'action':'side_hid','mode':'solid','colors':[[255,0,0]]*9})
+            check('bundled side HID codec and firmware',state['rgb']['side']==[[162,0,0]]*9)
+            call('action',{'action':'side_hid','mode':'rainbow'})
+            state=call('action',{'action':'preview','ms':3100})
+            check('packaged rainbow sends real USB frames',state['side_hid']['active'] and state['side_hid']['frames_sent']>60)
+            state=call('action',{'action':'side_hid','mode':'release'})
+            check('packaged HID release restores side off',not state['side_hid']['active'] and state['rgb']['side']==[[0,0,0]]*9)
+            rf=next(x['id'] for x in boot['firmwares'] if x['firmware_version']=='3.0.1')
+            call('action',{'action':'reset','firmware':rf,'environment':{'connection':'rf','cable':False}})
+            state=call('action',{'action':'side_hid','mode':'solid','colors':[[0,0,255]]*9})
+            check('bundled RF control executes real receive and closing ACKs',state['rgb']['side']==[[0,0,162]]*9 and state['stats']['calls']['rf_configuration_closing_ack']==6)
+            report=call('report')
+            reply=bytes.fromhex(next(x['details']['reply'] for x in report['trace'] if x['kind']=='raw-hid'))
+            check('packaged firmware emits version and build in real INFO reply',reply[23:]==b'FV\x01\x03\x00\x01\x0f\x02\x00' and state['firmware']['firmware_version']=='3.0.1' and state['firmware']['firmware_build']==2)
+            call('action',{'action':'side_hid','mode':'rainbow'})
+            state=call('action',{'action':'preview','ms':3100})
+            check('packaged wireless rainbow ten FPS',state['side_hid']['active'] and state['side_hid']['fps']==10 and state['side_hid']['frames_sent']==33)
+            call('action',{'action':'query'})
+            state=call('state')
+            check('wireless Fn+B overrides active control',state['battery']['query_active'] and state['side_hid']['active'])
+            call('action',{'action':'side_hid','mode':'stop'})
+            call('action',{'action':'preview','ms':3100})
+            state=call('action',{'action':'sleep'})
+            check('wireless timeout permits original sleep',state['status']=='sleeping' and not state['side_hid']['active'])
+            state=call('action',{'action':'tap','keys':['3,1'],'hold_ms':50})
+            check('wireless lighting preserves first key after wake',state['host_text']=='a' and state['stats']['flash_operations']==0)
             result['status']='PASS'
         finally:
             process.stdin.close();process.wait(timeout=10)

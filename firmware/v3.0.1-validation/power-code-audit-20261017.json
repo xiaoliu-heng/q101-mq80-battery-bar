@@ -1,0 +1,425 @@
+{
+  "status": "PASS_CODE_AUDIT_HARDWARE_CAUSE_UNCONFIRMED",
+  "device_access": "NONE",
+  "firmware_sha256": "7b800e3edab6b2e8c421c3b7729464e990edfd2e5a2647ded6059c1901006534",
+  "stock_firmware_sha256": "d19733978808c856db93236ea3472b2cf843493c9aa6d5320db50412431e5210",
+  "audit_script_sha256": "01d5342120037df3545bfcb8e568561ed6669dae4df30ab5d38fa905f676dfc3",
+  "adc_function_sha256": "bdd5497b95653d8008c6baeacce7e3e26a804d5dc5b19941fa8508fb1beaeb2f",
+  "unchanged_stock_adc_code": true,
+  "unchanged_stock_sampling_predicate": true,
+  "stock_sampling": {
+    "timer_address": "0x80a74",
+    "idle_seconds_address": "0x80a64",
+    "period_ticks": 64000000,
+    "ticks_per_second": 16000000,
+    "steady_period_seconds": 4.0,
+    "startup_can_override_timer": true
+  },
+  "estimator": {
+    "steady_and_recovery": [
+      {
+        "time_seconds": 14.001,
+        "raw_adc_fixture": 3367,
+        "scaled_adc": 1930,
+        "target_percent": 80,
+        "filtered_percent": 80,
+        "reported_percent": 80,
+        "filter_count": 0,
+        "warmup_count": 6
+      },
+      {
+        "time_seconds": 18.002,
+        "raw_adc_fixture": 3367,
+        "scaled_adc": 1930,
+        "target_percent": 80,
+        "filtered_percent": 80,
+        "reported_percent": 80,
+        "filter_count": 0,
+        "warmup_count": 6
+      },
+      {
+        "time_seconds": 22.003,
+        "raw_adc_fixture": 3207,
+        "scaled_adc": 1838,
+        "target_percent": 62,
+        "filtered_percent": 80,
+        "reported_percent": 80,
+        "filter_count": 1,
+        "warmup_count": 6
+      },
+      {
+        "time_seconds": 26.004,
+        "raw_adc_fixture": 3207,
+        "scaled_adc": 1838,
+        "target_percent": 62,
+        "filtered_percent": 80,
+        "reported_percent": 80,
+        "filter_count": 2,
+        "warmup_count": 6
+      },
+      {
+        "time_seconds": 30.005,
+        "raw_adc_fixture": 3207,
+        "scaled_adc": 1838,
+        "target_percent": 62,
+        "filtered_percent": 80,
+        "reported_percent": 80,
+        "filter_count": 3,
+        "warmup_count": 6
+      },
+      {
+        "time_seconds": 34.006,
+        "raw_adc_fixture": 3207,
+        "scaled_adc": 1838,
+        "target_percent": 62,
+        "filtered_percent": 80,
+        "reported_percent": 80,
+        "filter_count": 4,
+        "warmup_count": 6
+      },
+      {
+        "time_seconds": 38.007,
+        "raw_adc_fixture": 3207,
+        "scaled_adc": 1838,
+        "target_percent": 62,
+        "filtered_percent": 79,
+        "reported_percent": 79,
+        "filter_count": 0,
+        "warmup_count": 6
+      },
+      {
+        "time_seconds": 42.008,
+        "raw_adc_fixture": 3207,
+        "scaled_adc": 1838,
+        "target_percent": 62,
+        "filtered_percent": 79,
+        "reported_percent": 79,
+        "filter_count": 1,
+        "warmup_count": 6
+      },
+      {
+        "time_seconds": 46.009,
+        "raw_adc_fixture": 3207,
+        "scaled_adc": 1838,
+        "target_percent": 62,
+        "filtered_percent": 79,
+        "reported_percent": 79,
+        "filter_count": 2,
+        "warmup_count": 6
+      },
+      {
+        "time_seconds": 50.01,
+        "raw_adc_fixture": 3207,
+        "scaled_adc": 1838,
+        "target_percent": 62,
+        "filtered_percent": 79,
+        "reported_percent": 79,
+        "filter_count": 3,
+        "warmup_count": 6
+      },
+      {
+        "time_seconds": 54.011,
+        "raw_adc_fixture": 3207,
+        "scaled_adc": 1838,
+        "target_percent": 62,
+        "filtered_percent": 79,
+        "reported_percent": 79,
+        "filter_count": 4,
+        "warmup_count": 6
+      },
+      {
+        "time_seconds": 58.012,
+        "raw_adc_fixture": 3207,
+        "scaled_adc": 1838,
+        "target_percent": 62,
+        "filtered_percent": 78,
+        "reported_percent": 78,
+        "filter_count": 0,
+        "warmup_count": 6
+      },
+      {
+        "time_seconds": 62.013,
+        "raw_adc_fixture": 3367,
+        "scaled_adc": 1930,
+        "target_percent": 80,
+        "filtered_percent": 78,
+        "reported_percent": 78,
+        "filter_count": 0,
+        "warmup_count": 6
+      },
+      {
+        "time_seconds": 66.014,
+        "raw_adc_fixture": 3367,
+        "scaled_adc": 1930,
+        "target_percent": 80,
+        "filtered_percent": 78,
+        "reported_percent": 78,
+        "filter_count": 0,
+        "warmup_count": 6
+      },
+      {
+        "time_seconds": 70.015,
+        "raw_adc_fixture": 3367,
+        "scaled_adc": 1930,
+        "target_percent": 80,
+        "filtered_percent": 78,
+        "reported_percent": 78,
+        "filter_count": 0,
+        "warmup_count": 6
+      },
+      {
+        "time_seconds": 74.016,
+        "raw_adc_fixture": 3367,
+        "scaled_adc": 1930,
+        "target_percent": 80,
+        "filtered_percent": 78,
+        "reported_percent": 78,
+        "filter_count": 0,
+        "warmup_count": 6
+      },
+      {
+        "time_seconds": 78.017,
+        "raw_adc_fixture": 3367,
+        "scaled_adc": 1930,
+        "target_percent": 80,
+        "filtered_percent": 78,
+        "reported_percent": 78,
+        "filter_count": 0,
+        "warmup_count": 6
+      }
+    ],
+    "intermittent_low_samples": [
+      {
+        "time_seconds": 14.001,
+        "raw_adc_fixture": 3207,
+        "scaled_adc": 1838,
+        "target_percent": 62,
+        "filtered_percent": 80,
+        "reported_percent": 80,
+        "filter_count": 1,
+        "warmup_count": 6
+      },
+      {
+        "time_seconds": 18.002,
+        "raw_adc_fixture": 3367,
+        "scaled_adc": 1930,
+        "target_percent": 80,
+        "filtered_percent": 80,
+        "reported_percent": 80,
+        "filter_count": 1,
+        "warmup_count": 6
+      },
+      {
+        "time_seconds": 22.003,
+        "raw_adc_fixture": 3207,
+        "scaled_adc": 1838,
+        "target_percent": 62,
+        "filtered_percent": 80,
+        "reported_percent": 80,
+        "filter_count": 2,
+        "warmup_count": 6
+      },
+      {
+        "time_seconds": 26.004,
+        "raw_adc_fixture": 3367,
+        "scaled_adc": 1930,
+        "target_percent": 80,
+        "filtered_percent": 80,
+        "reported_percent": 80,
+        "filter_count": 2,
+        "warmup_count": 6
+      },
+      {
+        "time_seconds": 30.005,
+        "raw_adc_fixture": 3207,
+        "scaled_adc": 1838,
+        "target_percent": 62,
+        "filtered_percent": 80,
+        "reported_percent": 80,
+        "filter_count": 3,
+        "warmup_count": 6
+      },
+      {
+        "time_seconds": 34.006,
+        "raw_adc_fixture": 3367,
+        "scaled_adc": 1930,
+        "target_percent": 80,
+        "filtered_percent": 80,
+        "reported_percent": 80,
+        "filter_count": 3,
+        "warmup_count": 6
+      },
+      {
+        "time_seconds": 38.007,
+        "raw_adc_fixture": 3207,
+        "scaled_adc": 1838,
+        "target_percent": 62,
+        "filtered_percent": 80,
+        "reported_percent": 80,
+        "filter_count": 4,
+        "warmup_count": 6
+      },
+      {
+        "time_seconds": 42.008,
+        "raw_adc_fixture": 3367,
+        "scaled_adc": 1930,
+        "target_percent": 80,
+        "filtered_percent": 80,
+        "reported_percent": 80,
+        "filter_count": 4,
+        "warmup_count": 6
+      },
+      {
+        "time_seconds": 46.009,
+        "raw_adc_fixture": 3207,
+        "scaled_adc": 1838,
+        "target_percent": 62,
+        "filtered_percent": 79,
+        "reported_percent": 79,
+        "filter_count": 0,
+        "warmup_count": 6
+      },
+      {
+        "time_seconds": 50.01,
+        "raw_adc_fixture": 3367,
+        "scaled_adc": 1930,
+        "target_percent": 80,
+        "filtered_percent": 79,
+        "reported_percent": 79,
+        "filter_count": 0,
+        "warmup_count": 6
+      }
+    ],
+    "startup_warmup": [
+      {
+        "time_seconds": 10.0,
+        "raw_adc_fixture": 3486,
+        "scaled_adc": 1998,
+        "target_percent": 92,
+        "filtered_percent": 92,
+        "reported_percent": 92,
+        "filter_count": 0,
+        "warmup_count": 1
+      },
+      {
+        "time_seconds": 10.081168,
+        "raw_adc_fixture": 3469,
+        "scaled_adc": 1989,
+        "target_percent": 91,
+        "filtered_percent": 91,
+        "reported_percent": 91,
+        "filter_count": 0,
+        "warmup_count": 2
+      },
+      {
+        "time_seconds": 10.162336,
+        "raw_adc_fixture": 3451,
+        "scaled_adc": 1978,
+        "target_percent": 89,
+        "filtered_percent": 89,
+        "reported_percent": 89,
+        "filter_count": 0,
+        "warmup_count": 3
+      },
+      {
+        "time_seconds": 12.163504,
+        "raw_adc_fixture": 3434,
+        "scaled_adc": 1969,
+        "target_percent": 87,
+        "filtered_percent": 87,
+        "reported_percent": 87,
+        "filter_count": 0,
+        "warmup_count": 4
+      },
+      {
+        "time_seconds": 14.164672,
+        "raw_adc_fixture": 3416,
+        "scaled_adc": 1959,
+        "target_percent": 85,
+        "filtered_percent": 85,
+        "reported_percent": 85,
+        "filter_count": 0,
+        "warmup_count": 5
+      },
+      {
+        "time_seconds": 16.16584,
+        "raw_adc_fixture": 3399,
+        "scaled_adc": 1948,
+        "target_percent": 83,
+        "filtered_percent": 85,
+        "reported_percent": 85,
+        "filter_count": 1,
+        "warmup_count": 5
+      },
+      {
+        "time_seconds": 20.16684,
+        "raw_adc_fixture": 3399,
+        "scaled_adc": 1948,
+        "target_percent": 83,
+        "filtered_percent": 85,
+        "reported_percent": 85,
+        "filter_count": 2,
+        "warmup_count": 5
+      }
+    ],
+    "startup_sample_intervals_seconds": [
+      0.081168,
+      0.081168,
+      2.001168,
+      2.001168,
+      2.001168,
+      4.001
+    ],
+    "scope": "Actual ADC conversion, filtering and main-loop scheduling basic block, not a full boot/main-loop simulation. ADC values, initial state and GPIO are fixtures. Times are virtual; instruction execution and radio airtime are not timed."
+  },
+  "rf_rainbow_streams": [
+    {
+      "brightness": 25,
+      "rgb_frames": 100,
+      "target_frame_interval_ms": 100,
+      "keyboard_rf_transmit_submissions": 400,
+      "submissions_per_rgb_frame": 4.0,
+      "transmit_packet_types": {
+        "0x30": 100,
+        "0xb7": 300
+      },
+      "original_adc_task_calls": 2,
+      "instructions_including_modeled_boundary_wrappers": 1081974,
+      "protected_writes_from_rf_or_rendering": [],
+      "initial_percent": 80,
+      "final_percent": 80,
+      "adc_fixture": 3367,
+      "scope": "Fixed injected ADC input. RF delivery/ACKs are immediate models; power, retries and PHY airtime are not modeled."
+    },
+    {
+      "brightness": 65,
+      "rgb_frames": 100,
+      "target_frame_interval_ms": 100,
+      "keyboard_rf_transmit_submissions": 400,
+      "submissions_per_rgb_frame": 4.0,
+      "transmit_packet_types": {
+        "0x30": 100,
+        "0xb7": 300
+      },
+      "original_adc_task_calls": 2,
+      "instructions_including_modeled_boundary_wrappers": 1081974,
+      "protected_writes_from_rf_or_rendering": [],
+      "initial_percent": 80,
+      "final_percent": 80,
+      "adc_fixture": 3367,
+      "scope": "Fixed injected ADC input. RF delivery/ACKs are immediate models; power, retries and PHY airtime are not modeled."
+    }
+  ],
+  "findings": [
+    "The protected estimator state was not written by tested RF transactions or host RGB rendering.",
+    "One RGB update submitted one 0x30 response plus three 0xB7 closing packets at the keyboard RF TX boundary.",
+    "Constant ADC fixtures held the reported percentage constant while 10 FPS rainbow frames were processed.",
+    "The original estimator accumulated low samples even when higher samples occurred between them; recovery did not raise the cache.",
+    "Startup samples can directly lower the reported percent much faster than the steady filter."
+  ],
+  "not_proven": [
+    "Actual current, voltage, lost capacity or electrical root cause.",
+    "The physical calibration, ADC values or estimator startup state of the user keyboard.",
+    "Actual RF retransmission rate, airtime or sample/radio overlap."
+  ]
+}

@@ -1,0 +1,11 @@
+{
+  "date": "2026-10-17",
+  "timezone": "Asia/Shanghai",
+  "source": "User statement in this development conversation",
+  "original_user_statement": "我已经连接真机测试没问题了。",
+  "scope": "Previously delivered Kryra build; the user did not specify transport or individual test cases.",
+  "preceding_app_version_in_conversation": "1.2.0",
+  "version_read_from_hardware_by_this_run": false,
+  "new_sdk_26_build_covered": false,
+  "power_or_battery_life_measurement_reported": false
+}

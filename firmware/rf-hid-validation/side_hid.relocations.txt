@@ -1,0 +1,3 @@
+
+build/side-hid-rf/side_hid.elf:     file format elf32-littleriscv
+

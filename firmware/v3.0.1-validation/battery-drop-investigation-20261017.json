@@ -1,0 +1,982 @@
+{
+  "status": "CODE_AUDIT_COMPLETE_PHYSICAL_CAUSE_UNRESOLVED",
+  "date": "2026-10-17",
+  "timezone": "Asia/Shanghai",
+  "recorded_at": "2026-10-17T12:27:09.450051+00:00",
+  "user_observation": "During active lighting control, displayed battery falls by roughly one percent every few seconds.",
+  "correction": "Prevented idle sleep is not sufficient to explain a rapid drop while lighting is actively controlled. App 1.0.1 limits duration but is not a verified root-cause fix.",
+  "confirmed": {
+    "reported_percent_source": {
+      "firmware_address": "0x80948",
+      "reply_byte": 9,
+      "app_behavior": "Copies decoded original cached percent; no model-side decrement."
+    },
+    "stock_battery_routine": {
+      "start": "0x200117a0",
+      "end_exclusive": "0x20011b98",
+      "identical_in_current_patch": true,
+      "section_sha256": "bdd5497b95653d8008c6baeacce7e3e26a804d5dc5b19941fa8508fb1beaeb2f"
+    },
+    "stock_filter_tail_reproduction": {
+      "status": "EXECUTED_STOCK_FILTER_TAIL",
+      "scope": "Actual original machine code from 0x200119e4 to 0x20011a30, injected target percentage; ADC conversion, charge branch and scheduling not exercised.",
+      "same_code_in_current_patch": true,
+      "rows": [
+        {
+          "sample": 1,
+          "injected_target_percent": 60,
+          "internal_filtered_percent": 80,
+          "reported_percent": 80,
+          "filter_counter": 1
+        },
+        {
+          "sample": 2,
+          "injected_target_percent": 60,
+          "internal_filtered_percent": 80,
+          "reported_percent": 80,
+          "filter_counter": 2
+        },
+        {
+          "sample": 3,
+          "injected_target_percent": 60,
+          "internal_filtered_percent": 80,
+          "reported_percent": 80,
+          "filter_counter": 3
+        },
+        {
+          "sample": 4,
+          "injected_target_percent": 60,
+          "internal_filtered_percent": 80,
+          "reported_percent": 80,
+          "filter_counter": 4
+        },
+        {
+          "sample": 5,
+          "injected_target_percent": 60,
+          "internal_filtered_percent": 79,
+          "reported_percent": 79,
+          "filter_counter": 0
+        },
+        {
+          "sample": 6,
+          "injected_target_percent": 60,
+          "internal_filtered_percent": 79,
+          "reported_percent": 79,
+          "filter_counter": 1
+        },
+        {
+          "sample": 7,
+          "injected_target_percent": 60,
+          "internal_filtered_percent": 79,
+          "reported_percent": 79,
+          "filter_counter": 2
+        },
+        {
+          "sample": 8,
+          "injected_target_percent": 60,
+          "internal_filtered_percent": 79,
+          "reported_percent": 79,
+          "filter_counter": 3
+        },
+        {
+          "sample": 9,
+          "injected_target_percent": 60,
+          "internal_filtered_percent": 79,
+          "reported_percent": 79,
+          "filter_counter": 4
+        },
+        {
+          "sample": 10,
+          "injected_target_percent": 60,
+          "internal_filtered_percent": 78,
+          "reported_percent": 78,
+          "filter_counter": 0
+        },
+        {
+          "sample": 11,
+          "injected_target_percent": 60,
+          "internal_filtered_percent": 78,
+          "reported_percent": 78,
+          "filter_counter": 1
+        },
+        {
+          "sample": 12,
+          "injected_target_percent": 60,
+          "internal_filtered_percent": 78,
+          "reported_percent": 78,
+          "filter_counter": 2
+        },
+        {
+          "sample": 13,
+          "injected_target_percent": 95,
+          "internal_filtered_percent": 78,
+          "reported_percent": 78,
+          "filter_counter": 2
+        },
+        {
+          "sample": 14,
+          "injected_target_percent": 95,
+          "internal_filtered_percent": 78,
+          "reported_percent": 78,
+          "filter_counter": 2
+        },
+        {
+          "sample": 15,
+          "injected_target_percent": 95,
+          "internal_filtered_percent": 78,
+          "reported_percent": 78,
+          "filter_counter": 2
+        },
+        {
+          "sample": 16,
+          "injected_target_percent": 95,
+          "internal_filtered_percent": 78,
+          "reported_percent": 78,
+          "filter_counter": 2
+        },
+        {
+          "sample": 17,
+          "injected_target_percent": 95,
+          "internal_filtered_percent": 78,
+          "reported_percent": 78,
+          "filter_counter": 2
+        },
+        {
+          "sample": 18,
+          "injected_target_percent": 95,
+          "internal_filtered_percent": 78,
+          "reported_percent": 78,
+          "filter_counter": 2
+        },
+        {
+          "sample": 19,
+          "injected_target_percent": 95,
+          "internal_filtered_percent": 78,
+          "reported_percent": 78,
+          "filter_counter": 2
+        },
+        {
+          "sample": 20,
+          "injected_target_percent": 95,
+          "internal_filtered_percent": 78,
+          "reported_percent": 78,
+          "filter_counter": 2
+        },
+        {
+          "sample": 21,
+          "injected_target_percent": 95,
+          "internal_filtered_percent": 78,
+          "reported_percent": 78,
+          "filter_counter": 2
+        },
+        {
+          "sample": 22,
+          "injected_target_percent": 95,
+          "internal_filtered_percent": 78,
+          "reported_percent": 78,
+          "filter_counter": 2
+        }
+      ],
+      "no_real_hardware_access": true
+    },
+    "controlled_rgb_output_states": {
+      "status": "PASS_IN_CONTROLLED_RENDER_STATES",
+      "cases": 40,
+      "main_rgb_preserved_in_these_states": true,
+      "host_ignores_stock_side_brightness": true,
+      "rows": [
+        {
+          "main_off": false,
+          "side_brightness": 0,
+          "side_mode": 0,
+          "normal_main_sum": 0,
+          "black_main_sum": 0,
+          "blue_main_sum": 0,
+          "normal_side_max": 14,
+          "blue_side_rgb0": [
+            0,
+            20,
+            40
+          ],
+          "normal_output_flags": 0,
+          "black_output_flags": 0
+        },
+        {
+          "main_off": false,
+          "side_brightness": 0,
+          "side_mode": 1,
+          "normal_main_sum": 0,
+          "black_main_sum": 0,
+          "blue_main_sum": 0,
+          "normal_side_max": 14,
+          "blue_side_rgb0": [
+            0,
+            20,
+            40
+          ],
+          "normal_output_flags": 0,
+          "black_output_flags": 0
+        },
+        {
+          "main_off": false,
+          "side_brightness": 0,
+          "side_mode": 2,
+          "normal_main_sum": 0,
+          "black_main_sum": 0,
+          "blue_main_sum": 0,
+          "normal_side_max": 0,
+          "blue_side_rgb0": [
+            0,
+            20,
+            40
+          ],
+          "normal_output_flags": 0,
+          "black_output_flags": 0
+        },
+        {
+          "main_off": false,
+          "side_brightness": 0,
+          "side_mode": 3,
+          "normal_main_sum": 0,
+          "black_main_sum": 0,
+          "blue_main_sum": 0,
+          "normal_side_max": 14,
+          "blue_side_rgb0": [
+            0,
+            20,
+            40
+          ],
+          "normal_output_flags": 0,
+          "black_output_flags": 0
+        },
+        {
+          "main_off": false,
+          "side_brightness": 0,
+          "side_mode": 4,
+          "normal_main_sum": 0,
+          "black_main_sum": 0,
+          "blue_main_sum": 0,
+          "normal_side_max": 0,
+          "blue_side_rgb0": [
+            0,
+            20,
+            40
+          ],
+          "normal_output_flags": 0,
+          "black_output_flags": 0
+        },
+        {
+          "main_off": false,
+          "side_brightness": 1,
+          "side_mode": 0,
+          "normal_main_sum": 0,
+          "black_main_sum": 0,
+          "blue_main_sum": 0,
+          "normal_side_max": 29,
+          "blue_side_rgb0": [
+            0,
+            20,
+            40
+          ],
+          "normal_output_flags": 0,
+          "black_output_flags": 0
+        },
+        {
+          "main_off": false,
+          "side_brightness": 1,
+          "side_mode": 1,
+          "normal_main_sum": 0,
+          "black_main_sum": 0,
+          "blue_main_sum": 0,
+          "normal_side_max": 29,
+          "blue_side_rgb0": [
+            0,
+            20,
+            40
+          ],
+          "normal_output_flags": 0,
+          "black_output_flags": 0
+        },
+        {
+          "main_off": false,
+          "side_brightness": 1,
+          "side_mode": 2,
+          "normal_main_sum": 0,
+          "black_main_sum": 0,
+          "blue_main_sum": 0,
+          "normal_side_max": 0,
+          "blue_side_rgb0": [
+            0,
+            20,
+            40
+          ],
+          "normal_output_flags": 0,
+          "black_output_flags": 0
+        },
+        {
+          "main_off": false,
+          "side_brightness": 1,
+          "side_mode": 3,
+          "normal_main_sum": 0,
+          "black_main_sum": 0,
+          "blue_main_sum": 0,
+          "normal_side_max": 29,
+          "blue_side_rgb0": [
+            0,
+            20,
+            40
+          ],
+          "normal_output_flags": 0,
+          "black_output_flags": 0
+        },
+        {
+          "main_off": false,
+          "side_brightness": 1,
+          "side_mode": 4,
+          "normal_main_sum": 0,
+          "black_main_sum": 0,
+          "blue_main_sum": 0,
+          "normal_side_max": 0,
+          "blue_side_rgb0": [
+            0,
+            20,
+            40
+          ],
+          "normal_output_flags": 0,
+          "black_output_flags": 0
+        },
+        {
+          "main_off": false,
+          "side_brightness": 2,
+          "side_mode": 0,
+          "normal_main_sum": 0,
+          "black_main_sum": 0,
+          "blue_main_sum": 0,
+          "normal_side_max": 44,
+          "blue_side_rgb0": [
+            0,
+            20,
+            40
+          ],
+          "normal_output_flags": 0,
+          "black_output_flags": 0
+        },
+        {
+          "main_off": false,
+          "side_brightness": 2,
+          "side_mode": 1,
+          "normal_main_sum": 0,
+          "black_main_sum": 0,
+          "blue_main_sum": 0,
+          "normal_side_max": 44,
+          "blue_side_rgb0": [
+            0,
+            20,
+            40
+          ],
+          "normal_output_flags": 0,
+          "black_output_flags": 0
+        },
+        {
+          "main_off": false,
+          "side_brightness": 2,
+          "side_mode": 2,
+          "normal_main_sum": 0,
+          "black_main_sum": 0,
+          "blue_main_sum": 0,
+          "normal_side_max": 0,
+          "blue_side_rgb0": [
+            0,
+            20,
+            40
+          ],
+          "normal_output_flags": 0,
+          "black_output_flags": 0
+        },
+        {
+          "main_off": false,
+          "side_brightness": 2,
+          "side_mode": 3,
+          "normal_main_sum": 0,
+          "black_main_sum": 0,
+          "blue_main_sum": 0,
+          "normal_side_max": 44,
+          "blue_side_rgb0": [
+            0,
+            20,
+            40
+          ],
+          "normal_output_flags": 0,
+          "black_output_flags": 0
+        },
+        {
+          "main_off": false,
+          "side_brightness": 2,
+          "side_mode": 4,
+          "normal_main_sum": 0,
+          "black_main_sum": 0,
+          "blue_main_sum": 0,
+          "normal_side_max": 0,
+          "blue_side_rgb0": [
+            0,
+            20,
+            40
+          ],
+          "normal_output_flags": 0,
+          "black_output_flags": 0
+        },
+        {
+          "main_off": false,
+          "side_brightness": 3,
+          "side_mode": 0,
+          "normal_main_sum": 0,
+          "black_main_sum": 0,
+          "blue_main_sum": 0,
+          "normal_side_max": 64,
+          "blue_side_rgb0": [
+            0,
+            20,
+            40
+          ],
+          "normal_output_flags": 0,
+          "black_output_flags": 0
+        },
+        {
+          "main_off": false,
+          "side_brightness": 3,
+          "side_mode": 1,
+          "normal_main_sum": 0,
+          "black_main_sum": 0,
+          "blue_main_sum": 0,
+          "normal_side_max": 64,
+          "blue_side_rgb0": [
+            0,
+            20,
+            40
+          ],
+          "normal_output_flags": 0,
+          "black_output_flags": 0
+        },
+        {
+          "main_off": false,
+          "side_brightness": 3,
+          "side_mode": 2,
+          "normal_main_sum": 0,
+          "black_main_sum": 0,
+          "blue_main_sum": 0,
+          "normal_side_max": 0,
+          "blue_side_rgb0": [
+            0,
+            20,
+            40
+          ],
+          "normal_output_flags": 0,
+          "black_output_flags": 0
+        },
+        {
+          "main_off": false,
+          "side_brightness": 3,
+          "side_mode": 3,
+          "normal_main_sum": 0,
+          "black_main_sum": 0,
+          "blue_main_sum": 0,
+          "normal_side_max": 64,
+          "blue_side_rgb0": [
+            0,
+            20,
+            40
+          ],
+          "normal_output_flags": 0,
+          "black_output_flags": 0
+        },
+        {
+          "main_off": false,
+          "side_brightness": 3,
+          "side_mode": 4,
+          "normal_main_sum": 0,
+          "black_main_sum": 0,
+          "blue_main_sum": 0,
+          "normal_side_max": 0,
+          "blue_side_rgb0": [
+            0,
+            20,
+            40
+          ],
+          "normal_output_flags": 0,
+          "black_output_flags": 0
+        },
+        {
+          "main_off": true,
+          "side_brightness": 0,
+          "side_mode": 0,
+          "normal_main_sum": 0,
+          "black_main_sum": 0,
+          "blue_main_sum": 0,
+          "normal_side_max": 14,
+          "blue_side_rgb0": [
+            0,
+            20,
+            40
+          ],
+          "normal_output_flags": 2,
+          "black_output_flags": 0
+        },
+        {
+          "main_off": true,
+          "side_brightness": 0,
+          "side_mode": 1,
+          "normal_main_sum": 0,
+          "black_main_sum": 0,
+          "blue_main_sum": 0,
+          "normal_side_max": 14,
+          "blue_side_rgb0": [
+            0,
+            20,
+            40
+          ],
+          "normal_output_flags": 2,
+          "black_output_flags": 0
+        },
+        {
+          "main_off": true,
+          "side_brightness": 0,
+          "side_mode": 2,
+          "normal_main_sum": 0,
+          "black_main_sum": 0,
+          "blue_main_sum": 0,
+          "normal_side_max": 0,
+          "blue_side_rgb0": [
+            0,
+            20,
+            40
+          ],
+          "normal_output_flags": 2,
+          "black_output_flags": 0
+        },
+        {
+          "main_off": true,
+          "side_brightness": 0,
+          "side_mode": 3,
+          "normal_main_sum": 0,
+          "black_main_sum": 0,
+          "blue_main_sum": 0,
+          "normal_side_max": 14,
+          "blue_side_rgb0": [
+            0,
+            20,
+            40
+          ],
+          "normal_output_flags": 2,
+          "black_output_flags": 0
+        },
+        {
+          "main_off": true,
+          "side_brightness": 0,
+          "side_mode": 4,
+          "normal_main_sum": 0,
+          "black_main_sum": 0,
+          "blue_main_sum": 0,
+          "normal_side_max": 0,
+          "blue_side_rgb0": [
+            0,
+            20,
+            40
+          ],
+          "normal_output_flags": 2,
+          "black_output_flags": 0
+        },
+        {
+          "main_off": true,
+          "side_brightness": 1,
+          "side_mode": 0,
+          "normal_main_sum": 0,
+          "black_main_sum": 0,
+          "blue_main_sum": 0,
+          "normal_side_max": 29,
+          "blue_side_rgb0": [
+            0,
+            20,
+            40
+          ],
+          "normal_output_flags": 0,
+          "black_output_flags": 0
+        },
+        {
+          "main_off": true,
+          "side_brightness": 1,
+          "side_mode": 1,
+          "normal_main_sum": 0,
+          "black_main_sum": 0,
+          "blue_main_sum": 0,
+          "normal_side_max": 29,
+          "blue_side_rgb0": [
+            0,
+            20,
+            40
+          ],
+          "normal_output_flags": 0,
+          "black_output_flags": 0
+        },
+        {
+          "main_off": true,
+          "side_brightness": 1,
+          "side_mode": 2,
+          "normal_main_sum": 0,
+          "black_main_sum": 0,
+          "blue_main_sum": 0,
+          "normal_side_max": 0,
+          "blue_side_rgb0": [
+            0,
+            20,
+            40
+          ],
+          "normal_output_flags": 0,
+          "black_output_flags": 0
+        },
+        {
+          "main_off": true,
+          "side_brightness": 1,
+          "side_mode": 3,
+          "normal_main_sum": 0,
+          "black_main_sum": 0,
+          "blue_main_sum": 0,
+          "normal_side_max": 29,
+          "blue_side_rgb0": [
+            0,
+            20,
+            40
+          ],
+          "normal_output_flags": 0,
+          "black_output_flags": 0
+        },
+        {
+          "main_off": true,
+          "side_brightness": 1,
+          "side_mode": 4,
+          "normal_main_sum": 0,
+          "black_main_sum": 0,
+          "blue_main_sum": 0,
+          "normal_side_max": 0,
+          "blue_side_rgb0": [
+            0,
+            20,
+            40
+          ],
+          "normal_output_flags": 2,
+          "black_output_flags": 0
+        },
+        {
+          "main_off": true,
+          "side_brightness": 2,
+          "side_mode": 0,
+          "normal_main_sum": 0,
+          "black_main_sum": 0,
+          "blue_main_sum": 0,
+          "normal_side_max": 44,
+          "blue_side_rgb0": [
+            0,
+            20,
+            40
+          ],
+          "normal_output_flags": 0,
+          "black_output_flags": 0
+        },
+        {
+          "main_off": true,
+          "side_brightness": 2,
+          "side_mode": 1,
+          "normal_main_sum": 0,
+          "black_main_sum": 0,
+          "blue_main_sum": 0,
+          "normal_side_max": 44,
+          "blue_side_rgb0": [
+            0,
+            20,
+            40
+          ],
+          "normal_output_flags": 0,
+          "black_output_flags": 0
+        },
+        {
+          "main_off": true,
+          "side_brightness": 2,
+          "side_mode": 2,
+          "normal_main_sum": 0,
+          "black_main_sum": 0,
+          "blue_main_sum": 0,
+          "normal_side_max": 0,
+          "blue_side_rgb0": [
+            0,
+            20,
+            40
+          ],
+          "normal_output_flags": 0,
+          "black_output_flags": 0
+        },
+        {
+          "main_off": true,
+          "side_brightness": 2,
+          "side_mode": 3,
+          "normal_main_sum": 0,
+          "black_main_sum": 0,
+          "blue_main_sum": 0,
+          "normal_side_max": 44,
+          "blue_side_rgb0": [
+            0,
+            20,
+            40
+          ],
+          "normal_output_flags": 0,
+          "black_output_flags": 0
+        },
+        {
+          "main_off": true,
+          "side_brightness": 2,
+          "side_mode": 4,
+          "normal_main_sum": 0,
+          "black_main_sum": 0,
+          "blue_main_sum": 0,
+          "normal_side_max": 0,
+          "blue_side_rgb0": [
+            0,
+            20,
+            40
+          ],
+          "normal_output_flags": 2,
+          "black_output_flags": 0
+        },
+        {
+          "main_off": true,
+          "side_brightness": 3,
+          "side_mode": 0,
+          "normal_main_sum": 0,
+          "black_main_sum": 0,
+          "blue_main_sum": 0,
+          "normal_side_max": 64,
+          "blue_side_rgb0": [
+            0,
+            20,
+            40
+          ],
+          "normal_output_flags": 0,
+          "black_output_flags": 0
+        },
+        {
+          "main_off": true,
+          "side_brightness": 3,
+          "side_mode": 1,
+          "normal_main_sum": 0,
+          "black_main_sum": 0,
+          "blue_main_sum": 0,
+          "normal_side_max": 64,
+          "blue_side_rgb0": [
+            0,
+            20,
+            40
+          ],
+          "normal_output_flags": 0,
+          "black_output_flags": 0
+        },
+        {
+          "main_off": true,
+          "side_brightness": 3,
+          "side_mode": 2,
+          "normal_main_sum": 0,
+          "black_main_sum": 0,
+          "blue_main_sum": 0,
+          "normal_side_max": 0,
+          "blue_side_rgb0": [
+            0,
+            20,
+            40
+          ],
+          "normal_output_flags": 0,
+          "black_output_flags": 0
+        },
+        {
+          "main_off": true,
+          "side_brightness": 3,
+          "side_mode": 3,
+          "normal_main_sum": 0,
+          "black_main_sum": 0,
+          "blue_main_sum": 0,
+          "normal_side_max": 64,
+          "blue_side_rgb0": [
+            0,
+            20,
+            40
+          ],
+          "normal_output_flags": 0,
+          "black_output_flags": 0
+        },
+        {
+          "main_off": true,
+          "side_brightness": 3,
+          "side_mode": 4,
+          "normal_main_sum": 0,
+          "black_main_sum": 0,
+          "blue_main_sum": 0,
+          "normal_side_max": 0,
+          "blue_side_rgb0": [
+            0,
+            20,
+            40
+          ],
+          "normal_output_flags": 2,
+          "black_output_flags": 0
+        }
+      ],
+      "limitations": "Firmware RGB RAM and output flags only; no measurement of physical PWM/current or arbitrary prior buffer contents."
+    },
+    "physical_attempt": {
+      "status": "INCOMPLETE",
+      "date": "2026-10-17",
+      "finished_at": "2026-10-17T12:22:33.227123+00:00",
+      "transport": "rf",
+      "app_was_closed_for_capture": true,
+      "request_period_seconds": 1,
+      "effects_seconds_each": 5,
+      "physical_hardware_access": true,
+      "summaries": [],
+      "events": [],
+      "failure": {
+        "message": "\u7b49\u5f85 HID \u56de\u590d\u8d85\u65f6\u3002",
+        "traceback": "Traceback (most recent call last):\n  File \"<stdin>\", line 38, in <module>\n  File \"/Users/xiaoliu/workspace/q101-mq80-battery-bar/controller/protocol.py\", line 93, in info\n    state=self._request(INFO)\n  File \"/Users/xiaoliu/workspace/q101-mq80-battery-bar/controller/protocol.py\", line 90, in _request\n    return decode(request,self.transport.request(request))\n  File \"<stdin>\", line 23, in request\n  File \"<stdin>\", line 14, in record_request\n  File \"/Users/xiaoliu/workspace/q101-mq80-battery-bar/controller/transports.py\", line 108, in request\n    raise TransportError('\u7b49\u5f85 HID \u56de\u590d\u8d85\u65f6\u3002')\ncontroller.transports.TransportError: \u7b49\u5f85 HID \u56de\u590d\u8d85\u65f6\u3002\n"
+      },
+      "not_measured": [
+        "battery voltage",
+        "battery current",
+        "true remaining capacity"
+      ],
+      "note": "Protocol replies expose original cached percent, not raw ADC."
+    },
+    "adc_and_rf_code_audit": {
+      "report": "power-code-audit-20261017.json",
+      "script": "../hid-source/analyze_power.py",
+      "status": "PASS_CODE_AUDIT_HARDWARE_CAUSE_UNCONFIRMED",
+      "device_access": "NONE",
+      "stock_sampling": {
+        "timer_address": "0x80a74",
+        "idle_seconds_address": "0x80a64",
+        "period_ticks": 64000000,
+        "ticks_per_second": 16000000,
+        "steady_period_seconds": 4.0,
+        "startup_can_override_timer": true
+      },
+      "rf_rainbow_streams": [
+        {
+          "brightness": 25,
+          "rgb_frames": 100,
+          "target_frame_interval_ms": 100,
+          "keyboard_rf_transmit_submissions": 400,
+          "submissions_per_rgb_frame": 4.0,
+          "transmit_packet_types": {
+            "0x30": 100,
+            "0xb7": 300
+          },
+          "original_adc_task_calls": 2,
+          "instructions_including_modeled_boundary_wrappers": 1081974,
+          "protected_writes_from_rf_or_rendering": [],
+          "initial_percent": 80,
+          "final_percent": 80,
+          "adc_fixture": 3367,
+          "scope": "Fixed injected ADC input. RF delivery/ACKs are immediate models; power, retries and PHY airtime are not modeled."
+        },
+        {
+          "brightness": 65,
+          "rgb_frames": 100,
+          "target_frame_interval_ms": 100,
+          "keyboard_rf_transmit_submissions": 400,
+          "submissions_per_rgb_frame": 4.0,
+          "transmit_packet_types": {
+            "0x30": 100,
+            "0xb7": 300
+          },
+          "original_adc_task_calls": 2,
+          "instructions_including_modeled_boundary_wrappers": 1081974,
+          "protected_writes_from_rf_or_rendering": [],
+          "initial_percent": 80,
+          "final_percent": 80,
+          "adc_fixture": 3367,
+          "scope": "Fixed injected ADC input. RF delivery/ACKs are immediate models; power, retries and PHY airtime are not modeled."
+        }
+      ],
+      "original_and_patched_adc_results_identical": true,
+      "startup_sample_intervals_seconds": [
+        0.081168,
+        0.081168,
+        2.001168,
+        2.001168,
+        2.001168,
+        4.001
+      ]
+    }
+  },
+  "interpretation": {
+    "stock_estimator_can_step_down_one_percent": "In the executed steady discharge path, five lower-target samples reduce the stored percentage by one. Higher samples between them do not clear the count. The main-loop threshold is over four seconds, giving roughly twenty seconds per point under persistent low input.",
+    "no_quick_rebound_is_not_decisive": "The full original ADC function also retains the lower percentage after the injected input recovers. This reproduces the no-rebound behavior without modeling capacity loss, and is not proof of the physical cause.",
+    "emulation_scope": "The complete stock ADC conversion/filter routine, exact main-loop scheduling fragment and RF configuration receive/reply/closing code were executed. ADC, initialization checkpoint, GPIO and delivery are fixtures. This is not a full boot, interrupt-timing or electrical simulation.",
+    "host_brightness": "Host RGB overlay uses its requested RGB scaled by fixed 162/255 and overrides the original side-brightness setting.",
+    "potential_causes_to_distinguish": [
+      "Voltage-estimate adjustment under changed load",
+      "Actual extra electrical load during host control",
+      "Unexpected hardware/output or sampling behavior"
+    ],
+    "rf_communication_cost": "A single RGB FRAME submitted one 0x30 reply and three 0xB7 closing packets at the keyboard TX boundary. At the app target of 10 updates per second this corresponds to 40 keyboard transmit submissions per second before physical retransmission behavior. Receive/ACK work is additional; airtime and power are not modeled.",
+    "startup_exception": "The original warmup path can set the reported percentage directly and override its sample timer, producing around 80 ms then 2 s intervals in the controlled fixture. The real keyboard warmup state during the reported event is unknown.",
+    "fixed_input_control": "At fixed injected ADC input, two 100-frame rainbow streams (25 and 65 percent brightness) both held the reported percentage at 80. Guarded estimator state, calibration and sampling timer were not written by the tested RF or rendering tasks.",
+    "mitigation_scope": "App 1.0.1 lowers default brightness and limits effect duration. These are exposure limits, not a demonstrated fix for the reported rapid decline."
+  },
+  "unresolved": [
+    "Actual battery current, voltage, raw ADC readings and lost capacity",
+    "Actual brightness during the reported 2.4G rainbow effect",
+    "Whether the physical keyboard was in startup/warmup or steady filtering",
+    "Whether black control reproduces the decline compared with original lighting",
+    "Physical ADC calibration and actual radio/sample scheduling, retries and airtime"
+  ],
+  "next_capture": {
+    "phases": [
+      "Original lighting baseline",
+      "Five-second host-black frame",
+      "Recovery",
+      "Five-second blue frame at 25 percent",
+      "Recovery"
+    ],
+    "record": "Raw matching HID request/reply bytes with timestamps and reply byte 9",
+    "lighting_frames_sent_this_investigation": 0,
+    "status": "DEFERRED_BY_USER",
+    "reason": "User is unavailable for physical testing and explicitly requested code-only investigation.",
+    "last_attempt_limitation": "Receiver opens but keyboard returns no reply; UI tool also reports Mac locked and requires manual unlock.",
+    "requires_physical_adc_or_current_to_resolve": "Protocol byte 9 is already filtered and cannot distinguish capacity loss from voltage-estimate adjustment."
+  },
+  "references": [
+    {
+      "url": "https://www.ti.com/document-viewer/lit/html/SSZT786",
+      "use": "General explanation of voltage-based estimates with varying load; not proof of this device diagnosis."
+    },
+    {
+      "url": "https://doc.telink-semi.cn/doc/en/software/res/sdk/ble/b91_ble_single_connection_en/b91_ble_single_connection_en/",
+      "use": "General Telink ADC battery-detection background; not treated as the exact MQ80 application code."
+    }
+  ],
+  "boundaries": {
+    "current_measured": false,
+    "voltage_measured": false,
+    "true_capacity_loss_measured": false,
+    "firmware_modified_or_flashed": false,
+    "app_code_changed_this_investigation": false,
+    "artificial_display_smoothing_added": false,
+    "device_access_after_code_only_request": "NONE",
+    "production_code_changed_during_code_audit": false
+  },
+  "firmware_sha256": "7b800e3edab6b2e8c421c3b7729464e990edfd2e5a2647ded6059c1901006534",
+  "updated_at": "2026-10-17T12:39:58.197307+00:00",
+  "user_confirmed_context": {
+    "transport": "2.4G",
+    "effect": "rainbow",
+    "brightness_percent": null,
+    "displayed_percent_recovers_after_release": false,
+    "current_request": "Code-only analysis; physical tests deferred because the user is unavailable."
+  },
+  "next_implementation_direction": "A firmware-local effect could replace repeated host RGB transactions. This would reduce transaction count; it has not been implemented here and is not a verified electrical root-cause fix."
+}

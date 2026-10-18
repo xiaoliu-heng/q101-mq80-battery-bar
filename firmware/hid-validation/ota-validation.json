@@ -1,0 +1,533 @@
+{
+  "status": "PASS_OFFLINE_ONLY",
+  "count": 16,
+  "passed": 16,
+  "rows": [
+    {
+      "status": "PASS",
+      "scenario": "valid_image",
+      "result_code": 0,
+      "running_sha256": "f3e86554be1ed5faf11750fceea85980c9ccd080912be4552e8317fb09ef7719",
+      "candidate_sha256": "f380297767d86cba31d4264b1b419a69a17e7e6b7370413992eeb3b47d92a61c",
+      "active_bank": "0x0",
+      "target_bank": "0x40000",
+      "active_boot_flag": "0x0",
+      "target_boot_flag": "0x4b",
+      "active_unchanged": false,
+      "real_crc_executed": true,
+      "instructions": 4181893,
+      "flash_operations": [
+        {
+          "op": "program",
+          "address": 262144,
+          "size": 16
+        },
+        {
+          "op": "program",
+          "address": 262176,
+          "size": 1
+        },
+        {
+          "op": "program",
+          "address": 32,
+          "size": 1
+        }
+      ],
+      "no_device_access": true,
+      "limitations": [
+        "仅执行 OTA END / CRC；候选数据预置于虚拟 NOR。",
+        "没有执行接收器、完整 USB 传输或真实 Flash。",
+        "没有证明启动失败后的强制恢复、自动回滚或掉电恢复。"
+      ],
+      "direction": "battery-bar-to-hid"
+    },
+    {
+      "status": "PASS",
+      "scenario": "incomplete",
+      "result_code": 11,
+      "running_sha256": "f3e86554be1ed5faf11750fceea85980c9ccd080912be4552e8317fb09ef7719",
+      "candidate_sha256": "f380297767d86cba31d4264b1b419a69a17e7e6b7370413992eeb3b47d92a61c",
+      "active_bank": "0x0",
+      "target_bank": "0x40000",
+      "active_boot_flag": "0x4b",
+      "target_boot_flag": "0xff",
+      "active_unchanged": true,
+      "real_crc_executed": false,
+      "instructions": 68612,
+      "flash_operations": [],
+      "no_device_access": true,
+      "limitations": [
+        "仅执行 OTA END / CRC；候选数据预置于虚拟 NOR。",
+        "没有执行接收器、完整 USB 传输或真实 Flash。",
+        "没有证明启动失败后的强制恢复、自动回滚或掉电恢复。"
+      ],
+      "direction": "battery-bar-to-hid"
+    },
+    {
+      "status": "PASS",
+      "scenario": "crc_error",
+      "result_code": 7,
+      "running_sha256": "f3e86554be1ed5faf11750fceea85980c9ccd080912be4552e8317fb09ef7719",
+      "candidate_sha256": "f380297767d86cba31d4264b1b419a69a17e7e6b7370413992eeb3b47d92a61c",
+      "active_bank": "0x0",
+      "target_bank": "0x40000",
+      "active_boot_flag": "0x4b",
+      "target_boot_flag": "0xff",
+      "active_unchanged": true,
+      "real_crc_executed": true,
+      "instructions": 4181891,
+      "flash_operations": [
+        {
+          "op": "program",
+          "address": 262144,
+          "size": 16
+        },
+        {
+          "op": "program",
+          "address": 262176,
+          "size": 1
+        },
+        {
+          "op": "erase",
+          "address": 262144,
+          "size": 4096
+        }
+      ],
+      "no_device_access": true,
+      "limitations": [
+        "仅执行 OTA END / CRC；候选数据预置于虚拟 NOR。",
+        "没有执行接收器、完整 USB 传输或真实 Flash。",
+        "没有证明启动失败后的强制恢复、自动回滚或掉电恢复。"
+      ],
+      "direction": "battery-bar-to-hid"
+    },
+    {
+      "status": "PASS",
+      "scenario": "header_readback_error",
+      "result_code": 4,
+      "running_sha256": "f3e86554be1ed5faf11750fceea85980c9ccd080912be4552e8317fb09ef7719",
+      "candidate_sha256": "f380297767d86cba31d4264b1b419a69a17e7e6b7370413992eeb3b47d92a61c",
+      "active_bank": "0x0",
+      "target_bank": "0x40000",
+      "active_boot_flag": "0x4b",
+      "target_boot_flag": "0xff",
+      "active_unchanged": true,
+      "real_crc_executed": false,
+      "instructions": 68661,
+      "flash_operations": [
+        {
+          "op": "program",
+          "address": 262144,
+          "size": 16
+        },
+        {
+          "op": "erase",
+          "address": 262144,
+          "size": 4096
+        }
+      ],
+      "no_device_access": true,
+      "limitations": [
+        "仅执行 OTA END / CRC；候选数据预置于虚拟 NOR。",
+        "没有执行接收器、完整 USB 传输或真实 Flash。",
+        "没有证明启动失败后的强制恢复、自动回滚或掉电恢复。"
+      ],
+      "direction": "battery-bar-to-hid"
+    },
+    {
+      "status": "PASS",
+      "scenario": "valid_image",
+      "result_code": 0,
+      "running_sha256": "f3e86554be1ed5faf11750fceea85980c9ccd080912be4552e8317fb09ef7719",
+      "candidate_sha256": "f380297767d86cba31d4264b1b419a69a17e7e6b7370413992eeb3b47d92a61c",
+      "active_bank": "0x40000",
+      "target_bank": "0x0",
+      "active_boot_flag": "0x0",
+      "target_boot_flag": "0x4b",
+      "active_unchanged": false,
+      "real_crc_executed": true,
+      "instructions": 4181893,
+      "flash_operations": [
+        {
+          "op": "program",
+          "address": 0,
+          "size": 16
+        },
+        {
+          "op": "program",
+          "address": 32,
+          "size": 1
+        },
+        {
+          "op": "program",
+          "address": 262176,
+          "size": 1
+        }
+      ],
+      "no_device_access": true,
+      "limitations": [
+        "仅执行 OTA END / CRC；候选数据预置于虚拟 NOR。",
+        "没有执行接收器、完整 USB 传输或真实 Flash。",
+        "没有证明启动失败后的强制恢复、自动回滚或掉电恢复。"
+      ],
+      "direction": "battery-bar-to-hid"
+    },
+    {
+      "status": "PASS",
+      "scenario": "incomplete",
+      "result_code": 11,
+      "running_sha256": "f3e86554be1ed5faf11750fceea85980c9ccd080912be4552e8317fb09ef7719",
+      "candidate_sha256": "f380297767d86cba31d4264b1b419a69a17e7e6b7370413992eeb3b47d92a61c",
+      "active_bank": "0x40000",
+      "target_bank": "0x0",
+      "active_boot_flag": "0x4b",
+      "target_boot_flag": "0xff",
+      "active_unchanged": true,
+      "real_crc_executed": false,
+      "instructions": 68612,
+      "flash_operations": [],
+      "no_device_access": true,
+      "limitations": [
+        "仅执行 OTA END / CRC；候选数据预置于虚拟 NOR。",
+        "没有执行接收器、完整 USB 传输或真实 Flash。",
+        "没有证明启动失败后的强制恢复、自动回滚或掉电恢复。"
+      ],
+      "direction": "battery-bar-to-hid"
+    },
+    {
+      "status": "PASS",
+      "scenario": "crc_error",
+      "result_code": 7,
+      "running_sha256": "f3e86554be1ed5faf11750fceea85980c9ccd080912be4552e8317fb09ef7719",
+      "candidate_sha256": "f380297767d86cba31d4264b1b419a69a17e7e6b7370413992eeb3b47d92a61c",
+      "active_bank": "0x40000",
+      "target_bank": "0x0",
+      "active_boot_flag": "0x4b",
+      "target_boot_flag": "0xff",
+      "active_unchanged": true,
+      "real_crc_executed": true,
+      "instructions": 4181889,
+      "flash_operations": [
+        {
+          "op": "program",
+          "address": 0,
+          "size": 16
+        },
+        {
+          "op": "program",
+          "address": 32,
+          "size": 1
+        },
+        {
+          "op": "erase",
+          "address": 0,
+          "size": 4096
+        }
+      ],
+      "no_device_access": true,
+      "limitations": [
+        "仅执行 OTA END / CRC；候选数据预置于虚拟 NOR。",
+        "没有执行接收器、完整 USB 传输或真实 Flash。",
+        "没有证明启动失败后的强制恢复、自动回滚或掉电恢复。"
+      ],
+      "direction": "battery-bar-to-hid"
+    },
+    {
+      "status": "PASS",
+      "scenario": "header_readback_error",
+      "result_code": 4,
+      "running_sha256": "f3e86554be1ed5faf11750fceea85980c9ccd080912be4552e8317fb09ef7719",
+      "candidate_sha256": "f380297767d86cba31d4264b1b419a69a17e7e6b7370413992eeb3b47d92a61c",
+      "active_bank": "0x40000",
+      "target_bank": "0x0",
+      "active_boot_flag": "0x4b",
+      "target_boot_flag": "0xff",
+      "active_unchanged": true,
+      "real_crc_executed": false,
+      "instructions": 68661,
+      "flash_operations": [
+        {
+          "op": "program",
+          "address": 0,
+          "size": 16
+        },
+        {
+          "op": "erase",
+          "address": 0,
+          "size": 4096
+        }
+      ],
+      "no_device_access": true,
+      "limitations": [
+        "仅执行 OTA END / CRC；候选数据预置于虚拟 NOR。",
+        "没有执行接收器、完整 USB 传输或真实 Flash。",
+        "没有证明启动失败后的强制恢复、自动回滚或掉电恢复。"
+      ],
+      "direction": "battery-bar-to-hid"
+    },
+    {
+      "status": "PASS",
+      "scenario": "valid_image",
+      "result_code": 0,
+      "running_sha256": "f380297767d86cba31d4264b1b419a69a17e7e6b7370413992eeb3b47d92a61c",
+      "candidate_sha256": "f3e86554be1ed5faf11750fceea85980c9ccd080912be4552e8317fb09ef7719",
+      "active_bank": "0x0",
+      "target_bank": "0x40000",
+      "active_boot_flag": "0x0",
+      "target_boot_flag": "0x4b",
+      "active_unchanged": false,
+      "real_crc_executed": true,
+      "instructions": 4137292,
+      "flash_operations": [
+        {
+          "op": "program",
+          "address": 262144,
+          "size": 16
+        },
+        {
+          "op": "program",
+          "address": 262176,
+          "size": 1
+        },
+        {
+          "op": "program",
+          "address": 32,
+          "size": 1
+        }
+      ],
+      "no_device_access": true,
+      "limitations": [
+        "仅执行 OTA END / CRC；候选数据预置于虚拟 NOR。",
+        "没有执行接收器、完整 USB 传输或真实 Flash。",
+        "没有证明启动失败后的强制恢复、自动回滚或掉电恢复。"
+      ],
+      "direction": "hid-to-battery-bar"
+    },
+    {
+      "status": "PASS",
+      "scenario": "incomplete",
+      "result_code": 11,
+      "running_sha256": "f380297767d86cba31d4264b1b419a69a17e7e6b7370413992eeb3b47d92a61c",
+      "candidate_sha256": "f3e86554be1ed5faf11750fceea85980c9ccd080912be4552e8317fb09ef7719",
+      "active_bank": "0x0",
+      "target_bank": "0x40000",
+      "active_boot_flag": "0x4b",
+      "target_boot_flag": "0xff",
+      "active_unchanged": true,
+      "real_crc_executed": false,
+      "instructions": 68680,
+      "flash_operations": [],
+      "no_device_access": true,
+      "limitations": [
+        "仅执行 OTA END / CRC；候选数据预置于虚拟 NOR。",
+        "没有执行接收器、完整 USB 传输或真实 Flash。",
+        "没有证明启动失败后的强制恢复、自动回滚或掉电恢复。"
+      ],
+      "direction": "hid-to-battery-bar"
+    },
+    {
+      "status": "PASS",
+      "scenario": "crc_error",
+      "result_code": 7,
+      "running_sha256": "f380297767d86cba31d4264b1b419a69a17e7e6b7370413992eeb3b47d92a61c",
+      "candidate_sha256": "f3e86554be1ed5faf11750fceea85980c9ccd080912be4552e8317fb09ef7719",
+      "active_bank": "0x0",
+      "target_bank": "0x40000",
+      "active_boot_flag": "0x4b",
+      "target_boot_flag": "0xff",
+      "active_unchanged": true,
+      "real_crc_executed": true,
+      "instructions": 4137290,
+      "flash_operations": [
+        {
+          "op": "program",
+          "address": 262144,
+          "size": 16
+        },
+        {
+          "op": "program",
+          "address": 262176,
+          "size": 1
+        },
+        {
+          "op": "erase",
+          "address": 262144,
+          "size": 4096
+        }
+      ],
+      "no_device_access": true,
+      "limitations": [
+        "仅执行 OTA END / CRC；候选数据预置于虚拟 NOR。",
+        "没有执行接收器、完整 USB 传输或真实 Flash。",
+        "没有证明启动失败后的强制恢复、自动回滚或掉电恢复。"
+      ],
+      "direction": "hid-to-battery-bar"
+    },
+    {
+      "status": "PASS",
+      "scenario": "header_readback_error",
+      "result_code": 4,
+      "running_sha256": "f380297767d86cba31d4264b1b419a69a17e7e6b7370413992eeb3b47d92a61c",
+      "candidate_sha256": "f3e86554be1ed5faf11750fceea85980c9ccd080912be4552e8317fb09ef7719",
+      "active_bank": "0x0",
+      "target_bank": "0x40000",
+      "active_boot_flag": "0x4b",
+      "target_boot_flag": "0xff",
+      "active_unchanged": true,
+      "real_crc_executed": false,
+      "instructions": 68729,
+      "flash_operations": [
+        {
+          "op": "program",
+          "address": 262144,
+          "size": 16
+        },
+        {
+          "op": "erase",
+          "address": 262144,
+          "size": 4096
+        }
+      ],
+      "no_device_access": true,
+      "limitations": [
+        "仅执行 OTA END / CRC；候选数据预置于虚拟 NOR。",
+        "没有执行接收器、完整 USB 传输或真实 Flash。",
+        "没有证明启动失败后的强制恢复、自动回滚或掉电恢复。"
+      ],
+      "direction": "hid-to-battery-bar"
+    },
+    {
+      "status": "PASS",
+      "scenario": "valid_image",
+      "result_code": 0,
+      "running_sha256": "f380297767d86cba31d4264b1b419a69a17e7e6b7370413992eeb3b47d92a61c",
+      "candidate_sha256": "f3e86554be1ed5faf11750fceea85980c9ccd080912be4552e8317fb09ef7719",
+      "active_bank": "0x40000",
+      "target_bank": "0x0",
+      "active_boot_flag": "0x0",
+      "target_boot_flag": "0x4b",
+      "active_unchanged": false,
+      "real_crc_executed": true,
+      "instructions": 4137292,
+      "flash_operations": [
+        {
+          "op": "program",
+          "address": 0,
+          "size": 16
+        },
+        {
+          "op": "program",
+          "address": 32,
+          "size": 1
+        },
+        {
+          "op": "program",
+          "address": 262176,
+          "size": 1
+        }
+      ],
+      "no_device_access": true,
+      "limitations": [
+        "仅执行 OTA END / CRC；候选数据预置于虚拟 NOR。",
+        "没有执行接收器、完整 USB 传输或真实 Flash。",
+        "没有证明启动失败后的强制恢复、自动回滚或掉电恢复。"
+      ],
+      "direction": "hid-to-battery-bar"
+    },
+    {
+      "status": "PASS",
+      "scenario": "incomplete",
+      "result_code": 11,
+      "running_sha256": "f380297767d86cba31d4264b1b419a69a17e7e6b7370413992eeb3b47d92a61c",
+      "candidate_sha256": "f3e86554be1ed5faf11750fceea85980c9ccd080912be4552e8317fb09ef7719",
+      "active_bank": "0x40000",
+      "target_bank": "0x0",
+      "active_boot_flag": "0x4b",
+      "target_boot_flag": "0xff",
+      "active_unchanged": true,
+      "real_crc_executed": false,
+      "instructions": 68680,
+      "flash_operations": [],
+      "no_device_access": true,
+      "limitations": [
+        "仅执行 OTA END / CRC；候选数据预置于虚拟 NOR。",
+        "没有执行接收器、完整 USB 传输或真实 Flash。",
+        "没有证明启动失败后的强制恢复、自动回滚或掉电恢复。"
+      ],
+      "direction": "hid-to-battery-bar"
+    },
+    {
+      "status": "PASS",
+      "scenario": "crc_error",
+      "result_code": 7,
+      "running_sha256": "f380297767d86cba31d4264b1b419a69a17e7e6b7370413992eeb3b47d92a61c",
+      "candidate_sha256": "f3e86554be1ed5faf11750fceea85980c9ccd080912be4552e8317fb09ef7719",
+      "active_bank": "0x40000",
+      "target_bank": "0x0",
+      "active_boot_flag": "0x4b",
+      "target_boot_flag": "0xff",
+      "active_unchanged": true,
+      "real_crc_executed": true,
+      "instructions": 4137288,
+      "flash_operations": [
+        {
+          "op": "program",
+          "address": 0,
+          "size": 16
+        },
+        {
+          "op": "program",
+          "address": 32,
+          "size": 1
+        },
+        {
+          "op": "erase",
+          "address": 0,
+          "size": 4096
+        }
+      ],
+      "no_device_access": true,
+      "limitations": [
+        "仅执行 OTA END / CRC；候选数据预置于虚拟 NOR。",
+        "没有执行接收器、完整 USB 传输或真实 Flash。",
+        "没有证明启动失败后的强制恢复、自动回滚或掉电恢复。"
+      ],
+      "direction": "hid-to-battery-bar"
+    },
+    {
+      "status": "PASS",
+      "scenario": "header_readback_error",
+      "result_code": 4,
+      "running_sha256": "f380297767d86cba31d4264b1b419a69a17e7e6b7370413992eeb3b47d92a61c",
+      "candidate_sha256": "f3e86554be1ed5faf11750fceea85980c9ccd080912be4552e8317fb09ef7719",
+      "active_bank": "0x40000",
+      "target_bank": "0x0",
+      "active_boot_flag": "0x4b",
+      "target_boot_flag": "0xff",
+      "active_unchanged": true,
+      "real_crc_executed": false,
+      "instructions": 68729,
+      "flash_operations": [
+        {
+          "op": "program",
+          "address": 0,
+          "size": 16
+        },
+        {
+          "op": "erase",
+          "address": 0,
+          "size": 4096
+        }
+      ],
+      "no_device_access": true,
+      "limitations": [
+        "仅执行 OTA END / CRC；候选数据预置于虚拟 NOR。",
+        "没有执行接收器、完整 USB 传输或真实 Flash。",
+        "没有证明启动失败后的强制恢复、自动回滚或掉电恢复。"
+      ],
+      "direction": "hid-to-battery-bar"
+    }
+  ],
+  "hardware_access": false,
+  "recovery_after_boot_failure_proven": false
+}

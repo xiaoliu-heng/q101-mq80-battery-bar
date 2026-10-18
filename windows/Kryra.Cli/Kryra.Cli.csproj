@@ -1,0 +1,4 @@
+<Project Sdk="Microsoft.NET.Sdk">
+ <PropertyGroup><OutputType>Exe</OutputType><AssemblyName>kryractl</AssemblyName></PropertyGroup>
+ <ItemGroup><ProjectReference Include="..\Kryra.Core\Kryra.Core.csproj" /></ItemGroup>
+</Project>

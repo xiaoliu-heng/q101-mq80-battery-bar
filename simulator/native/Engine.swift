@@ -129,6 +129,9 @@ struct LabError: LocalizedError {
     @Published var memorySize = 64
     @Published var memoryText = "选择地址读取虚拟内存。"
     @Published var otaCase = "valid_image"
+    @Published var sideHIDColors = Array(repeating:[255,128,0],count:9)
+    @Published var sideHIDBrightness = 100.0
+    @Published var sideHIDPeriod = 5.0
 
     private let engine: EngineConnection
     init(engineResources:URL? = nil,dataDirectory:URL? = nil) { engine = EngineConnection(resources:engineResources,dataDirectory:dataDirectory) }
@@ -142,6 +145,29 @@ struct LabError: LocalizedError {
     private var envPending: [String: JSONValue] = [:]
     private var debounce: [String: Task<Void, Never>] = [:]
     private var physicalInput = PhysicalKeyboardState()
+    private var sideEditTask: Task<Void,Never>?
+
+    var sideHID: JSONValue { runtime["side_hid"] }
+    var sideHIDReady: Bool { sideHID["supported"].flag && sideHID["control_ready"].flag }
+    var sideHIDConnection: String { environment["connection"]?.text == "rf" ? "rf" : "usb" }
+    var sideHIDTransportName: String { sideHIDConnection == "rf" ? "2.4G" : "USB" }
+    var firmwareVersionCaption: String {
+        let version = runtime["firmware"]["firmware_version"]
+        guard !version.isNull else { return "此镜像未提供可查询的固件版本号" }
+        let labels = ["fn_b_battery_bar":"电量条", "battery_query":"电量查询", "usb_side_rgb":"USB 控灯", "rf_side_rgb":"2.4G 控灯", "local_effects":"本地灯效"]
+        let features = runtime["firmware"]["firmware_features"].values.map{labels[$0.text] ?? $0.text}.joined(separator:" / ")
+        return "固件 v\(version.text) · 构建 \(runtime["firmware"]["firmware_build"].int) · \(features)"
+    }
+    var sideHIDCaption: String {
+        if !sideHID["supported"].flag { return "请载入侧灯实验固件" }
+        if sideHIDConnection == "rf" && !sideHID["rf_supported"].flag { return "2.4G 需要 USB + 2.4G 实验固件" }
+        if runtime["status"].text == "sleeping" { return "键盘已休眠 · 请先按键唤醒" }
+        if !sideHID["control_ready"].flag { return "等待虚拟 \(sideHIDTransportName) 主机" }
+        if runtime["battery"]["query_active"].flag { return "电量条优先 · 结束后恢复侧灯" }
+        if sideHID["mode"].text == "rainbow" { return playing ? "\(sideHIDTransportName) 彩虹播放中 · \(sideHID["fps"].int) FPS" : "彩虹已暂停" }
+        if sideHID["mode"].text != "off" { return "电脑颜色控制中" }
+        return sideHID["active"].flag ? "已停止发送 · 等待超时恢复" : "原侧灯状态"
+    }
 
     var highlightedKeys: Set<String> { selectedKeys.union(physicalKeys).union(runtime["keys"].values.map(\.text)) }
 
@@ -203,6 +229,7 @@ struct LabError: LocalizedError {
         for edit in edits { await edit.value }
     }
     private func finishInput() async {
+        if let edits = sideEditTask { await edits.value }
         if let previous = intentTail { await previous.value }
         await finishEnvironment()
         if let previous = actionTail { _ = await previous.value }
@@ -233,6 +260,7 @@ struct LabError: LocalizedError {
             do {
                 let result = try await engine.call("action", params)
                 apply(result, foreground: !background)
+                if ["reset","restore","load_job"].contains(params["action"].text) { syncSideHIDControls() }
                 return result["error"].isNull ? result : nil
             } catch { show(error); return nil }
         }
@@ -334,6 +362,76 @@ struct LabError: LocalizedError {
     func pause() { playing = false; epoch += 1; clockTask?.cancel(); clockTask = nil }
     func togglePlayback() { playing ? pause() : play() }
     func setClock(_ mode: String) { let wasPlaying = playing; pause(); clockMode = mode; if wasPlaying { play() } }
+
+    func prepareSideHID() { prepareSideHID(connection:"usb") }
+    func prepareSideHID(connection:String) {
+        guard ["usb","rf"].contains(connection), let image = images.filter({$0["side_hid_rf"].flag && !$0["firmware_version"].isNull}).max(by: {
+            $0["firmware_version"].text.compare($1["firmware_version"].text, options: .numeric) == .orderedAscending
+        }) else { issue = "内置带版本号的 USB + 2.4G 实验固件缺失，请重新构建应用。"; return }
+        setKeyboardCapture(false); pause(); sideEditTask?.cancel(); sideEditTask = nil
+        page = .sideHID
+        submit { [self] in
+            await finishEnvironment()
+            var inputs = environment
+            inputs["connection"] = .string(connection); inputs["cable"] = .bool(connection == "usb")
+            inputs["receiver"] = true
+            inputs["host_ready"] = true; inputs["host_suspended"] = false
+            if await perform(["action":"reset","firmware":image["id"],"environment":.object(inputs)]) != nil {
+                success("侧灯实验固件已载入 · 虚拟 \(connection == "rf" ? "2.4G" : "USB") 就绪")
+            }
+        }
+    }
+    private func sideHIDParameters(_ mode: String) -> JSONValue {
+        ["action":"side_hid","mode":.string(mode),
+         "colors":.array(sideHIDColors.map{.array($0.map{.int($0)})}),
+         "brightness":.int(Int(sideHIDBrightness.rounded())),"period_ms":.int(Int((sideHIDPeriod*1000).rounded()))]
+    }
+    private func syncSideHIDControls() {
+        let colors = sideHID["colors"].values.map{$0.values.map(\.int)}
+        if colors.count == 9 && colors.allSatisfy({$0.count == 3}) { sideHIDColors = colors }
+        sideHIDBrightness = sideHID["brightness"].double
+        sideHIDPeriod = sideHID["period_ms"].double / 1000
+    }
+    func controlSideHID(_ mode:String, generation:Int? = nil) {
+        sideEditTask?.cancel(); sideEditTask = nil
+        let current = generation ?? epoch, params = sideHIDParameters(mode)
+        submit { [self] in
+            await finishEnvironment()
+            if await perform(params) != nil {
+                success(mode == "release" ? "已释放侧灯控制" : mode == "stop" ? "停止发送，等待固件超时恢复" : "侧灯 HID · 实时固件预览")
+                if mode != "release" && mode != "stop" && epoch == current && !playing { play() }
+            }
+        }
+    }
+    private func queueSideHIDEdit(_ mode:String) {
+        guard sideHIDReady else { return }
+        sideEditTask?.cancel()
+        let current = epoch
+        sideEditTask = Task { [weak self] in
+            try? await Task.sleep(nanoseconds:60_000_000)
+            guard let self, !Task.isCancelled else { return }
+            controlSideHID(mode,generation:current)
+        }
+    }
+    func setSideHIDColor(_ color:Color, segment:Int? = nil) {
+        guard let rgb = NSColor(color).usingColorSpace(.sRGB) else { return }
+        let values = [rgb.redComponent,rgb.greenComponent,rgb.blueComponent].map{max(0,min(255,Int(($0*255).rounded())))}
+        if let segment { sideHIDColors[segment] = values }
+        else { sideHIDColors = Array(repeating:values,count:9) }
+        queueSideHIDEdit(segment == nil ? "solid" : "frame")
+    }
+    func sideHIDColorBinding(_ segment:Int? = nil) -> Binding<Color> {
+        Binding(get:{ let rgb = self.sideHIDColors[segment ?? 0]; return Color(red:Double(rgb[0])/255,green:Double(rgb[1])/255,blue:Double(rgb[2])/255) },
+                set:{ self.setSideHIDColor($0,segment:segment) })
+    }
+    func setSideHIDBrightness(_ value:Double) {
+        sideHIDBrightness = value.rounded()
+        if sideHID["mode"].text != "off" { queueSideHIDEdit(sideHID["mode"].text) }
+    }
+    func setSideHIDPeriod(_ value:Double) {
+        sideHIDPeriod = value
+        if sideHID["mode"].text == "rainbow" { queueSideHIDEdit("rainbow") }
+    }
     func play() {
         guard ready, !playing, runtime["error"].isNull else { return }
         playing = true; epoch += 1; let generation = epoch; clockAt = ProcessInfo.processInfo.systemUptime
@@ -351,6 +449,7 @@ struct LabError: LocalizedError {
         }
     }
     func reset(_ firmware: String? = nil) {
+        sideEditTask?.cancel(); sideEditTask = nil
         setKeyboardCapture(false)
         pause(); selectedKeys.removeAll(); physicalInput = PhysicalKeyboardState(); physicalKeys.removeAll(); issue = nil
         let inputs = environment
@@ -367,6 +466,7 @@ struct LabError: LocalizedError {
             guard let self else { return }
             if delayed { try? await Task.sleep(nanoseconds: 180_000_000); if Task.isCancelled { return } }
             if key == "connection" || key == "keymap_preset" {
+                sideEditTask?.cancel(); sideEditTask = nil
                 setKeyboardCapture(false); selectedKeys.removeAll()
                 pause()
                 if key == "connection" { environment["cable"] = .bool(value.text == "usb") }
@@ -452,6 +552,7 @@ struct LabError: LocalizedError {
         do { let value = try JSONDecoder().decode(JSONValue.self,from:Data(scenarioJSON.utf8)); save(try value.data(pretty:true),name:"MQ80-scenario.json") } catch { show(error) }
     }
     func importFirmware() {
+        sideEditTask?.cancel(); sideEditTask = nil
         pause()
         openFile("导入 CS836B 应用 BIN") { [weak self] url in
             guard let self else { return }
@@ -467,6 +568,7 @@ struct LabError: LocalizedError {
         }
     }
     func importJSON(snapshot: Bool) {
+        sideEditTask?.cancel(); sideEditTask = nil
         pause()
         openFile(snapshot ? "载入运行快照" : "导入场景 JSON") { [weak self] url in
             guard let self else { return }

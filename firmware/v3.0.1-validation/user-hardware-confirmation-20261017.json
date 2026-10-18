@@ -1,0 +1,11 @@
+{
+  "date": "2026-10-17",
+  "source": "direct user report in the development conversation",
+  "firmware_context": "v3.0.1, build 2, supplied and pushed immediately before the report",
+  "reported_transports": ["usb", "rf"],
+  "reported_functions": ["battery_query", "side_lighting_control"],
+  "user_statement": "我已经在真机验证了这个固件，可以获取电量，控制灯光。2.4g和usb都试过了。",
+  "independent_device_capture_this_confirmation": false,
+  "device_binary_sha256_read_back": false,
+  "scope": "User-confirmed firmware behavior; not a test of the newly created macOS app, RF throughput, power consumption, or flashing recovery."
+}
