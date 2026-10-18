@@ -1,0 +1,9 @@
+<Project Sdk="Microsoft.NET.Sdk">
+ <PropertyGroup>
+  <OutputType>WinExe</OutputType><UseWPF>true</UseWPF><UseWindowsForms>true</UseWindowsForms>
+  <ImplicitUsings>disable</ImplicitUsings><AssemblyName>Kryra</AssemblyName><RootNamespace>Kryra.Windows</RootNamespace>
+  <StartupObject>Kryra.Windows.Program</StartupObject><ApplicationManifest>app.manifest</ApplicationManifest><ApplicationIcon>Assets\Kryra.ico</ApplicationIcon>
+ </PropertyGroup>
+ <ItemGroup><ProjectReference Include="..\Kryra.Core\Kryra.Core.csproj" /><Resource Include="Assets\Kryra.ico" /></ItemGroup>
+ <ItemGroup><Content Include="..\skill\kryra\**\*" Link="Skill\kryra\%(RecursiveDir)%(Filename)%(Extension)" CopyToOutputDirectory="PreserveNewest" CopyToPublishDirectory="PreserveNewest"/></ItemGroup>
+</Project>

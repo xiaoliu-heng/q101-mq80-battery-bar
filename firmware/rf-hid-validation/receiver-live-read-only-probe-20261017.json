@@ -1,0 +1,225 @@
+{
+  "time_utc": "2026-10-16T16:14:19.677345+00:00",
+  "time_asia_shanghai": "2026-10-17T00:14:19.677345+08:00",
+  "scope": "Physical receiver USB-side Raw HID only; NOT an over-the-air RF capture",
+  "target": {
+    "vid": "320F",
+    "pid": "5088",
+    "usage_page": "FF60",
+    "usage": "0061",
+    "devices": [
+      {
+        "USB Product Name": "IQUNIX 2.4GHz",
+        "USB Vendor Name": "Telink",
+        "idVendor": 12815,
+        "idProduct": 20616,
+        "bcdDevice": 257,
+        "locationID": 34668544,
+        "bcdUSB": 512
+      }
+    ],
+    "hid_properties": {
+      "VendorID": 12815,
+      "ProductID": 20616,
+      "PrimaryUsagePage": 65376,
+      "PrimaryUsage": 97,
+      "MaxInputReportSize": 32,
+      "MaxOutputReportSize": 32,
+      "ReportDescriptor": "06 60 ff 09 61 a1 01 09 62 15 00 26 ff 00 95 20 75 08 81 02 09 63 15 00 26 ff 00 95 20 75 08 91 02 c0"
+    }
+  },
+  "queries": "12 custom INFO requests with ignored nonce payloads, plus one standard VIA get-protocol-version query; no write operations",
+  "lighting_commands_sent": false,
+  "ota_or_flash_commands_sent": false,
+  "opened_keyboard_input_interface": false,
+  "expected_legacy_reply_source": "Real battery-bar-v2 RV32 RF receive, dispatch and reply execution; no physical flash writes",
+  "records": [
+    {
+      "name": "zero",
+      "sequence": 178,
+      "request": "fe 53 4c 10 b2 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00",
+      "reply": "01 53 09 10 b2 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00",
+      "latency_ms": 7.639,
+      "reply_length": 32,
+      "sequence_echoed": true,
+      "payload_27_bytes_echoed": true,
+      "matches_battery_v2_machine_code_reply": true,
+      "new_extension_reply": false
+    },
+    {
+      "name": "incrementing",
+      "sequence": 179,
+      "request": "fe 53 4c 10 b3 00 01 02 03 04 05 06 07 08 09 0a 0b 0c 0d 0e 0f 10 11 12 13 14 15 16 17 18 19 1a",
+      "reply": "01 53 09 10 b3 00 01 02 03 04 05 06 07 08 09 0a 0b 0c 0d 0e 0f 10 11 12 13 14 15 16 17 18 19 1a",
+      "latency_ms": 8.413,
+      "reply_length": 32,
+      "sequence_echoed": true,
+      "payload_27_bytes_echoed": true,
+      "matches_battery_v2_machine_code_reply": true,
+      "new_extension_reply": false
+    },
+    {
+      "name": "descending",
+      "sequence": 180,
+      "request": "fe 53 4c 10 b4 ff fe fd fc fb fa f9 f8 f7 f6 f5 f4 f3 f2 f1 f0 ef ee ed ec eb ea e9 e8 e7 e6 e5",
+      "reply": "01 53 09 10 b4 ff fe fd fc fb fa f9 f8 f7 f6 f5 f4 f3 f2 f1 f0 ef ee ed ec eb ea e9 e8 e7 e6 e5",
+      "latency_ms": 15.446,
+      "reply_length": 32,
+      "sequence_echoed": true,
+      "payload_27_bytes_echoed": true,
+      "matches_battery_v2_machine_code_reply": true,
+      "new_extension_reply": false
+    },
+    {
+      "name": "all_ff",
+      "sequence": 181,
+      "request": "fe 53 4c 10 b5 ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff",
+      "reply": "01 53 09 10 b5 ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff",
+      "latency_ms": 19.103,
+      "reply_length": 32,
+      "sequence_echoed": true,
+      "payload_27_bytes_echoed": true,
+      "matches_battery_v2_machine_code_reply": true,
+      "new_extension_reply": false
+    },
+    {
+      "name": "alternating",
+      "sequence": 182,
+      "request": "fe 53 4c 10 b6 55 aa 55 aa 55 aa 55 aa 55 aa 55 aa 55 aa 55 aa 55 aa 55 aa 55 aa 55 aa 55 aa 55",
+      "reply": "01 53 09 10 b6 55 aa 55 aa 55 aa 55 aa 55 aa 55 aa 55 aa 55 aa 55 aa 55 aa 55 aa 55 aa 55 aa 55",
+      "latency_ms": 17.463,
+      "reply_length": 32,
+      "sequence_echoed": true,
+      "payload_27_bytes_echoed": true,
+      "matches_battery_v2_machine_code_reply": true,
+      "new_extension_reply": false
+    },
+    {
+      "name": "seeded_random_0",
+      "sequence": 252,
+      "request": "fe 53 4c 10 fc a7 ab 23 84 98 2a b0 fa 05 9f 69 50 65 24 5b 0b 82 35 c7 59 26 72 5a 6c d7 39 a8",
+      "reply": "01 53 09 10 fc a7 ab 23 84 98 2a b0 fa 05 9f 69 50 65 24 5b 0b 82 35 c7 59 26 72 5a 6c d7 39 a8",
+      "latency_ms": 11.908,
+      "reply_length": 32,
+      "sequence_echoed": true,
+      "payload_27_bytes_echoed": true,
+      "matches_battery_v2_machine_code_reply": true,
+      "new_extension_reply": false
+    },
+    {
+      "name": "seeded_random_1",
+      "sequence": 253,
+      "request": "fe 53 4c 10 fd 53 38 19 6d 2a 24 c5 af a4 21 a8 8b ac cf 28 a3 5e 90 b8 c5 49 7e a1 6a 10 dc 59",
+      "reply": "01 53 09 10 fd 53 38 19 6d 2a 24 c5 af a4 21 a8 8b ac cf 28 a3 5e 90 b8 c5 49 7e a1 6a 10 dc 59",
+      "latency_ms": 17.378,
+      "reply_length": 32,
+      "sequence_echoed": true,
+      "payload_27_bytes_echoed": true,
+      "matches_battery_v2_machine_code_reply": true,
+      "new_extension_reply": false
+    },
+    {
+      "name": "seeded_random_2",
+      "sequence": 254,
+      "request": "fe 53 4c 10 fe a2 57 9f d6 d5 f5 e1 fd 0a 0a 2d 14 4c 99 0a fb 19 1a e5 eb 58 24 5d e4 35 9b 56",
+      "reply": "01 53 09 10 fe a2 57 9f d6 d5 f5 e1 fd 0a 0a 2d 14 4c 99 0a fb 19 1a e5 eb 58 24 5d e4 35 9b 56",
+      "latency_ms": 14.865,
+      "reply_length": 32,
+      "sequence_echoed": true,
+      "payload_27_bytes_echoed": true,
+      "matches_battery_v2_machine_code_reply": true,
+      "new_extension_reply": false
+    },
+    {
+      "name": "seeded_random_3",
+      "sequence": 255,
+      "request": "fe 53 4c 10 ff 31 05 6d 6b cf 99 e8 c8 19 0f 63 ae 05 a8 d0 fb 85 89 93 48 5d 5c 9e 85 80 6f 47",
+      "reply": "01 53 09 10 ff 31 05 6d 6b cf 99 e8 c8 19 0f 63 ae 05 a8 d0 fb 85 89 93 48 5d 5c 9e 85 80 6f 47",
+      "latency_ms": 14.841,
+      "reply_length": 32,
+      "sequence_echoed": true,
+      "payload_27_bytes_echoed": true,
+      "matches_battery_v2_machine_code_reply": true,
+      "new_extension_reply": false
+    },
+    {
+      "name": "seeded_random_4",
+      "sequence": 0,
+      "request": "fe 53 4c 10 00 be cd 3f 97 93 58 42 de 8f 3c 48 62 ac 8a 4c 47 c3 08 f1 c4 93 9c 3d 13 25 81 0b",
+      "reply": "01 53 09 10 00 be cd 3f 97 93 58 42 de 8f 3c 48 62 ac 8a 4c 47 c3 08 f1 c4 93 9c 3d 13 25 81 0b",
+      "latency_ms": 8.503,
+      "reply_length": 32,
+      "sequence_echoed": true,
+      "payload_27_bytes_echoed": true,
+      "matches_battery_v2_machine_code_reply": true,
+      "new_extension_reply": false
+    },
+    {
+      "name": "seeded_random_5",
+      "sequence": 1,
+      "request": "fe 53 4c 10 01 5f 10 eb 85 36 dd 69 00 c8 b3 20 21 eb ca ae 01 df 8d 5f 99 89 2e 38 8e d1 12 b3",
+      "reply": "01 53 09 10 01 5f 10 eb 85 36 dd 69 00 c8 b3 20 21 eb ca ae 01 df 8d 5f 99 89 2e 38 8e d1 12 b3",
+      "latency_ms": 16.932,
+      "reply_length": 32,
+      "sequence_echoed": true,
+      "payload_27_bytes_echoed": true,
+      "matches_battery_v2_machine_code_reply": true,
+      "new_extension_reply": false
+    },
+    {
+      "name": "seeded_random_6",
+      "sequence": 2,
+      "request": "fe 53 4c 10 02 42 6b 6e 04 3c ba a7 d9 14 c3 01 98 c6 d9 9e 68 6a d7 e5 3e 71 8d 94 14 da 60 d1",
+      "reply": "01 53 09 10 02 42 6b 6e 04 3c ba a7 d9 14 c3 01 98 c6 d9 9e 68 6a d7 e5 3e 71 8d 94 14 da 60 d1",
+      "latency_ms": 13.319,
+      "reply_length": 32,
+      "sequence_echoed": true,
+      "payload_27_bytes_echoed": true,
+      "matches_battery_v2_machine_code_reply": true,
+      "new_extension_reply": false
+    }
+  ],
+  "errors": [],
+  "summary": {
+    "requested": 12,
+    "replies": 12,
+    "all_32_bytes": true,
+    "all_sequences_echoed": true,
+    "all_27_payload_bytes_echoed": true,
+    "all_match_legacy_firmware_model": true,
+    "extension_reply_count": 0,
+    "latency_ms": {
+      "min": 7.639,
+      "median": 14.853,
+      "max": 19.103
+    },
+    "standard_read_only_replies": 1,
+    "total_replies": 13,
+    "latency_scope": "12 custom INFO round trips; not a physical LED frame rate measurement"
+  },
+  "interpretation": [
+    "Receiver was opened without seizing ordinary keyboard input.",
+    "Unknown-command replies matching the legacy model do not expose a valid battery field.",
+    "Raw 2.4GHz frame headers, checksum and CRC cannot be inspected at this USB interface.",
+    "The detected VIA protocol version alone cannot identify the flashed firmware SHA256 or prove custom command processing by the keyboard."
+  ],
+  "status": "PASS_LEGACY_REPORT_ROUNDTRIP_EXTENSION_NOT_PRESENT",
+  "standard_read_only_queries": [
+    {
+      "purpose": "VIA get protocol version; not a firmware build identifier",
+      "request": "01 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00",
+      "reply": "01 00 0b 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00",
+      "reply_length": 32,
+      "latency_ms": 7.085,
+      "version_big_endian": 11
+    }
+  ],
+  "conclusion": {
+    "report_length_and_nonce_roundtrip": "PASS",
+    "new_side_hid_extension_detected": false,
+    "battery_data_validated": false,
+    "lighting_control_validated": false,
+    "rf_air_frame_header_crc_validated": false,
+    "flashed_firmware_sha256_identified": false
+  }
+}

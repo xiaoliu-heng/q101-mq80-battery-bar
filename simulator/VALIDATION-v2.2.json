@@ -1,0 +1,76 @@
+{
+  "version": "2.2.0",
+  "status": "PASS_OFFLINE_ONLY",
+  "created_at_utc": "2026-10-16T14:50:13.523475+00:00",
+  "scope": "Native side-light HID controls, virtual USB host, firmware RGB output; no hardware access or firmware changes.",
+  "python_tests": {
+    "passed": 52,
+    "command": "PYTHONPATH=simulator .venv/bin/python -m unittest discover -s simulator/tests -p 'test_*.py' -v"
+  },
+  "swift_controller": {
+    "passed": 45,
+    "built_in_suite_passed": 10
+  },
+  "packaged_engine": {
+    "passed": 19
+  },
+  "final_bundle_isolation_smoke": [
+    {
+      "name": "final engine runs outside repository without PYTHONPATH",
+      "status": "PASS"
+    },
+    {
+      "name": "final bundle has firmware, codec and live animation",
+      "status": "PASS"
+    },
+    {
+      "name": "final bundle exposes HID battery countdown",
+      "status": "PASS"
+    },
+    {
+      "name": "final bundle resumes rainbow after query",
+      "status": "PASS"
+    },
+    {
+      "name": "final bundle releases side lights",
+      "status": "PASS"
+    },
+    {
+      "name": "final bundle never writes Flash",
+      "status": "PASS"
+    }
+  ],
+  "firmware_hid_tests": {
+    "passed": 26,
+    "battery_regression_groups": 6
+  },
+  "native_gui": {
+    "status": "PASS",
+    "app_version": "2.2.0",
+    "qa_bundle_id": "local.xiaoliu.mq80-firmware-lab.native.qa22hid",
+    "qa_accessibility_hidden": true,
+    "standard_app_accessibility_hidden": false,
+    "checks": [
+      "Side HID workspace and unsupported-firmware gating visible",
+      "Bundled firmware and virtual USB setup through native menu",
+      "Red preset changes all nine firmware output pixels",
+      "Brightness changed to 50% through native slider",
+      "Rainbow period changed to 2.0 seconds through native slider",
+      "Rainbow playback visible with live frame counter and nine colors"
+    ],
+    "voiceover_acceptance": "unverified"
+  },
+  "app": "dist/MQ80 Firmware Lab 2.2.app",
+  "firmware_sha256": {
+    "simulator/assets/stock.bin": "d19733978808c856db93236ea3472b2cf843493c9aa6d5320db50412431e5210",
+    "simulator/assets/battery-bar-v2.bin": "f3e86554be1ed5faf11750fceea85980c9ccd080912be4552e8317fb09ef7719",
+    "firmware/experimental/side-hid.bin": "f380297767d86cba31d4264b1b419a69a17e7e6b7370413992eeb3b47d92a61c"
+  },
+  "native_executable_sha256": "9dd27060b873694e1c5b9fe9ca94c056c3d0f8d248d78ff20cc82294a305b891",
+  "engine_executable_sha256": "057704ba354466d279255fb170c353d0c42e5675fcf985f4dcdcd7104fb8754b",
+  "limits": [
+    "Virtual host transmission cadence and rainbow generation are modeled.",
+    "USB FIFO and endpoint boundaries are modeled.",
+    "No physical lighting control, RF transport, flashing or recovery validation."
+  ]
+}

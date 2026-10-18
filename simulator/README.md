@@ -1,6 +1,8 @@
-# MQ80 Firmware Lab 2.1
+# MQ80 Firmware Lab 2.4.1
 
 原生 macOS 离线测试工具：SwiftUI / AppKit 界面，Python / Unicorn 固件引擎。App 没有内嵌网页，也不连接或刷写实体键盘。适合研究 Fn+B 电量条、灯效、按键/组合键、休眠返回路径和 OTA 结束校验。
+
+开发版 2.4.1 内置带版本号的 **固件 v3.0.1，构建号 2**，在“侧灯 HID”工作区显示固件版本和功能，并可切换虚拟 USB / 2.4G 调色、播放彩虹。USB 默认 20 FPS，2.4G 默认 10 FPS。固件版本与 App 版本分别编号；当前 Release 的 2.1 不包含此面板。
 
 <img src="../docs/images/simulator-workbench.png" width="1000" alt="MQ80 Firmware Lab 2.1 原生工作台和实体键盘输入控件">
 
@@ -10,12 +12,13 @@
 
 当前包适用于 Apple Silicon，目标 macOS 13+，已在 macOS 26.5.1 验证；Intel 和其他系统版本未实测。Python / Unicorn 已打包。应用为本地 ad-hoc 签名，未公证；首次打开时先核对 Release 校验值，再按系统“隐私与安全性”提示处理，不需要全局关闭安全保护。
 
-## 五个工作区
+## 六个工作区
 
 | 工作区 | 可做的测试 |
 | --- | --- |
 | 工作台 | 84 键矩阵、实体键盘组合键、Fn+B、9 颗侧灯、HID 报告、虚拟主机字符、休眠检查点 |
 | 灯效预览 | 运行实际灯效函数，显示原始 LED 索引 0–92，调节主/侧灯、亮度和速度 |
+| 侧灯 HID | 虚拟 USB 整条/逐段调色、彩虹动画、亮度与周期、释放控制、停止发送后的超时恢复 |
 | 场景与回归 | 10 个内置场景、JSON 编辑/导入/导出、重放、双镜像比较和虚拟 NOR OTA END / CRC 检查 |
 | 运行时检查 | 虚拟内存、通用寄存器、追踪、统计、快照和报告导出 |
 | 建模覆盖 | 每项功能的真实代码、模型和未支持范围 |
@@ -29,7 +32,20 @@
 5. “仿真”菜单可进入全关灯休眠检查点，随后发送 A，观察主机报告。检查点预置计数，不能当作真实经过某段时间的测量。
 6. 在“场景与回归”运行全部回归；电量条 v2 基准为 10/10。⌘S 导出报告；⇧⌘S 保存快照。
 
-App 内置 `assets/stock.bin` 和 `assets/battery-bar-v2.bin`，与 Release 固件完全相同。⌘O 导入的是同一固定地址配置兼容的应用 BIN，不支持 EXE、VIA JSON 或任意型号固件。CRC 合格也不保证地址布局兼容。
+App 内置官方、原电量条 v2、旧 USB 实验版、未标版本的 USB/2.4G 实验版、历史 v3.0.0 及修正版 v3.0.1，共六份镜像。构建时将 `../firmware/experimental/side-hid.bin`、`side-hid-rf.bin`、`side-hid-rf-v3.0.0.bin` 和 `side-hid-rf-v3.0.1.bin` 打包至 `assets/`；原两份 Release 镜像保留不变。新 v3.0.1 为 128372 字节，CRC 47D6766F。⌘O 只接受同一固定地址配置兼容的应用 BIN；CRC 合格不保证地址布局兼容。
+
+## 侧灯 HID 实时预览
+
+1. 打开“侧灯 HID”（⌘6），点击“载入实验固件”，或直接选择“虚拟 USB · 20 FPS” / “虚拟 2.4G · 10 FPS”。传输切换会重建虚拟运行环境，保留电量设置。
+   面板显示“固件 v3.0.1 · 构建 2”和当前功能列表；顶部固件菜单也有版本标识。早期镜像显示未提供可查询版本，v2 的历史发布名称仍保留，不会被猜成新版本。
+2. 点击预设颜色或打开“整条颜色”取色器，修改后实时发送；展开“逐段调色”可分别设置九段 RGB。亮度作用于电脑发出的颜色，固件仍按最高通道值 162 缩放。
+3. 点击“播放彩虹”，拖动“周期”调节速度（0.5～10 秒一轮）。“继续 / 暂停”同时控制虚拟时钟和发送端，暂停时颜色和超时倒计时冻结。实时预览按墙钟播放，严格仿真按虚拟时间播放。
+4. 点击“Fn+B 查询电量”：电量条优先显示约三秒，电脑继续发送，查询结束后自动恢复颜色/动画。
+5. “释放控制”立即交回原侧灯逻辑；“停止发送 · 测试超时”保留当前帧，让固件在约两秒虚拟时间后自动恢复。继续时钟才能观察超时。
+
+颜色通过共享协议编码器生成 32 字节 Raw HID 报文，经真实 USB 或 RF 配置接收/分派、回复和补丁渲染函数产生预览。无线还执行 B2 确认与三个 B7 收尾发送/ACK；配置交易的接收器响应为即时模型，没有验证空口调度、重传或真实吞吐。键盘上行报告仍使用原延迟/丢包模型。
+
+2.4G 控制有效时暂缓原自动休眠；释放或停发超时后恢复原空闲计时。已休眠需要先按键唤醒。电脑端发送节拍为模型；此工作区始终离线，不调用 IOKit/hidapi。录制包含 `side_hid` 步骤，可在相同实验固件下重放；新快照也保存发送端模式、动画相位和序号，旧快照仍可载入。
 
 详细操作见[使用说明](使用说明.txt)。本机数据位于 `~/Library/Application Support/MQ80 Firmware Lab/`；报告与录制可能包含测试输入，公开前请检查。
 
@@ -46,7 +62,7 @@ mkdir -p test-results
 .venv/bin/python build_macos.py
 ```
 
-产物为 `dist/MQ80 Firmware Lab 2.1.app`。运行独立的 Swift 控制器和打包引擎检查：
+产物为 `dist/MQ80 Firmware Lab 2.4.app`。运行独立的 Swift 控制器和打包引擎检查：
 
 ```sh
 xcrun swiftc -O -parse-as-library -target arm64-apple-macosx13.0 \
@@ -54,14 +70,16 @@ xcrun swiftc -O -parse-as-library -target arm64-apple-macosx13.0 \
   tests/NativeControllerTests.swift -framework AppKit -framework SwiftUI \
   -o build/native-controller-tests
 build/native-controller-tests \
-  "$PWD/dist/MQ80 Firmware Lab 2.1.app/Contents/Resources" \
+  "$PWD/dist/MQ80 Firmware Lab 2.4.app/Contents/Resources" \
   test-results/native-controller.json
 .venv/bin/python validate_native_package.py \
-  "dist/MQ80 Firmware Lab 2.1.app/Contents/Resources/engine/MQ80LabEngine" \
+  "dist/MQ80 Firmware Lab 2.4.app/Contents/Resources/engine/MQ80LabEngine" \
   --out test-results/native-package.json
 ```
 
-已发布的 2.1 原始基准：41 项 Python 检查、33 项 Swift 控制器检查、10 个固件回归、16 项打包引擎检查通过；另做过原生界面操作与解压迁移检查。原始记录在 `VALIDATION-v2.1.json`。源码树已精简，该历史记录中的旧打包脚本、完整日志及文件哈希不是当前目录清单；本次发布检查见 [`../docs/PUBLICATION_CHECKS.json`](../docs/PUBLICATION_CHECKS.json)。
+开发版 2.4.1 及固件 v3.0.1 验证记录见 [`VALIDATION-v2.4.1.json`](VALIDATION-v2.4.1.json)，新增超时边界修复、最新固件选择和版本显示检查；v3.0.0 历史记录保留在 `VALIDATION-v2.4.json`。2.3 无线控灯历史记录见 [`VALIDATION-v2.3.json`](VALIDATION-v2.3.json)，2.2 USB 面板记录见 [`VALIDATION-v2.2.json`](VALIDATION-v2.2.json)。
+
+已发布的 2.1 原始基准：41 项 Python 检查、33 项 Swift 控制器检查、10 个固件回归、16 项打包引擎检查通过；另做过原生界面操作与解压迁移检查。原始记录在 `VALIDATION-v2.1.json`。源码树已精简，该历史记录中的旧打包脚本、完整日志及文件哈希不是当前目录清单；2.1 发布检查见 [`../docs/PUBLICATION_CHECKS.json`](../docs/PUBLICATION_CHECKS.json)。
 
 ## 架构和限制
 

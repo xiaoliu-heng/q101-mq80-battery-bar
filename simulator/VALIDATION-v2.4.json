@@ -1,0 +1,96 @@
+{
+  "version": "2.4.0",
+  "firmware_version": "3.0.0",
+  "firmware_build": 1,
+  "firmware_features": [
+    "fn_b_battery_bar",
+    "battery_query",
+    "usb_side_rgb",
+    "rf_side_rgb"
+  ],
+  "status": "PASS_OFFLINE_ONLY",
+  "created_at_utc": "2026-10-17T02:05:13.666658+00:00",
+  "scope": "Versioned v3 firmware identity and backwards-compatible INFO metadata, bundled native simulator. No hardware writes.",
+  "python_tests": {
+    "passed": 62
+  },
+  "swift_controller": {
+    "passed": 56,
+    "built_in_suite_passed": 10
+  },
+  "packaged_engine": {
+    "passed": 25
+  },
+  "final_bundle_isolation_smoke": {
+    "status": "PASS",
+    "cwd_outside_repository": true,
+    "without_pythonpath": true,
+    "checks": [
+      "bundled version/build/features and five firmware images outside source tree",
+      "real machine INFO metadata survives packaged codec, with active RF rainbow",
+      "version query and control require no Flash writes"
+    ],
+    "no_device_access": true
+  },
+  "firmware_hid_tests": {
+    "passed": 40,
+    "battery_regression_groups": 6
+  },
+  "ota": {
+    "passed": 16,
+    "dual_bank": true,
+    "directions": [
+      "battery v2 to v3.0.0",
+      "v3.0.0 to battery v2"
+    ]
+  },
+  "reproducibility": {
+    "status": "PASS",
+    "firmware_version": "3.0.0",
+    "firmware_build": 1,
+    "sha256": "920a7afd984c1ad6041cd4e0f6810ce6b7326bafc2b9b77c03b65132b5450aee",
+    "independent_output_directories": [
+      "build/side-hid-rf-v3.0.0",
+      "build/side-hid-rf-v3.0.0-repro"
+    ],
+    "same_binary": true,
+    "same_generated_version_header": true,
+    "legacy_images_unchanged": {
+      "simulator/assets/stock.bin": "d19733978808c856db93236ea3472b2cf843493c9aa6d5320db50412431e5210",
+      "simulator/assets/battery-bar-v2.bin": "f3e86554be1ed5faf11750fceea85980c9ccd080912be4552e8317fb09ef7719",
+      "firmware/experimental/side-hid.bin": "f380297767d86cba31d4264b1b419a69a17e7e6b7370413992eeb3b47d92a61c",
+      "firmware/experimental/side-hid-rf.bin": "200b27e312debb8125ff0cb480efe6e208df0dabe36f298ee43854af039d7a83"
+    },
+    "compiler": "riscv-none-elf-gcc (xPack GNU RISC-V Embedded GCC arm64) 15.2.0"
+  },
+  "native_gui": {
+    "status": "PASS",
+    "qa_bundle_id": "local.xiaoliu.mq80-firmware-lab.native.qa24version",
+    "qa_accessibility_hidden": true,
+    "standard_app_accessibility_hidden": false,
+    "qa_native_text_section_matches_standard": true,
+    "checks": [
+      "Firmware selector shows v3.0.0",
+      "Side HID workspace shows firmware v3.0.0 and build 1",
+      "All four firmware features are visible",
+      "Virtual RF setup selects versioned image; App label remains independent at 2.4"
+    ],
+    "voiceover_acceptance": "unverified"
+  },
+  "app": "dist/MQ80 Firmware Lab 2.4.app",
+  "firmware_sha256": {
+    "simulator/assets/stock.bin": "d19733978808c856db93236ea3472b2cf843493c9aa6d5320db50412431e5210",
+    "simulator/assets/battery-bar-v2.bin": "f3e86554be1ed5faf11750fceea85980c9ccd080912be4552e8317fb09ef7719",
+    "firmware/experimental/side-hid.bin": "f380297767d86cba31d4264b1b419a69a17e7e6b7370413992eeb3b47d92a61c",
+    "firmware/experimental/side-hid-rf.bin": "200b27e312debb8125ff0cb480efe6e208df0dabe36f298ee43854af039d7a83",
+    "firmware/experimental/side-hid-rf-v3.0.0.bin": "920a7afd984c1ad6041cd4e0f6810ce6b7326bafc2b9b77c03b65132b5450aee"
+  },
+  "native_executable_sha256": "e59ac5007d204c0c6398267893424cf33b3a855de7a5a6fb1664764d5569003c",
+  "engine_executable_sha256": "e279332b91cf04962aec8f59a331acf7dfdde3f1552df760a2bc6620fad8cd2e",
+  "limits": [
+    "New version identity is tested offline only; the physical keyboard has not been flashed.",
+    "Legacy v2 and unversioned experimental BINs are unchanged; firmware version is unknown when INFO metadata is absent.",
+    "Metadata occupies reply bytes 23..31; protocol v1 fields 0..22 remain compatible.",
+    "Physical RF/USB timing, current consumption, receiver firmware and forced recovery remain unverified."
+  ]
+}

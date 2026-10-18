@@ -1,0 +1,149 @@
+{
+  "status": "PASS_OFFLINE_ONLY_NOT_FLASHED",
+  "date": "2026-10-17",
+  "recorded_at": "2026-10-17T13:04:07.406158+00:00",
+  "firmware_version": "3.1.0",
+  "firmware_build": 3,
+  "firmware_sha256": "5757c625adf427a4932a9fb9e8e7be0e5a4a88311e4484278d771c5c1b29cf0a",
+  "size": 129732,
+  "crc32_telink": "F2979115",
+  "device_access": "NONE",
+  "flashed": false,
+  "physical_rf_validated": false,
+  "physical_usb_validated": false,
+  "local_effects": [
+    "solid",
+    "blink",
+    "breathe",
+    "rainbow"
+  ],
+  "duration_ms": [
+    100,
+    60000
+  ],
+  "notification_policy": "One PLAY command; firmware time-based animation and deadline. No keepalive or host RGB stream. Original RF sleep cancels a local notification. Legacy FRAME is retained separately.",
+  "checks": {
+    "local_effect_groups": 13,
+    "hid_regression_tests": 43,
+    "battery_regression_groups": [
+      "fn_b_dispatch",
+      "bar_machine_code",
+      "stock_renderer",
+      "expiry_restore",
+      "total_frame",
+      "rgb_encoder"
+    ],
+    "independent_parser": {
+      "status": "PASS",
+      "engine": "independent standard-library RV32IM interpreter",
+      "parser_calls": 2907,
+      "invalid_length_mode_opcode_cases": 1522,
+      "non_extension_magic_cases": 765,
+      "exact_tick_boundaries": 80,
+      "timeout_values": 139,
+      "max_parser_instructions": 482,
+      "observed_parser_stack_bytes": 64,
+      "store_allowlist_and_abi": true,
+      "native_effect_expiry_retry_wrap_cases": 48
+    },
+    "controlled_stock_render_comparisons": 855,
+    "legacy_stream_soak": {
+      "continuous_stream": {
+        "status": "PASS",
+        "rows": [
+          {
+            "connection": "usb",
+            "status": "PASS",
+            "virtual_seconds": 300,
+            "frames": 6001,
+            "target_fps": 20,
+            "sequence_wraps": 23,
+            "timer_wraps": 1,
+            "stopped_sender_expired": true,
+            "flash_operations": 0
+          },
+          {
+            "connection": "rf",
+            "status": "PASS",
+            "virtual_seconds": 300,
+            "frames": 3001,
+            "target_fps": 10,
+            "sequence_wraps": 11,
+            "timer_wraps": 1,
+            "stopped_sender_expired": true,
+            "flash_operations": 0
+          }
+        ],
+        "scope": "Packet transactions and rendering at modeled timestamps; idle IRQs and radio timing are not simulated here."
+      }
+    },
+    "ota_model_cases": 32,
+    "existing_engine_suite": {
+      "status": "PASS",
+      "tests": 62,
+      "command": "PYTHONPATH=simulator .venv/bin/python -m unittest discover -s simulator/tests",
+      "device_access": "NONE",
+      "scope": "Python engine, native stdio protocol, side-HID legacy host, local server and image catalog."
+    },
+    "reproducible_build": {
+      "status": "PASS",
+      "device_access": "NONE",
+      "two_independent_build_directories": true,
+      "byte_identical": true,
+      "firmware_sha256": "5757c625adf427a4932a9fb9e8e7be0e5a4a88311e4484278d771c5c1b29cf0a",
+      "compiler": "riscv-none-elf-gcc (xPack GNU RISC-V Embedded GCC arm64) 15.2.0"
+    }
+  },
+  "unchanged_previous_images": [
+    {
+      "path": "firmware/experimental/side-hid.bin",
+      "sha256": "f380297767d86cba31d4264b1b419a69a17e7e6b7370413992eeb3b47d92a61c",
+      "matches_previous_git_revision": true
+    },
+    {
+      "path": "firmware/experimental/side-hid-rf.bin",
+      "sha256": "200b27e312debb8125ff0cb480efe6e208df0dabe36f298ee43854af039d7a83",
+      "matches_previous_git_revision": true
+    },
+    {
+      "path": "firmware/experimental/side-hid-rf-v3.0.0.bin",
+      "sha256": "920a7afd984c1ad6041cd4e0f6810ce6b7326bafc2b9b77c03b65132b5450aee",
+      "matches_previous_git_revision": true
+    },
+    {
+      "path": "firmware/experimental/side-hid-rf-v3.0.1.bin",
+      "sha256": "7b800e3edab6b2e8c421c3b7729464e990edfd2e5a2647ded6059c1901006534",
+      "matches_previous_git_revision": true
+    }
+  ],
+  "source_sha256": {
+    "firmware/hid-source/side_hid.c": "0309ad88e9daa4407a387b42de8444100818c80eee2b070bf8436592a0dbd3df",
+    "firmware/hid-source/hid_trampoline.S": "ea31d494b79376193d16cefd6efed29992cb517ad584d0b4f54c614c3c425623",
+    "firmware/hid-source/patch.ld": "4ff17a282e486d6dff984ac5b786f31366b1ebc7f40b8f3c610163340e78d98f",
+    "firmware/hid-source/version.json": "1229c7464d3f13b1055ef95cea76cb62c501b291b18c1e658b57491bcd384a88",
+    "firmware/hid-source/build_hid.py": "8039f6af1e9dd64b69ffc0c795c91ccdf6658ad48bac5dd4e8f50b440c3d6861",
+    "firmware/hid-source/validate_hid.py": "0dab116531a9cbb88fa2ea504d7a530f8ff371da4565a07cebbbe5fa1d516d2c",
+    "firmware/hid-source/validate_effects.py": "0948d8cf359052a731e0d45f37818227bfac900faf3401618fed9c33eef6c75b",
+    "firmware/hid-source/validate_preflash.py": "2d86568afb02a881a43185c3e9c6fa84cdb0f6a9e8b6c71e55e73cfe69991206",
+    "controller/protocol.py": "b965ee6f7eb00cbfba1632ea23f865e7b6c8fcde7d73caf5f7780032301936f4",
+    "simulator/mq80lab/engine.py": "1dcf46a42d895a76be108597281261b12e0ef54f045a1eabb1a92631714c02c2",
+    "simulator/mq80lab/machine.py": "f5a388c4fd598250a03b10b21b735c1dc812bc1e8e69da6a04a320a243fb24f4",
+    "simulator/mq80lab/profile.py": "28c1ded08c81662bf740fa8e7d2f5e066f8e6637e379ec1ae95cbe0a65142e35",
+    "simulator/mq80lab/server.py": "0da1713002221ad82406ec79c10023bc0b154890bb6ed484366206b7c6882e7d"
+  },
+  "limitations": [
+    "ADC, current, voltage and capacity were not measured. Rapid battery-drop diagnosis remains physically unconfirmed.",
+    "Silicon PM, GPIO and receiver delivery are models; physical sleep timing, RF retries and LED refresh were not measured.",
+    "Notifications can end before their duration if original wireless sleep is selected.",
+    "PLAY deduplication keeps the last ID only in RAM; reboot or a legacy FRAME can clear it."
+  ],
+  "reports": [
+    "effects-validation.json",
+    "hid-validation.json",
+    "preflash-core.json",
+    "preflash-soak.json",
+    "preflash-ota.json",
+    "existing-suite-summary.json",
+    "reproducibility.json"
+  ]
+}

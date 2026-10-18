@@ -1,0 +1,8 @@
+{
+  "status": "PASS",
+  "device_access": "NONE",
+  "two_independent_build_directories": true,
+  "byte_identical": true,
+  "firmware_sha256": "5757c625adf427a4932a9fb9e8e7be0e5a4a88311e4484278d771c5c1b29cf0a",
+  "compiler": "riscv-none-elf-gcc (xPack GNU RISC-V Embedded GCC arm64) 15.2.0"
+}

@@ -4,5 +4,6 @@
 # Preserve original manufacturer JSON and upstream license text verbatim.
 simulator/assets/layout.json -whitespace
 third-party/* -whitespace
+windows/licenses/** -text -whitespace
 # Preserve the already tested engine source, including its final empty line.
 simulator/mq80lab/machine.py whitespace=-blank-at-eof

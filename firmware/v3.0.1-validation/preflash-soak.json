@@ -1,0 +1,39 @@
+{
+  "status": "PASS_OFFLINE_ONLY_NOT_FLASHED",
+  "firmware_sha256": "7b800e3edab6b2e8c421c3b7729464e990edfd2e5a2647ded6059c1901006534",
+  "group": "soak",
+  "firmware_version": "3.0.1",
+  "firmware_build": 2,
+  "device_access": "NONE",
+  "checks": {
+    "continuous_stream": {
+      "status": "PASS",
+      "rows": [
+        {
+          "connection": "usb",
+          "status": "PASS",
+          "virtual_seconds": 300,
+          "frames": 6001,
+          "target_fps": 20,
+          "sequence_wraps": 23,
+          "timer_wraps": 1,
+          "stopped_sender_expired": true,
+          "flash_operations": 0
+        },
+        {
+          "connection": "rf",
+          "status": "PASS",
+          "virtual_seconds": 300,
+          "frames": 3001,
+          "target_fps": 10,
+          "sequence_wraps": 11,
+          "timer_wraps": 1,
+          "stopped_sender_expired": true,
+          "flash_operations": 0
+        }
+      ],
+      "scope": "Packet transactions and rendering at modeled timestamps; idle IRQs and radio timing are not simulated here."
+    }
+  },
+  "wall_seconds": 50.913
+}

@@ -1,0 +1,24 @@
+<!doctype html><html lang="zh-CN"><meta charset="utf-8"><meta name="viewport" content="width=device-width"><title>Kryra Windows · 使用说明</title>
+<style>body{font:16px/1.8 "Segoe UI", "Microsoft YaHei UI",sans-serif;color:#243b30;background:#edf2ef;margin:0}main{max-width:850px;margin:55px auto;padding:0 28px}h1{font-size:42px}h2{margin-top:38px}code,pre{font-family:Consolas,monospace;background:#fff;border-radius:8px;padding:3px 7px}pre{padding:20px;overflow:auto}a{color:#137b68}p{color:#52695c}table{border-collapse:collapse;width:100%;background:#fff}td,th{padding:12px;text-align:left;border-bottom:1px solid #dde6e0}</style>
+<main><h1>Kryra <small style="font-size:20px;color:#7c9185">Windows 1.1</small></h1>
+<p>用键盘侧灯传递几秒钟的提醒。支持 USB 与 2.4G，需要键盘固件 v3.1.0。</p>
+<h2>使用控制面板</h2><p>选择纯色、闪烁、呼吸或彩虹，调整颜色、亮度、持续时间和周期。点“发送提醒”后，键盘自行播放并恢复原灯效。编辑参数只改变预览。关闭窗口后可从系统托盘重新打开；设置页可以退出应用。</p>
+<p>自动连接优先 USB。USB 模式需要数据线和 Fn+5；2.4G 需要接收器和 Fn+4。无线键盘已休眠时先按键唤醒。本地灯效不会阻止原有无线休眠，休眠可提前结束提醒。</p>
+<h2>Codex Skill</h2><p>进入“设置 → Codex Skill → 管理”安装或更新。默认安装到 <code>%USERPROFILE%\.agents\skills\kryra</code>，也可以选择其他父目录。之后在 Codex 使用 <code>$kryra</code> 查询电量或发送短暂灯光提醒。未出现时重新打开 Codex。应用会保护其他来源的同名目录。</p>
+<p>Skill 通过应用目录内的原生 CLI 调用，不复制 API token。移动应用后，请在管理页更新 Skill，以更新路径绑定。</p>
+<h2>命令行</h2><p>在应用目录运行原生 <code>kryractl.exe</code>。CLI 自动读取当前用户的本机 API 凭证。</p>
+<pre>kryractl battery --refresh
+kryractl settings --poll-interval 120
+kryractl solid 34D399 --brightness 25 --seconds 3
+kryractl blink FFAA33 --period 1000 --seconds 5
+kryractl breathe 38BDF8 --period 2000 --seconds 5
+kryractl rainbow --period 5000 --seconds 5
+kryractl release</pre>
+<h2>本机 API</h2><p>监听 <code>127.0.0.1</code> 动态端口。<code>%LOCALAPPDATA%\Kryra\api.json</code> 保存 host、port、token、pid；所有接口要求 <code>Authorization: Bearer TOKEN</code>。当前用户目录受 ACL 保护，每次启动更新凭证。设置页显示实际地址。</p>
+<table><tr><th>接口</th><th>用途</th></tr><tr><td>GET /v1/health</td><td>应用与 demo 标志</td></tr><tr><td>GET /v1/status</td><td>设备、电量和灯效快照</td></tr><tr><td>GET /v1/battery?refresh=true</td><td>主动刷新电量</td></tr><tr><td>POST /v1/refresh</td><td>刷新连接与电量</td></tr><tr><td>GET / POST /v1/settings</td><td>查询或设置电量更新间隔</td></tr><tr><td>POST /v1/lighting</td><td>发送本地灯效或有限渐变</td></tr><tr><td>POST /v1/lighting/release</td><td>恢复原灯效</td></tr></table>
+<pre>{"mode":"breathe","color":"34D399","brightness":25,
+ "period_ms":1000,"duration_seconds":3}</pre>
+<p>亮度 0～100，持续时间 0.1～60 秒，动态周期 500～20000 毫秒。默认亮度 25%、持续 5 秒；彩虹不带 color。可传入非零 UInt32 request_id，同一编号和参数的重试不会重启或延长通知；未传时生成随机编号。</p>
+<pre>{"battery_poll_interval_seconds":120}</pre>
+<p>间隔为 30～3600 整数秒，保存后重新计时，不立即查询。高级 <code>frame</code> 使用九个 colors，持续 0.5～10 秒，期间有有限无线租约。查询和 UI 预览不取得灯光控制权，普通提醒使用一次 PLAY，无持续帧流和心跳。</p>
+<p>界面预览与电量均不是光学测量或续航测量。电量来自键盘缓存；断线或超时保留并标注上次读数。</p></main></html>

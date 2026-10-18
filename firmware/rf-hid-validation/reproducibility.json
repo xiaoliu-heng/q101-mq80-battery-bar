@@ -1,0 +1,11 @@
+{
+  "status": "PASS",
+  "independent_output_directories": [
+    "build/side-hid-rf",
+    "build/side-hid-rf-repro"
+  ],
+  "compiler": "riscv-none-elf-gcc (xPack GNU RISC-V Embedded GCC arm64) 15.2.0",
+  "sha256": "200b27e312debb8125ff0cb480efe6e208df0dabe36f298ee43854af039d7a83",
+  "same_bytes": true,
+  "old_usb_image_unchanged": true
+}

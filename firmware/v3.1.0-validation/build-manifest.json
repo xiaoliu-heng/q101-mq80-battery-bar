@@ -1,0 +1,157 @@
+{
+  "status": "BUILT_OFFLINE_NOT_FLASHED",
+  "base_firmware": "MQ80-CS836B-V0109-20241220",
+  "modified_name": "MQ80-CS836B-V0109-20241220-BatteryBar-SideHID-v3.1.0-USB-RF-EXPERIMENTAL.bin",
+  "modified_size": 129732,
+  "modified_sha256": "5757c625adf427a4932a9fb9e8e7be0e5a4a88311e4484278d771c5c1b29cf0a",
+  "modified_crc32_telink": "F2979115",
+  "stock_sha256": "d19733978808c856db93236ea3472b2cf843493c9aa6d5320db50412431e5210",
+  "compiled_code_size": 3425,
+  "actual_original_byte_changes": 40,
+  "patched_ranges": [
+    {
+      "offset": "0x142",
+      "length": 4,
+      "reason": "Reserve battery timer + 52-byte host/effect state in BSS",
+      "original": "130eae55",
+      "modified": "130e2e59"
+    },
+    {
+      "offset": "0x98f0",
+      "length": 4,
+      "reason": "Existing Fn+B side renderer",
+      "original": "411122c6",
+      "modified": "6f500146"
+    },
+    {
+      "offset": "0xc400",
+      "length": 4,
+      "reason": "Host lease, battery priority and final side overlay",
+      "original": "011122cc",
+      "modified": "6f201131"
+    },
+    {
+      "offset": "0xe22c",
+      "length": 4,
+      "reason": "Shared USB/RF request dispatch",
+      "original": "8b14803e",
+      "modified": "6f00d151"
+    },
+    {
+      "offset": "0xdfc4",
+      "length": 4,
+      "reason": "Record actual report length in general USB receiver",
+      "original": "03876781",
+      "modified": "6f109118"
+    },
+    {
+      "offset": "0xe1d8",
+      "length": 4,
+      "reason": "Record actual report length in direct VIA receiver",
+      "original": "03876781",
+      "modified": "6f108178"
+    },
+    {
+      "offset": "0x112ac",
+      "length": 4,
+      "reason": "Cancel local notification before original RF fast sleep",
+      "original": "411126c2",
+      "modified": "6fe0806c"
+    },
+    {
+      "offset": "0x12a4e",
+      "length": 4,
+      "reason": "Cancel local notification before original RF normal sleep",
+      "original": "93058002",
+      "modified": "6fc0307c"
+    },
+    {
+      "offset": "0x13520",
+      "length": 8,
+      "reason": "Existing Fn+B press/retrigger hook",
+      "original": "8b078035f99b93e7",
+      "modified": "efb010116f00000d"
+    },
+    {
+      "offset": "0x18",
+      "length": 4,
+      "reason": "OTA image length",
+      "original": "54ed0100",
+      "modified": "c4fa0100"
+    }
+  ],
+  "symbols": {
+    "patch_start_tick": "0x82698",
+    "side_host": "0x8269c",
+    "side_usb_length": "0x826c2",
+    "stock_side_resume": "0x200098f4",
+    "stock_frame_resume": "0x2000c404",
+    "stock_usb_general_resume": "0x2000dfc8",
+    "stock_usb_direct_resume": "0x2000e1dc",
+    "stock_hid_dispatch_resume": "0x2000e230",
+    "stock_hid_reply": "0x2000e2f4",
+    "stock_rf_fast_sleep_resume": "0x200112b0",
+    "stock_rf_normal_sleep_resume": "0x20012a52",
+    "patch_side_entry": "0x2001ed50",
+    "patch_begin": "0x2001ee30",
+    "battery_only_frame_entry": "0x2001ee64",
+    "patch_frame_entry": "0x2001ef10",
+    "patch_stock_side": "0x2001ef38",
+    "patch_stock_frame": "0x2001ef40",
+    "patch_hid_dispatch_entry": "0x2001ef48",
+    "timeout_ticks": "0x2001f004",
+    "remaining_ticks": "0x2001f03c",
+    "expire_host": "0x2001f0c8",
+    "keep_rf_awake": "0x2001f10c",
+    "side_hid_process": "0x2001f12c",
+    "side_host_before_frame": "0x2001f6a4",
+    "side_host_before_sleep": "0x2001f72c",
+    "side_host_overlay": "0x2001f754",
+    "patch_usb_length_general": "0x2001f94c",
+    "patch_usb_length_direct": "0x2001f960",
+    "patch_rf_fast_sleep": "0x2001f974",
+    "patch_rf_normal_sleep": "0x2001fa10",
+    "side_firmware_metadata": "0x2001faa8"
+  },
+  "bss_end": "0x826d0",
+  "compiler": "riscv-none-elf-gcc (xPack GNU RISC-V Embedded GCC arm64) 15.2.0",
+  "compiler_flags": [
+    "-march=rv32im",
+    "-mabi=ilp32",
+    "-mno-relax",
+    "-Os",
+    "-msmall-data-limit=0",
+    "-ffreestanding",
+    "-fno-builtin",
+    "-fno-pic",
+    "-fno-stack-protector",
+    "-fno-unwind-tables",
+    "-fno-asynchronous-unwind-tables",
+    "-ffunction-sections",
+    "-fdata-sections",
+    "-Wall",
+    "-Wextra",
+    "-Werror"
+  ],
+  "control_transports": [
+    "usb",
+    "rf"
+  ],
+  "rf_info_query": true,
+  "firmware_version": "3.1.0",
+  "firmware_build": 3,
+  "firmware_feature_flags": 31,
+  "version_metadata_format": 1,
+  "rf_sleep_policy": "PLAY never resets idle counters; original RF sleep cancels the notification. Legacy FRAME keeps its original bounded-lease behavior.",
+  "local_effects": [
+    "solid",
+    "blink",
+    "breathe",
+    "rainbow"
+  ],
+  "local_effect_duration_ms": [
+    100,
+    60000
+  ],
+  "device_access": "NONE"
+}

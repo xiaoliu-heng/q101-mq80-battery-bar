@@ -1,0 +1,10 @@
+{
+  "status": "PASS",
+  "tests_run": 41,
+  "failures": 0,
+  "errors": 0,
+  "command": "PYTHONPATH=simulator python -m unittest discover -s simulator/tests -v",
+  "source_tree": "hid-side-control",
+  "includes": "native RPC, rendering, snapshots, matrix input, USB, RF, BLE, wake first key and OTA boundaries",
+  "hardware_access": false
+}

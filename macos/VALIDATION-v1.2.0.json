@@ -1,0 +1,156 @@
+{
+  "status": "PASS_OFFLINE_WITH_DEMO_GUI",
+  "app_version": "1.2.0",
+  "app_build": 4,
+  "date_utc": "2026-10-17T13:40:30.330621+00:00",
+  "supported_firmware": [
+    "3.1.0"
+  ],
+  "other_firmware_versions_rejected": true,
+  "firmware": {
+    "version": "3.1.0",
+    "build": 3,
+    "sha256": "5757c625adf427a4932a9fb9e8e7be0e5a4a88311e4484278d771c5c1b29cf0a",
+    "modified": false,
+    "flashed": false
+  },
+  "ui": {
+    "content_size_points": {
+      "width": 368,
+      "height": 584
+    },
+    "continuous_vertical_gradient": true,
+    "individual_led_cells": false,
+    "scroll_view": false,
+    "intrinsic_host_resizing": false,
+    "status_region_height_points": 34,
+    "settings_on_separate_page": true,
+    "local_preview_edits_send_commands": false,
+    "notification_effect_commands_per_send": 1,
+    "rgb_stream": false,
+    "heartbeat": false,
+    "sdk": "15.5",
+    "tested_macos": "15.7.4",
+    "glass_rendering_in_delivered_build": "native Material with translucent capsule styling",
+    "sdk_26_glass_branch_compiled_or_run": false,
+    "previews": [
+      "previews/kryra-v1.2.0-light.png",
+      "previews/kryra-v1.2.0-dark.png"
+    ]
+  },
+  "tests": {
+    "core": {
+      "status": "PASS",
+      "count": 156,
+      "report": "core-tests-v1.2.0.json"
+    },
+    "panel": {
+      "status": "PASS",
+      "count": 54,
+      "report": "panel-tests-v1.2.0.json",
+      "coverage": [
+        "light/dark",
+        "four effects",
+        "settings",
+        "long device name and skill path",
+        "long error",
+        "reconnect",
+        "fixed window/popover host size",
+        "local preview does not send"
+      ]
+    },
+    "e2e": {
+      "status": "PASS",
+      "count": 46,
+      "report": "e2e-v1.2.0.json",
+      "physical_hid_access": false
+    },
+    "gui": {
+      "status": "PASS",
+      "report": "gui-tests-v1.2.0.json",
+      "primary_mode": "explicit demo"
+    },
+    "wire_fixtures": {
+      "count": 27,
+      "versions": [
+        "3.1.0"
+      ],
+      "paths": [
+        "usb-direct",
+        "usb-general",
+        "rf"
+      ],
+      "actual_machine_code_execution": true
+    },
+    "skill": {
+      "status": "PASS",
+      "validator": "skill-creator/scripts/quick_validate.py",
+      "global_installation_modified": false
+    },
+    "universal_build": {
+      "status": "PASS",
+      "architectures": [
+        "arm64",
+        "x86_64"
+      ],
+      "minimum_macos": "13.0",
+      "codesign_verify_deep_strict": true
+    }
+  },
+  "release": {
+    "status": "PASS",
+    "version": "1.2.0",
+    "architectures": [
+      "arm64",
+      "x86_64"
+    ],
+    "app_executable_sha256": "0621f16729e0ed469e599af1c3bf92c46aec60a5ca5b24dfa2f8c67d3c235621",
+    "cli_sha256": "965fcf9c8dd932b49ab9efcae87b3856002806a7eef61582b228054b168fd854",
+    "artifacts": [
+      {
+        "path": "dist/Kryra-1.2.0-universal.zip",
+        "size": 988349,
+        "sha256": "cc425f2d3a6b44d2da45efb403083eaab342bcd9dcda2a44281dea4cc2004ea3"
+      },
+      {
+        "path": "dist/Kryra-1.2.0-universal.dmg",
+        "size": 1406714,
+        "sha256": "f225e94d68531002c7927313e070f52d68cb758308f56a8f963a36100c2df5c3"
+      }
+    ],
+    "signing": "local ad-hoc; not Developer ID notarized",
+    "published": false
+  },
+  "source_sha256": {
+    "macos/Kryra/App.swift": "eba8525c5966b33772dfed65b1dac4e3dda5f98b14ef2a421389b7a923d66bd4",
+    "macos/Kryra/AppModel.swift": "bf263f0fd5cec311bb9c910372af5d0a62916dc6355159d14d90dfd0676297e5",
+    "macos/Kryra/Controller.swift": "d0d2cfaca4edc0437852a087d0b70e3580550d4a7a83acec8c8db18b75fd8eb1",
+    "macos/Kryra/Glass.swift": "cb1747aa896ef2aa164eb7f2272c8beb5e4fa71f2ced372217f0b9e9c2e69e62",
+    "macos/Kryra/HID.swift": "9752cf2ada888effdcfb13ec47e1fad9604df29b72e181a3e9fee0e60f3db43d",
+    "macos/Kryra/HTTP.swift": "0cc175cff59833cfbc450fd72635fdffb311f879326e2035468c80e80caca64f",
+    "macos/Kryra/PanelHost.swift": "618dc50704c5772737e82ec829dd9b7e30994499061dfa0a16296e10eadb785a",
+    "macos/Kryra/Presentation.swift": "9d8b005b3784886d499823a9eabe8018f2003dcd9dccd4c594c6d897f7010bc0",
+    "macos/Kryra/Protocol.swift": "793103810b02aba2f8ad6a4e0109d8773e0832e37e51ce09e6ba988a5c94d07b",
+    "macos/Kryra/RuntimeFiles.swift": "7650843ce1fbc3dadc70252eef45cdefc101f1a6d3b6775acf89086f619e59ea",
+    "macos/Kryra/SkillInstaller.swift": "387e0ca9ff6a66e515990af4d5d576fa444e42b32c142caca25d2923d4700250",
+    "macos/Kryra/Views.swift": "bbdf4b6e5cad07144517fd25ad652a0f2eda79c95a1198243064d78295030059",
+    "macos/kryractl/Main.swift": "b03f4764916900fb3836f12112b6ed308590235905d53482b993be944c5cbfbe",
+    "macos/build.py": "1cd29b1b8ee8e0ca6ab86a2a4fd4c78faf709f13912265f9827f3d9a1af57d06",
+    "macos/API.html": "5b62615c7f8f2f8293f08a3d9899af71140d2b71620c6c11b8e18f9ebd7beb18",
+    "macos/README.md": "47434d01438dbf270511237882328d543309b6efe9391d9af2c4506ea3655e4f",
+    "macos/skill/kryra/SKILL.md": "4b160e45be4ce0218c9cd6196a5ffc9658c75ba14a5d88c7fb70fbb9bc5bea43",
+    "macos/tests/CoreTests.swift": "1fffa405383ce18ef086f3ff5268d572b28f91d039e342c569d20f40df2193c5",
+    "macos/tests/PanelTests.swift": "88535f250f34394060d5a003892bdd3bae493491c069effddeb30a246589c738",
+    "macos/tests/fixtures.py": "a7b1ef0f3f9a99dba5ad117380cda95cd9687507e52c3f9ec4f684b2e04522d8",
+    "macos/tests/validate_app.py": "726501ae42e651958bbeab809277c12b451ca16417ca89dd4a5a7a829822dffb",
+    "scripts/check_macos.py": "36ffdef74470f801e56ab283824514dcf4baa6c1669988f71712b35912a94570",
+    "scripts/check_kryra_panel.py": "d20b9f3a106affd5f175cc30ec3f29f3eec6eed9560e47b01644714b6c70fb45",
+    "scripts/package_macos.py": "3f0ca244df0bda29976302c8aebbf68574b0eb2b3a0fcf384086430c2db9c2cc"
+  },
+  "limitations": [
+    "No new physical keyboard, optical, sleep, current or battery-life validation.",
+    "Native macOS 26 Liquid Glass code is conditional and unverified with SDK 15.5.",
+    "Intel binaries compiled and packaged; no Intel hardware execution.",
+    "Local ad-hoc signing; no Developer ID notarization."
+  ]
+}

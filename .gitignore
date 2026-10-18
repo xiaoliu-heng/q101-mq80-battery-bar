@@ -11,3 +11,6 @@ test-results/
 *.zip
 *.tar.gz
 .release/
+!windows/Kryra.App/
+windows/**/bin/
+windows/**/obj/

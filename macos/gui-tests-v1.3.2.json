@@ -1,0 +1,23 @@
+{
+  "status": "PASS_ON_MACOS15_MACOS26_RUNTIME_PENDING",
+  "date_utc": "2026-10-17T15:29:21.900058+00:00",
+  "app_version": "1.3.2",
+  "host_macos": "15.7.4",
+  "mode": "forced demo; separate preview bundle, private runtime and preferences",
+  "surfaces_visually_inspected": [
+    "actual menu-bar NSPopover",
+    "actual independent NSWindow lighting page",
+    "actual independent NSWindow settings page"
+  ],
+  "observations": [
+    "Independent window has a painted native titlebar and rounded upper exterior corners.",
+    "Native titlebar/content boundary remains continuous at the sides; no transparent missing upper area.",
+    "Menu-bar popover retains its single native corner mask and outline.",
+    "Switching to settings preserves the window size and upper corners; no scroller."
+  ],
+  "physical_hid_access": false,
+  "lighting_commands_sent": 0,
+  "qa_app_exited": true,
+  "runtime_file_removed": true,
+  "macos26_native_glass_visual_acceptance": false
+}

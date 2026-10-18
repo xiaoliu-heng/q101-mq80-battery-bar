@@ -1,0 +1,841 @@
+{
+  "status": "PASS_SHORT_NOTIFICATION_POLICY",
+  "date": "2026-10-17",
+  "timezone": "Asia/Shanghai",
+  "recorded_at": "2026-10-17T12:13:46.829491+00:00",
+  "app_name": "Kryra",
+  "app_version": "1.0.1",
+  "user_preference": "Primarily status notifications lasting a few seconds.",
+  "changes": {
+    "default_brightness_percent": 25,
+    "default_notification_seconds": 5,
+    "short_static_max_seconds": 9,
+    "short_static_rgb_frames": 1,
+    "short_static_keepalives": 0,
+    "short_static_watchdog": "requested duration plus 1000 ms, up to 10000 ms",
+    "normal_completion": "explicit RELEASE at requested duration",
+    "longer_static_keepalive_interval_seconds": 1,
+    "continuous_requires_explicit_opt_in": true,
+    "rgb_animation_default_seconds": 5,
+    "firmware_update_required": false
+  },
+  "cause_from_source": {
+    "live_rf_control_resets_idle_counters": "firmware/hid-source/side_hid.c: keep_rf_awake and side_host_before_frame",
+    "prior_static_renewals_per_second": 4,
+    "rf_rainbow_target_fps": 10,
+    "firmware_idle_policy_unchanged": true,
+    "battery_sample": "Original firmware percent cache; not a current or capacity measurement."
+  },
+  "minimum_macos": "13.0",
+  "architectures": [
+    "arm64",
+    "x86_64"
+  ],
+  "host_runtime_tested": "arm64 macOS 15.7.4",
+  "native_core_checks": 106,
+  "native_checks": [
+    {
+      "name": "firmware packet fixture 0",
+      "status": "PASS"
+    },
+    {
+      "name": "firmware reply fixture 0",
+      "status": "PASS"
+    },
+    {
+      "name": "reject reply corruption at 0",
+      "status": "PASS"
+    },
+    {
+      "name": "reject reply corruption at 1",
+      "status": "PASS"
+    },
+    {
+      "name": "reject reply corruption at 2",
+      "status": "PASS"
+    },
+    {
+      "name": "reject reply corruption at 3",
+      "status": "PASS"
+    },
+    {
+      "name": "reject reply corruption at 4",
+      "status": "PASS"
+    },
+    {
+      "name": "reject reply corruption at 6",
+      "status": "PASS"
+    },
+    {
+      "name": "reject reply corruption at 7",
+      "status": "PASS"
+    },
+    {
+      "name": "reject reply corruption at 17",
+      "status": "PASS"
+    },
+    {
+      "name": "reject reply corruption at 18",
+      "status": "PASS"
+    },
+    {
+      "name": "reject reply corruption at 19",
+      "status": "PASS"
+    },
+    {
+      "name": "reject reply corruption at 20",
+      "status": "PASS"
+    },
+    {
+      "name": "reject reply corruption at 21",
+      "status": "PASS"
+    },
+    {
+      "name": "reply length 0",
+      "status": "PASS"
+    },
+    {
+      "name": "reply length 1",
+      "status": "PASS"
+    },
+    {
+      "name": "reply length 31",
+      "status": "PASS"
+    },
+    {
+      "name": "reply length 33",
+      "status": "PASS"
+    },
+    {
+      "name": "firmware packet fixture 1",
+      "status": "PASS"
+    },
+    {
+      "name": "firmware reply fixture 1",
+      "status": "PASS"
+    },
+    {
+      "name": "firmware packet fixture 2",
+      "status": "PASS"
+    },
+    {
+      "name": "firmware reply fixture 2",
+      "status": "PASS"
+    },
+    {
+      "name": "firmware packet fixture 3",
+      "status": "PASS"
+    },
+    {
+      "name": "firmware reply fixture 3",
+      "status": "PASS"
+    },
+    {
+      "name": "firmware packet fixture 4",
+      "status": "PASS"
+    },
+    {
+      "name": "firmware reply fixture 4",
+      "status": "PASS"
+    },
+    {
+      "name": "firmware packet fixture 5",
+      "status": "PASS"
+    },
+    {
+      "name": "firmware reply fixture 5",
+      "status": "PASS"
+    },
+    {
+      "name": "firmware packet fixture 6",
+      "status": "PASS"
+    },
+    {
+      "name": "firmware reply fixture 6",
+      "status": "PASS"
+    },
+    {
+      "name": "firmware packet fixture 7",
+      "status": "PASS"
+    },
+    {
+      "name": "firmware reply fixture 7",
+      "status": "PASS"
+    },
+    {
+      "name": "firmware packet fixture 8",
+      "status": "PASS"
+    },
+    {
+      "name": "firmware reply fixture 8",
+      "status": "PASS"
+    },
+    {
+      "name": "firmware packet fixture 9",
+      "status": "PASS"
+    },
+    {
+      "name": "firmware reply fixture 9",
+      "status": "PASS"
+    },
+    {
+      "name": "firmware packet fixture 10",
+      "status": "PASS"
+    },
+    {
+      "name": "firmware reply fixture 10",
+      "status": "PASS"
+    },
+    {
+      "name": "firmware packet fixture 11",
+      "status": "PASS"
+    },
+    {
+      "name": "firmware reply fixture 11",
+      "status": "PASS"
+    },
+    {
+      "name": "firmware packet fixture 12",
+      "status": "PASS"
+    },
+    {
+      "name": "firmware reply fixture 12",
+      "status": "PASS"
+    },
+    {
+      "name": "firmware packet fixture 13",
+      "status": "PASS"
+    },
+    {
+      "name": "firmware reply fixture 13",
+      "status": "PASS"
+    },
+    {
+      "name": "firmware packet fixture 14",
+      "status": "PASS"
+    },
+    {
+      "name": "firmware reply fixture 14",
+      "status": "PASS"
+    },
+    {
+      "name": "nine colors and brightness preserve byte order",
+      "status": "PASS"
+    },
+    {
+      "name": "rainbow phase repeats",
+      "status": "PASS"
+    },
+    {
+      "name": "invalid lighting parameters 48",
+      "status": "PASS"
+    },
+    {
+      "name": "invalid lighting parameters 49",
+      "status": "PASS"
+    },
+    {
+      "name": "invalid lighting parameters 50",
+      "status": "PASS"
+    },
+    {
+      "name": "invalid lighting parameters 51",
+      "status": "PASS"
+    },
+    {
+      "name": "invalid lighting parameters 52",
+      "status": "PASS"
+    },
+    {
+      "name": "invalid lighting parameters 53",
+      "status": "PASS"
+    },
+    {
+      "name": "invalid lighting parameters 54",
+      "status": "PASS"
+    },
+    {
+      "name": "invalid lighting parameters 55",
+      "status": "PASS"
+    },
+    {
+      "name": "invalid lighting parameters 56",
+      "status": "PASS"
+    },
+    {
+      "name": "invalid lighting parameters 57",
+      "status": "PASS"
+    },
+    {
+      "name": "invalid lighting parameters 58",
+      "status": "PASS"
+    },
+    {
+      "name": "invalid lighting parameters 59",
+      "status": "PASS"
+    },
+    {
+      "name": "partial HTTP read 1",
+      "status": "PASS"
+    },
+    {
+      "name": "partial HTTP read 15",
+      "status": "PASS"
+    },
+    {
+      "name": "partial HTTP read 210",
+      "status": "PASS"
+    },
+    {
+      "name": "HTTP request body and token",
+      "status": "PASS"
+    },
+    {
+      "name": "wrong token refused",
+      "status": "PASS"
+    },
+    {
+      "name": "browser Origin refused",
+      "status": "PASS"
+    },
+    {
+      "name": "HTTP bounds and ambiguity 66",
+      "status": "PASS"
+    },
+    {
+      "name": "HTTP bounds and ambiguity 67",
+      "status": "PASS"
+    },
+    {
+      "name": "HTTP bounds and ambiguity 68",
+      "status": "PASS"
+    },
+    {
+      "name": "HTTP bounds and ambiguity 69",
+      "status": "PASS"
+    },
+    {
+      "name": "HTTP bounds and ambiguity 70",
+      "status": "PASS"
+    },
+    {
+      "name": "controls cannot precede INFO",
+      "status": "PASS"
+    },
+    {
+      "name": "old firmware rejected before control",
+      "status": "PASS"
+    },
+    {
+      "name": "legacy received only INFO",
+      "status": "PASS"
+    },
+    {
+      "name": "battery reads never acquire lighting",
+      "status": "PASS"
+    },
+    {
+      "name": "timed lighting releases",
+      "status": "PASS"
+    },
+    {
+      "name": "native controller sends scaled RGB",
+      "status": "PASS"
+    },
+    {
+      "name": "superseded effect cannot release newer effect",
+      "status": "PASS"
+    },
+    {
+      "name": "static lighting renews about once per second",
+      "status": "PASS"
+    },
+    {
+      "name": "computer sleep stops lighting traffic",
+      "status": "PASS"
+    },
+    {
+      "name": "disconnect preserves stale battery without restarting control",
+      "status": "PASS"
+    },
+    {
+      "name": "reconnect only reads state",
+      "status": "PASS"
+    },
+    {
+      "name": "all HID work stays on named serial thread",
+      "status": "PASS"
+    },
+    {
+      "name": "shutdown releases owned lighting",
+      "status": "PASS"
+    },
+    {
+      "name": "legacy RF can read battery without claiming control",
+      "status": "PASS"
+    },
+    {
+      "name": "legacy RF cannot receive lighting frame",
+      "status": "PASS"
+    },
+    {
+      "name": "unsupported RF only received INFO",
+      "status": "PASS"
+    },
+    {
+      "name": "RF rainbow uses bounded ten FPS schedule",
+      "status": "PASS"
+    },
+    {
+      "name": "RF finite animation releases",
+      "status": "PASS"
+    },
+    {
+      "name": "external lighting is recognized",
+      "status": "PASS"
+    },
+    {
+      "name": "selecting and quitting do not release another controller",
+      "status": "PASS"
+    },
+    {
+      "name": "in-flight refresh cannot undo computer sleep",
+      "status": "PASS"
+    },
+    {
+      "name": "cancelled request cannot apply queued lighting",
+      "status": "PASS"
+    },
+    {
+      "name": "a cancelled queued HID frame never runs",
+      "status": "PASS"
+    },
+    {
+      "name": "default notification uses quarter brightness on actual wire",
+      "status": "PASS"
+    },
+    {
+      "name": "notification watchdog covers five seconds plus ACK margin",
+      "status": "PASS"
+    },
+    {
+      "name": "short static notification stays visible beyond former two-second lease",
+      "status": "PASS"
+    },
+    {
+      "name": "short static notification sends one RGB frame and no heartbeats",
+      "status": "PASS"
+    },
+    {
+      "name": "default five-second notification releases automatically",
+      "status": "PASS"
+    },
+    {
+      "name": "notification timer leaves no repeating HID traffic",
+      "status": "PASS"
+    },
+    {
+      "name": "continuous lighting requires explicit request and still renews",
+      "status": "PASS"
+    },
+    {
+      "name": "continuous RF control is released for computer sleep",
+      "status": "PASS"
+    },
+    {
+      "name": "installer copies executable and metadata",
+      "status": "PASS"
+    },
+    {
+      "name": "managed skill can be updated",
+      "status": "PASS"
+    },
+    {
+      "name": "unmanaged skill is preserved",
+      "status": "PASS"
+    },
+    {
+      "name": "foreign skill contents unchanged",
+      "status": "PASS"
+    }
+  ],
+  "end_to_end_checks": 36,
+  "end_to_end_checks_detail": [
+    {
+      "name": "headless explicit demo starts",
+      "status": "PASS"
+    },
+    {
+      "name": "credential file is private",
+      "status": "PASS"
+    },
+    {
+      "name": "state directory is private",
+      "status": "PASS"
+    },
+    {
+      "name": "token has 256 random bits",
+      "status": "PASS"
+    },
+    {
+      "name": "unauthenticated request refused",
+      "status": "PASS"
+    },
+    {
+      "name": "wrong token refused",
+      "status": "PASS"
+    },
+    {
+      "name": "browser Origin refused",
+      "status": "PASS"
+    },
+    {
+      "name": "foreign Host refused",
+      "status": "PASS"
+    },
+    {
+      "name": "API health",
+      "status": "PASS"
+    },
+    {
+      "name": "API version matches bundle",
+      "status": "PASS"
+    },
+    {
+      "name": "duplicate instance leaves active API untouched",
+      "status": "PASS"
+    },
+    {
+      "name": "unknown route",
+      "status": "PASS"
+    },
+    {
+      "name": "native CLI battery",
+      "status": "PASS"
+    },
+    {
+      "name": "native CLI active refresh",
+      "status": "PASS"
+    },
+    {
+      "name": "CLI solid reaches shared controller",
+      "status": "PASS"
+    },
+    {
+      "name": "API and CLI observe same state",
+      "status": "PASS"
+    },
+    {
+      "name": "CLI default is a dim five-second notification",
+      "status": "PASS"
+    },
+    {
+      "name": "CLI explicit continuous request is supported",
+      "status": "PASS"
+    },
+    {
+      "name": "continuous and duration cannot be combined",
+      "status": "PASS"
+    },
+    {
+      "name": "API refuses nonboolean continuous option",
+      "status": "PASS"
+    },
+    {
+      "name": "bad brightness rejected",
+      "status": "PASS"
+    },
+    {
+      "name": "invalid request leaves current effect",
+      "status": "PASS"
+    },
+    {
+      "name": "CLI validates before contacting API",
+      "status": "PASS"
+    },
+    {
+      "name": "native CLI rainbow",
+      "status": "PASS"
+    },
+    {
+      "name": "rainbow keeps streaming",
+      "status": "PASS"
+    },
+    {
+      "name": "finite effect restores original",
+      "status": "PASS"
+    },
+    {
+      "name": "nine independent colors",
+      "status": "PASS"
+    },
+    {
+      "name": "CLI release",
+      "status": "PASS"
+    },
+    {
+      "name": "concurrent requests are bounded",
+      "status": "PASS"
+    },
+    {
+      "name": "final command wins after concurrent callers",
+      "status": "PASS"
+    },
+    {
+      "name": "listener binds only IPv4 loopback",
+      "status": "PASS"
+    },
+    {
+      "name": "oversized body rejected",
+      "status": "PASS"
+    },
+    {
+      "name": "ambiguous framing rejected",
+      "status": "PASS"
+    },
+    {
+      "name": "copied skill helper needs no repo or Python",
+      "status": "PASS"
+    },
+    {
+      "name": "graceful quit",
+      "status": "PASS"
+    },
+    {
+      "name": "API token rotates on restart",
+      "status": "PASS"
+    }
+  ],
+  "firmware_interop_fixtures": 15,
+  "existing_firmware_watchdog_compatibility": {
+    "status": "PASS",
+    "checks": [
+      {
+        "transport": "usb",
+        "notification_seconds": 5,
+        "watchdog_ms": 6000,
+        "ending": "release",
+        "status": "PASS",
+        "idle_counters_resume_after_release_or_expiry": true
+      },
+      {
+        "transport": "usb",
+        "notification_seconds": 5,
+        "watchdog_ms": 6000,
+        "ending": "lost_app",
+        "status": "PASS",
+        "idle_counters_resume_after_release_or_expiry": true
+      },
+      {
+        "transport": "usb",
+        "notification_seconds": 9,
+        "watchdog_ms": 10000,
+        "ending": "release",
+        "status": "PASS",
+        "idle_counters_resume_after_release_or_expiry": true
+      },
+      {
+        "transport": "usb",
+        "notification_seconds": 9,
+        "watchdog_ms": 10000,
+        "ending": "lost_app",
+        "status": "PASS",
+        "idle_counters_resume_after_release_or_expiry": true
+      },
+      {
+        "transport": "rf",
+        "notification_seconds": 5,
+        "watchdog_ms": 6000,
+        "ending": "release",
+        "status": "PASS",
+        "idle_counters_resume_after_release_or_expiry": true
+      },
+      {
+        "transport": "rf",
+        "notification_seconds": 5,
+        "watchdog_ms": 6000,
+        "ending": "lost_app",
+        "status": "PASS",
+        "idle_counters_resume_after_release_or_expiry": true
+      },
+      {
+        "transport": "rf",
+        "notification_seconds": 9,
+        "watchdog_ms": 10000,
+        "ending": "release",
+        "status": "PASS",
+        "idle_counters_resume_after_release_or_expiry": true
+      },
+      {
+        "transport": "rf",
+        "notification_seconds": 9,
+        "watchdog_ms": 10000,
+        "ending": "lost_app",
+        "status": "PASS",
+        "idle_counters_resume_after_release_or_expiry": true
+      }
+    ],
+    "count": 8,
+    "real_firmware_execution": true,
+    "physical_hardware_access": false,
+    "firmware_sha256": "7b800e3edab6b2e8c421c3b7729464e990edfd2e5a2647ded6059c1901006534"
+  },
+  "gui_checks": {
+    "status": "PASS",
+    "mode": "explicit-demo GUI",
+    "default_brightness": 25,
+    "default_duration_seconds": 5,
+    "default_single_frame_visible_via_api": true,
+    "continuous_opt_in_via_checkbox": true,
+    "timed_control_can_replace_continuous_control": true,
+    "three_second_picker_option_and_automatic_restore": true,
+    "final_status": {
+      "api_version": 1,
+      "app_version": "1.0.1",
+      "battery": {
+        "connected": true,
+        "demo": true,
+        "percent": 88,
+        "stale": false,
+        "transport": "usb",
+        "updated_at": "2026-10-17T12:12:19Z"
+      },
+      "demo": true,
+      "device": {
+        "connected": true,
+        "firmware_build": 2,
+        "firmware_version": "3.0.1",
+        "id": "demo-usb",
+        "name": "Q101 演示键盘",
+        "transport": "usb"
+      },
+      "devices": [
+        {
+          "id": "demo-usb",
+          "name": "Q101 演示键盘",
+          "transport": "usb"
+        }
+      ],
+      "error": null,
+      "lighting": {
+        "active": false,
+        "brightness": 100,
+        "colors": [],
+        "continuous": false,
+        "duration_seconds": null,
+        "frames_sent": 1,
+        "mode": "original",
+        "period_ms": 5000,
+        "prevents_idle_sleep": false
+      },
+      "sleeping": false
+    },
+    "physical_hid_access": false
+  },
+  "release": {
+    "status": "PASS",
+    "version": "1.0.1",
+    "architectures": [
+      "arm64",
+      "x86_64"
+    ],
+    "app_executable_sha256": "20f37bc750277122b2a6b9a3d40438dcd971dcf354c1edf8902117d48ec5dc23",
+    "cli_sha256": "af1074565a36a9f020b5f79f83c6f1fe3d9908c7629caa509e0019a2aaef35fc",
+    "artifacts": [
+      {
+        "path": "dist/Kryra-1.0.1-universal.zip",
+        "size": 855241,
+        "sha256": "66fc7d1631f3b74dc38aa8b16e554f715d994bc8c9b8543a784643e96e7063fa"
+      },
+      {
+        "path": "dist/Kryra-1.0.1-universal.dmg",
+        "size": 1225575,
+        "sha256": "f4df233e2aa297cdbbe31027adfceb9488cc0dc529fe6e12e96437a75578c224"
+      }
+    ],
+    "signing": "local ad-hoc; not Developer ID notarized",
+    "published": false
+  },
+  "final_runtime_read_only_status": {
+    "api_version": 1,
+    "app_version": "1.0.1",
+    "battery": {
+      "connected": false,
+      "demo": false,
+      "percent": null,
+      "stale": true,
+      "transport": null,
+      "updated_at": null
+    },
+    "demo": false,
+    "device": {
+      "connected": false,
+      "firmware_build": null,
+      "firmware_version": null
+    },
+    "devices": [
+      {
+        "id": "rf-2110000",
+        "name": "IQUNIX 2.4GHz",
+        "transport": "rf"
+      }
+    ],
+    "error": "键盘未响应；如果正在休眠，请先按键唤醒。",
+    "lighting": {
+      "active": false,
+      "brightness": 100,
+      "colors": [],
+      "continuous": false,
+      "duration_seconds": null,
+      "frames_sent": 0,
+      "mode": "original",
+      "period_ms": 5000,
+      "prevents_idle_sleep": false
+    },
+    "sleeping": false
+  },
+  "boundaries": {
+    "new_effects_physical_hardware_tested": false,
+    "physical_receiver_present": true,
+    "final_real_keyboard_response": false,
+    "hardware_attempt": "One fresh battery INFO requested; receiver enumerated, keyboard did not respond. No new physical lighting frames were sent.",
+    "previous_usb_validation": "VALIDATION-USB-20261017.json applies to v1.0.0; retained unchanged.",
+    "power_current_measured": false,
+    "battery_life_gain_measured": false,
+    "rf_control_still_holds_idle_while_active": true,
+    "stock_idle_countdown_resumes_after_release": true,
+    "intel_runtime_tested": false,
+    "developer_id_notarized": false,
+    "cloud_published": false
+  },
+  "source_sha256": {
+    "macos/API.html": "61a477551d7073d473aff05e0075bc15f7eb48606844005d146f57296591bb85",
+    "macos/Icon.swift": "a4d56fc22a8d1ade4ffe50b6fdd6bcaf269539fd9fd504d59fecb4572d4e4692",
+    "macos/Kryra/App.swift": "caed12bee0bb5c62a6a911ecc373d4c6ec38caa9938703b1fdebc7b31eb3c889",
+    "macos/Kryra/AppModel.swift": "bf263f0fd5cec311bb9c910372af5d0a62916dc6355159d14d90dfd0676297e5",
+    "macos/Kryra/Controller.swift": "9feef8c43c5943a0fa584afdd1a768552bbe76b807590dddcd770381477800e8",
+    "macos/Kryra/HID.swift": "9752cf2ada888effdcfb13ec47e1fad9604df29b72e181a3e9fee0e60f3db43d",
+    "macos/Kryra/HTTP.swift": "0cc175cff59833cfbc450fd72635fdffb311f879326e2035468c80e80caca64f",
+    "macos/Kryra/Protocol.swift": "427495d1061472a460e139063aa3e0d1e34241a62c2c84e4f342e46b9d793ede",
+    "macos/Kryra/RuntimeFiles.swift": "de6ed343766dfa9cb1d36f946619e4790f1caea730e0736bd08b326ddbabad65",
+    "macos/Kryra/SkillInstaller.swift": "387e0ca9ff6a66e515990af4d5d576fa444e42b32c142caca25d2923d4700250",
+    "macos/Kryra/Views.swift": "b91fad5276e3e43d5a522de2bd4051d164498552ed82bbe00b85511bdf7372c8",
+    "macos/README.md": "ff8f5131c3a644cb7d4b6232f8fd3d10dc54ca49dd2076178d2ad50edf08213c",
+    "macos/build.py": "3ef4f47db73733352945c623361a1321adc5664baba4c284e4bc577a26146863",
+    "macos/kryractl/Main.swift": "5ad3f4c91dadf757035365f0d0fcf51ce9a7daf9c5fe305f7ffd3521cf86c58a",
+    "macos/skill/kryra/SKILL.md": "44317be856653bd01c4794d1ec2d07311be12572ad2443a366901d91545bad1b",
+    "macos/skill/kryra/agents/openai.yaml": "9c791117caad1080f4cb947a117422b6d5c97be9f4b41a238653f3e569a0c641",
+    "macos/tests/CoreTests.swift": "0484dd4477c8a62fab6dea63937dd66103ef7dc49c340ed001db12f6ac799bbc",
+    "macos/tests/fixtures.py": "d9c0aaf5dccc417a67df47278ddf48cf50d0830e56cdd38847b306a46f455cfc",
+    "macos/tests/validate_app.py": "a15106f2a9442538ddc39963f5b5ac918aea6c81dd310dbdc71a059a7b2a2b61",
+    "scripts/check_macos.py": "36ffdef74470f801e56ab283824514dcf4baa6c1669988f71712b35912a94570",
+    "scripts/package_macos.py": "3f0ca244df0bda29976302c8aebbf68574b0eb2b3a0fcf384086430c2db9c2cc"
+  },
+  "notes": [
+    "The app now defaults to a brief, dim notification rather than indefinite control.",
+    "The default static alert sends INFO, TIMEOUT, one FRAME, then RELEASE, with no KEEPALIVE during the alert.",
+    "The requested five seconds still hold RF idle during the effect; release resumes the original idle countdown, not immediate deep sleep.",
+    "Automated and GUI effect checks use explicit isolated demos/fakes; firmware watchdog cases execute unchanged v3.0.1 machine code.",
+    "142 app checks and 8 firmware compatibility cases passed. No battery-life percentage improvement is claimed."
+  ]
+}

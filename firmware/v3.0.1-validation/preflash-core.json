@@ -1,0 +1,85 @@
+{
+  "status": "PASS_OFFLINE_ONLY_NOT_FLASHED",
+  "firmware_sha256": "7b800e3edab6b2e8c421c3b7729464e990edfd2e5a2647ded6059c1901006534",
+  "group": "core",
+  "firmware_version": "3.0.1",
+  "firmware_build": 2,
+  "device_access": "NONE",
+  "checks": {
+    "independent_parser": {
+      "status": "PASS",
+      "engine": "independent standard-library RV32IM interpreter",
+      "parser_calls": 2669,
+      "invalid_length_mode_opcode_cases": 1524,
+      "non_extension_magic_cases": 765,
+      "exact_tick_boundaries": 80,
+      "timeout_values": 139,
+      "max_parser_instructions": 436,
+      "observed_parser_stack_bytes": 40,
+      "store_allowlist_and_abi": true
+    },
+    "startup_and_render": {
+      "status": "PASS",
+      "startup_images": 3,
+      "render_comparisons_to_v2": 855,
+      "main_effects": 19,
+      "side_modes": 5,
+      "connections": 3,
+      "battery_query_states": 3,
+      "full_original_data_compared": true,
+      "observed_frame_stack_bytes": 140,
+      "limitations": [
+        "Controlled states, not full boot or arbitrary interrupt schedules."
+      ]
+    },
+    "rf_corruption": {
+      "status": "PASS",
+      "single_bit_corruptions_rejected": 344,
+      "scope": "Stock receive RAM envelope, not physical RF packets."
+    },
+    "expiry_regression": {
+      "status": "PASS",
+      "rows": [
+        {
+          "path": "direct",
+          "case": "expired",
+          "v3.0.0_reactivates_expired_frame": true,
+          "candidate_reactivates_expired_frame": false
+        },
+        {
+          "path": "direct",
+          "case": "shortened",
+          "v3.0.0_reactivates_expired_frame": true,
+          "candidate_reactivates_expired_frame": false
+        },
+        {
+          "path": "general",
+          "case": "expired",
+          "v3.0.0_reactivates_expired_frame": true,
+          "candidate_reactivates_expired_frame": false
+        },
+        {
+          "path": "general",
+          "case": "shortened",
+          "v3.0.0_reactivates_expired_frame": true,
+          "candidate_reactivates_expired_frame": false
+        },
+        {
+          "path": "rf",
+          "case": "expired",
+          "v3.0.0_reactivates_expired_frame": true,
+          "candidate_reactivates_expired_frame": false
+        },
+        {
+          "path": "rf",
+          "case": "shortened",
+          "v3.0.0_reactivates_expired_frame": true,
+          "candidate_reactivates_expired_frame": false
+        }
+      ],
+      "previous_sha256": "920a7afd984c1ad6041cd4e0f6810ce6b7326bafc2b9b77c03b65132b5450aee",
+      "note": "Only a new FRAME can restart control after expiry; an adjusted TIMEOUT cannot."
+    }
+  },
+  "wall_seconds": 14.348
+}

@@ -1,0 +1,118 @@
+{
+  "status": "BUILT_OFFLINE_NOT_FLASHED",
+  "base_firmware": "MQ80-CS836B-V0109-20241220",
+  "modified_name": "MQ80-CS836B-V0109-20241220-BatteryBar-SideHID-EXPERIMENTAL.bin",
+  "modified_size": 128148,
+  "modified_sha256": "f380297767d86cba31d4264b1b419a69a17e7e6b7370413992eeb3b47d92a61c",
+  "modified_crc32_telink": "3DA2170D",
+  "stock_sha256": "d19733978808c856db93236ea3472b2cf843493c9aa6d5320db50412431e5210",
+  "compiled_code_size": 1844,
+  "actual_original_byte_changes": 32,
+  "patched_ranges": [
+    {
+      "offset": "0x142",
+      "length": 4,
+      "reason": "Reserve battery timer + 40-byte host state in BSS",
+      "original": "130eae55",
+      "modified": "130e6e58"
+    },
+    {
+      "offset": "0x98f0",
+      "length": 4,
+      "reason": "Existing Fn+B side renderer",
+      "original": "411122c6",
+      "modified": "6f500146"
+    },
+    {
+      "offset": "0xc400",
+      "length": 4,
+      "reason": "Host lease, battery priority and final side overlay",
+      "original": "011122cc",
+      "modified": "6f201131"
+    },
+    {
+      "offset": "0xe22c",
+      "length": 4,
+      "reason": "Shared USB/RF request dispatch",
+      "original": "8b14803e",
+      "modified": "6f00d151"
+    },
+    {
+      "offset": "0xdfc4",
+      "length": 4,
+      "reason": "Record actual report length in general USB receiver",
+      "original": "03876781",
+      "modified": "6f108149"
+    },
+    {
+      "offset": "0xe1d8",
+      "length": 4,
+      "reason": "Record actual report length in direct VIA receiver",
+      "original": "03876781",
+      "modified": "6f108129"
+    },
+    {
+      "offset": "0x13520",
+      "length": 8,
+      "reason": "Existing Fn+B press/retrigger hook",
+      "original": "8b078035f99b93e7",
+      "modified": "efb010116f00000d"
+    },
+    {
+      "offset": "0x18",
+      "length": 4,
+      "reason": "OTA image length",
+      "original": "54ed0100",
+      "modified": "94f40100"
+    }
+  ],
+  "symbols": {
+    "patch_start_tick": "0x82698",
+    "side_host": "0x8269c",
+    "side_usb_length": "0x826c2",
+    "stock_side_resume": "0x200098f4",
+    "stock_frame_resume": "0x2000c404",
+    "stock_usb_general_resume": "0x2000dfc8",
+    "stock_usb_direct_resume": "0x2000e1dc",
+    "stock_hid_dispatch_resume": "0x2000e230",
+    "stock_hid_reply": "0x2000e2f4",
+    "patch_side_entry": "0x2001ed50",
+    "patch_begin": "0x2001ee30",
+    "battery_only_frame_entry": "0x2001ee64",
+    "patch_frame_entry": "0x2001ef10",
+    "patch_stock_side": "0x2001ef38",
+    "patch_stock_frame": "0x2001ef40",
+    "patch_hid_dispatch_entry": "0x2001ef48",
+    "remaining_ticks": "0x2001f004",
+    "side_hid_process": "0x2001f060",
+    "side_host_before_frame": "0x2001f370",
+    "side_host_overlay": "0x2001f3f0",
+    "patch_usb_length_general": "0x2001f45c",
+    "patch_usb_length_direct": "0x2001f470"
+  },
+  "bss_end": "0x826c4",
+  "compiler": "riscv-none-elf-gcc (xPack GNU RISC-V Embedded GCC arm64) 15.2.0",
+  "compiler_flags": [
+    "-march=rv32im",
+    "-mabi=ilp32",
+    "-mno-relax",
+    "-Os",
+    "-msmall-data-limit=0",
+    "-ffreestanding",
+    "-fno-builtin",
+    "-fno-pic",
+    "-fno-stack-protector",
+    "-fno-unwind-tables",
+    "-fno-asynchronous-unwind-tables",
+    "-ffunction-sections",
+    "-fdata-sections",
+    "-Wall",
+    "-Wextra",
+    "-Werror"
+  ],
+  "control_transports": [
+    "usb"
+  ],
+  "rf_info_query": true,
+  "device_access": "NONE"
+}

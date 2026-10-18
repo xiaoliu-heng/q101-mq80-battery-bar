@@ -1,0 +1,7 @@
+{
+  "status": "PASS",
+  "tests": 62,
+  "command": "PYTHONPATH=simulator .venv/bin/python -m unittest discover -s simulator/tests",
+  "device_access": "NONE",
+  "scope": "Python engine, native stdio protocol, side-HID legacy host, local server and image catalog."
+}

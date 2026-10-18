@@ -72,16 +72,19 @@ import SwiftUI
             item("松开所有键",#selector(releaseAll)),.separator(),
             item("全关灯 · 休眠检查点",#selector(sleepFast)),item("普通空闲 · 休眠检查点",#selector(sleepNormal)),
             .separator(),item("播放波浪灯效",#selector(wave)),item("播放常亮灯效",#selector(solid)),
+            .separator(),item("准备 USB 侧灯测试",#selector(prepareSideHID)),item("准备 2.4G 侧灯测试",#selector(prepareSideHIDRF)),
+            item("侧灯应用颜色",#selector(sideHIDSolid)),item("播放侧灯彩虹",#selector(sideHIDRainbow)),item("释放侧灯控制",#selector(sideHIDRelease)),
             .separator(),item("重置运行环境",#selector(reset)),item("运行全部回归",#selector(suite))])
         _ = add("显示",[item("工作台",#selector(workbench),"1"),item("灯效预览",#selector(lighting),"2"),
             item("场景与回归",#selector(scenarios),"3"),item("运行时检查",#selector(inspect),"4"),item("建模覆盖",#selector(coverage),"5"),
+            item("侧灯 HID",#selector(sideHID),"6"),
             .separator(),item("显示 / 隐藏环境设置",#selector(inspector))])
         let windows = add("窗口",[NSMenuItem(title:"最小化",action:#selector(NSWindow.miniaturize(_:)),keyEquivalent:"m"),NSMenuItem(title:"缩放",action:#selector(NSWindow.performZoom(_:)),keyEquivalent:"")])
         NSApp.windowsMenu = windows
         let help = add("帮助",[item("MQ80 Firmware Lab 使用说明",#selector(guide))]); NSApp.helpMenu = help
         NSApp.mainMenu = bar
     }
-    @objc private func about() { NSApp.orderFrontStandardAboutPanel(options:[.applicationVersion:"2.1.0",.credits:NSAttributedString(string:"原生 macOS 离线固件工作台 · 不连接或刷写键盘")]) }
+    @objc private func about() { NSApp.orderFrontStandardAboutPanel(options:[.applicationVersion:"2.4.1",.credits:NSAttributedString(string:"原生 macOS 离线固件工作台 · 不连接或刷写键盘")]) }
     @objc private func importFirmware() { if lab.ready { lab.importFirmware() } }
     @objc private func exportReport() { if lab.ready { lab.export("report",name:"MQ80-runtime-report.json") } }
     @objc private func saveSnapshot() { if lab.ready { lab.export("snapshot",name:"MQ80-snapshot.json") } }
@@ -97,6 +100,11 @@ import SwiftUI
     @objc private func sleepNormal() { if lab.ready { lab.command(["action":"sleep","gate":"normal"],pauseFirst:true) } }
     @objc private func wave() { if lab.ready { lab.page = .lighting;lab.previewLighting(1) } }
     @objc private func solid() { if lab.ready { lab.page = .lighting;lab.previewLighting(6) } }
+    @objc private func prepareSideHID() { if lab.ready { lab.prepareSideHID() } }
+    @objc private func prepareSideHIDRF() { if lab.ready { lab.prepareSideHID(connection:"rf") } }
+    @objc private func sideHIDSolid() { if lab.ready { lab.controlSideHID("solid") } }
+    @objc private func sideHIDRainbow() { if lab.ready { lab.controlSideHID("rainbow") } }
+    @objc private func sideHIDRelease() { if lab.ready { lab.controlSideHID("release") } }
     @objc private func reset() { if lab.ready { lab.reset() } }
     @objc private func suite() { if lab.ready && !lab.jobRunning { lab.page = .scenarios;lab.startJob("suite") } }
     @objc private func inspector() { lab.showInspector.toggle() }
@@ -105,6 +113,7 @@ import SwiftUI
     @objc private func scenarios() { lab.page = .scenarios }
     @objc private func inspect() { lab.page = .inspect }
     @objc private func coverage() { lab.page = .coverage }
+    @objc private func sideHID() { lab.page = .sideHID }
     @objc private func guide() { if let url = Bundle.main.url(forResource:"使用说明",withExtension:"txt") { NSWorkspace.shared.open(url) } }
 }
 
