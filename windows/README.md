@@ -6,7 +6,7 @@
 
 解压 `Kryra-Windows-1.1.0-win-x64.zip`，打开其中的 `Kryra.exe`。保留解压目录内的配套文件。默认发行包附带 .NET Desktop 运行时，成品无需安装 Python、Node、.NET SDK 或前端框架。
 
-预发布下载见 [v3.1.0-rc.1](https://github.com/xiaoliu-heng/q101-mq80-battery-bar/releases/tag/v3.1.0-rc.1)。Windows 软件版本 **1.1.0** 与键盘固件版本 **3.1.0** 分别编号。包内 `BuildInfo.json` 记录源码提交与文件校验值；运行时许可见 `THIRD_PARTY_NOTICES.md` 和 `licenses/`，固件风险见包内“免责声明.md”。
+正式版下载见 [v3.1.0](https://github.com/xiaoliu-heng/q101-mq80-battery-bar/releases/tag/v3.1.0)，应用 ZIP 与 `v3.1.0-rc.1` 相同。Windows 软件版本 **1.1.0** 与键盘固件版本 **3.1.0** 分别编号。包内 `BuildInfo.json` 记录源码提交与文件校验值；运行时许可见 `THIRD_PARTY_NOTICES.md` 和 `licenses/`，固件风险见包内“免责声明.md”。
 
 首次运行显示控制面板，关闭窗口后继续驻留系统托盘。点击托盘电量可重新打开；托盘菜单或设置页可退出。登录启动默认关闭，可在设置页自选。
 

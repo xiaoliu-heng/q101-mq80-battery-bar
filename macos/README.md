@@ -10,6 +10,8 @@
 
 ## 使用
 
+在 [v3.1.0 正式版](https://github.com/xiaoliu-heng/q101-mq80-battery-bar/releases/tag/v3.1.0) 下载 `Kryra-1.3.2-universal.dmg` 或 ZIP；应用包与 `v3.1.0-rc.1` 相同。
+
 将 `Kryra.app` 放入 `/Applications` 或 `~/Applications` 后打开。首次打开显示控制面板，关闭面板后仍留在菜单栏；菜单栏显示键盘电量，点击即可打开面板。
 
 - 自动选择优先使用可响应的 USB，也可在设备菜单指定接收器或键盘。连接数据线并切到 USB 模式，或插入接收器并切到 2.4G；正在休眠的键盘先按键唤醒。
