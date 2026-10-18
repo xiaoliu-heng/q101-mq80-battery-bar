@@ -2,10 +2,13 @@
 
 把 IQUNIX Q101 / MQ80 的 **Fn+B 电量查询**改成侧边灯条：长度表示剩余电量，颜色由红到绿，约 3 秒后恢复原灯效。附带原生 macOS 离线测试软件 **MQ80 Firmware Lab**。
 
-**项目使用者已在一台 Q101 上确认：有线、2.4G、蓝牙和 VIA 均正常使用。** 其他硬件批次及刷写失败后的强制恢复尚未验证。刷写前请阅读[风险与免责声明](DISCLAIMER.md)。
+**v2 和 v3 会并存，保留各自的下载入口，由使用者按需求选择。** 只需要 Fn+B 电量条可选 **v2**；需要电脑主动查询电量、灯光通知和 Skill 自动化可选 **v3**。已经使用 v2 且满足需求的用户，可以继续使用，无需为了版本号升级。
+
+**项目使用者已在一台 Q101 的 v2 固件上确认：有线、2.4G、蓝牙和 VIA 均正常使用。** v3 的验证范围见[发布说明](https://github.com/xiaoliu-heng/q101-mq80-battery-bar/blob/v3/docs/RELEASE-v3.1.0-rc.1.md#验证范围)。其他硬件批次及刷写失败后的强制恢复尚未验证。刷写前请阅读[风险与免责声明](DISCLAIMER.md)。
 
 ## 目录
 
+- [v2 和 v3 怎么选](#v2-和-v3-怎么选)
 - [功能与实测](#功能与实测)
 - [下载与校验](#下载与校验)
 - [刷写步骤](#刷写步骤)
@@ -13,6 +16,24 @@
 - [macOS 测试软件](#macos-测试软件)
 - [目录与开发](#目录与开发)
 - [用途与免责声明](#用途与免责声明)
+
+## v2 和 v3 怎么选
+
+| 对比项 | v2 · Fn+B 电量条 | v3 · 电量条 + 电脑控制 |
+| --- | --- | --- |
+| 适合谁 | 只想在键盘上查看电量 | 想在电脑上看电量、发送灯光提醒或接入自动化 |
+| Fn+B 电量条 | 支持，约 3 秒后恢复原灯效 | 保留 |
+| 电脑主动查询电量 | 不支持 | 支持 USB / 2.4G，Kryra 在菜单栏或系统托盘显示百分比 |
+| 电脑发送灯光通知 | 不支持 | 纯色、闪烁、呼吸、彩虹，由固件本地播放并到期恢复 |
+| 本机 API / CLI / Codex Skill | 不支持 | 通过 Kryra 查询电量、发送短时提醒 |
+| 日常配套软件 | 使用 Fn+B 无需安装软件 | 电脑控制使用 Kryra，提供 macOS / Windows 原生应用 |
+| 当前下载 | [电量条 v2](https://github.com/xiaoliu-heng/q101-mq80-battery-bar/releases/tag/battery-bar-v2) | [固件 v3.1.0 预发布](https://github.com/xiaoliu-heng/q101-mq80-battery-bar/releases/tag/v3.1.0-rc.1) |
+
+两版的 Fn+B 都可独立使用，无需电脑应用常驻。v3 的电脑查询和新通知需要 Kryra 运行；上述四种通知灯效只需发送一次命令，无需持续发帧或心跳，原有无线休眠可提前结束通知。电脑端电量查询和控灯目前仅支持 USB / 2.4G，不支持蓝牙。
+
+**当前 Kryra 仅支持固件 v3.1.0，不能搭配 v2 使用。** 固件与软件分别编号：固件 v3.1.0 对应本次提供的 Kryra macOS 1.3.2 / Windows 1.1.0。MQ80 Firmware Lab 是可选的离线测试软件，不用于读取真机电量或控制真机灯光。
+
+每把键盘一次刷入一版固件，按[刷写步骤](#刷写步骤)核对所选版本的文件和校验值。两版都基于同一 MQ80 V0109 官方固件修改，均为实验固件；目前没有可用于比较两版续航的实测数据。
 
 ## 功能与实测
 
@@ -26,7 +47,9 @@
 
 *Q101 实机满电效果。电量取自原固件的百分比缓存，实际长度和颜色观感会受灯珠及扩散罩影响。*
 
-### 已验证范围
+<a id="已验证范围"></a>
+
+### v2 已验证范围
 
 基于 **MQ80-CS836B-V0109-20241220** 官方固件修改。实测路径为 **Q101 → 官方 MQ80 V0109 → 电量条 v2**，以下均为修改版的使用者实机反馈：
 
@@ -43,7 +66,9 @@
 
 ## 下载与校验
 
-在 [Release 的 Assets](https://github.com/xiaoliu-heng/q101-mq80-battery-bar/releases/tag/battery-bar-v2) 下载固件、macOS App 和校验清单。固件也可从仓库获取：[电量条固件](simulator/assets/battery-bar-v2.bin) · [官方 MQ80 镜像](simulator/assets/stock.bin)。测试软件源码位于 [`simulator/`](simulator/)。
+### v2 · Fn+B 电量条
+
+在 [电量条 v2 的 Assets](https://github.com/xiaoliu-heng/q101-mq80-battery-bar/releases/tag/battery-bar-v2) 下载固件、macOS 离线测试 App 和校验清单。此版本继续提供下载，适合只需要 Fn+B 电量条的用户。固件也可从仓库获取：[电量条固件](simulator/assets/battery-bar-v2.bin) · [官方 MQ80 镜像](simulator/assets/stock.bin)。测试软件源码位于 [`simulator/`](simulator/)。
 
 Release 文件说明：
 
@@ -51,7 +76,7 @@ Release 文件说明：
 | --- | --- |
 | `MQ80-CS836B-V0109-20241220-FnB-BatteryBar-v2-EXPERIMENTAL.bin` | 完整修改版固件，供官方工具导入 |
 | `MQ80-CS836B-V0109-20241220-STOCK.bin` | 官方 MQ80 应用镜像，供符合恢复条件时使用；不是 Q101 整片备份 |
-| `MQ80-Firmware-Lab-v2.1-native-macOS-arm64.zip` | 可双击的原生 macOS 测试 App，内置两份固件 |
+| `MQ80-Firmware-Lab-v2.1-native-macOS-arm64.zip` | 可双击的原生 macOS 离线测试 App，内置两份固件 |
 | `SHA256SUMS.txt` | 下载文件的 SHA-256 清单 |
 | `unicorn-2.1.4-source.tar.gz` | App 所用 Unicorn 的对应上游源码，普通使用者无需下载 |
 
@@ -62,7 +87,7 @@ Release 文件说明：
 | 电量条 v2 | **126756** | **068F4D5A**（工具可能显示 `68F4D5A`） |
 | 官方 MQ80 V0109 | 126292 | B00C451E |
 
-修改版 SHA-256：
+v2 固件 SHA-256：
 
 ```text
 f3e86554be1ed5faf11750fceea85980c9ccd080912be4552e8317fb09ef7719
@@ -74,7 +99,27 @@ Windows PowerShell 校验示例（按实际下载文件名调整）：
 Get-FileHash .\battery-bar-v2.bin -Algorithm SHA256
 ```
 
-macOS / Linux：`shasum -a 256 battery-bar-v2.bin`。全部发布文件校验值见 [SHA256SUMS.txt](firmware/SHA256SUMS.txt)。校验一致只证明文件完整，不代表硬件兼容。
+macOS / Linux：`shasum -a 256 battery-bar-v2.bin`。v2 发布文件校验值见 [SHA256SUMS.txt](firmware/SHA256SUMS.txt)。校验一致只证明文件完整，不代表硬件兼容。
+
+### v3 · 电量条与 Kryra 控制
+
+在 [v3.1.0-rc.1 的 Assets](https://github.com/xiaoliu-heng/q101-mq80-battery-bar/releases/tag/v3.1.0-rc.1) 下载，当前为预发布：
+
+| 文件 | 用途 |
+| --- | --- |
+| `MQ80-CS836B-V0109-20241220-BatteryBar-SideHID-v3.1.0-USB-RF-EXPERIMENTAL.bin` | 完整固件 v3.1.0，构建 3，保留 Fn+B 并增加 USB / 2.4G 电量与灯光控制 |
+| `Kryra-Windows-1.1.0-win-x64.zip` | Windows 10 / 11 x64 原生托盘应用，解压运行 |
+| `Kryra-1.3.2-universal.dmg` / `Kryra-1.3.2-universal.zip` | macOS 13+ 原生菜单栏应用，Apple Silicon / Intel 通用版 |
+| `SHA256SUMS.txt` | 本次固件与 Windows 附件的 SHA-256 清单 |
+| `Kryra-1.3.2-universal-SHA256SUMS.txt` | 本次 Mac DMG / ZIP 的 SHA-256 清单 |
+
+v3.1.0 固件的 **codesize 为 129732，CRC 为 F2979115**，SHA-256：
+
+```text
+5757c625adf427a4932a9fb9e8e7be0e5a4a88311e4484278d771c5c1b29cf0a
+```
+
+Kryra 默认每 60 秒查询电量，更新间隔可设为 30～3600 秒；灯光编辑只做本机预览，点击发送后才下发通知。安装、API、CLI、Skill 及各平台验证范围见 [macOS 说明](https://github.com/xiaoliu-heng/q101-mq80-battery-bar/blob/v3/macos/README.md)、[Windows 说明](https://github.com/xiaoliu-heng/q101-mq80-battery-bar/blob/v3/windows/README.md)和[发布说明](https://github.com/xiaoliu-heng/q101-mq80-battery-bar/blob/v3/docs/RELEASE-v3.1.0-rc.1.md)。v3 源码与开发记录位于 [`v3` 分支](https://github.com/xiaoliu-heng/q101-mq80-battery-bar/tree/v3)。
 
 <a id="使用官方-windows-工具刷入"></a>
 
@@ -91,17 +136,17 @@ macOS / Linux：`shasum -a 256 battery-bar-v2.bin`。全部发布文件校验值
 
 ### 2. 导入并核对固件
 
-1. 运行解压后的 EXE，选择 **Get Device Fw Version**，确认设备有回复；官方 V0109 的预期 CRC 为 `B00C451E`。无回复或版本不符时，先排查再继续。
+1. 运行解压后的 EXE，选择 **Get Device Fw Version**，确认设备有回复并记录当前 CRC；官方 V0109 为 `B00C451E`，已刷修改版的设备应与当前版本的校验值一致。无回复或版本无法确认时，先排查再继续。
 2. 打开 **Debug Mode**，输入小写 **`telink`**，点击 **show Debug surface**。
 3. 点击 **open bin**，选择完整修改版 `.bin`。
-4. 核对文件路径及 **codesize = 126756、crc = 068F4D5A / 68F4D5A**。工具默认加载内嵌官方镜像，不能只看文件名或按钮状态。
+4. 核对文件路径及所选固件的校验值：**v2 为 codesize = 126756、crc = 068F4D5A / 68F4D5A**；**v3.1.0 为 codesize = 129732、crc = F2979115**。工具默认加载内嵌官方镜像，不能只看文件名或按钮状态。
 
 **导入文件不会刷写，点击 Start 才开始写入键盘。**
 
 ### 3. 刷写并检查
 
 1. 点击 **Start**，保持 USB 和供电，不拔线、不切模式、不让电脑休眠。
-2. 等待 **进度 100% 且显示 `OTA Success`**，设备重新出现后再查询 CRC，应为 `068F4D5A`。
+2. 等待 **进度 100% 且显示 `OTA Success`**，设备重新出现后再查询 CRC，应与所刷版本一致：**v2 为 068F4D5A，v3.1.0 为 F2979115**。
 3. 检查有线输入、Fn+B 电量条及约 3 秒后的灯效恢复；再分别检查 2.4G、蓝牙与 VIA。2.4G 切换键在本项目设备上为 Fn+4，改过键位时以自己的配置为准。
 
 本项目 macOS 测试软件用于离线验证，不能代替官方工具刷写键盘。
