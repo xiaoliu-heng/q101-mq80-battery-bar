@@ -33,7 +33,7 @@
 
 两版的 Fn+B 都可独立使用，无需电脑应用常驻。v3 的电脑查询和新通知需要 Kryra 运行；上述四种通知灯效只需发送一次命令，无需持续发帧或心跳，原有无线休眠可提前结束通知。电脑端电量查询和控灯目前仅支持 USB / 2.4G，不支持蓝牙。
 
-**当前 Kryra 仅支持固件 v3.1.0，不能搭配 v2 使用。** 固件与软件分别编号：固件 v3.1.0 对应本次提供的 Kryra macOS 1.3.2 / Windows 1.1.0。MQ80 Firmware Lab 是可选的离线测试软件，不用于读取真机电量或控制真机灯光。
+**当前 Kryra 仅支持固件 v3.1.0，不能搭配 v2 使用。** 固件与软件分别编号：固件 v3.1.0 对应本次提供的 Kryra macOS 1.3.4 / Windows 1.1.0。MQ80 Firmware Lab 是可选的离线测试软件，不用于读取真机电量或控制真机灯光。
 
 每把键盘一次刷入一版固件，按[刷写步骤](#刷写步骤)核对所选版本的文件和校验值。两版都基于同一 MQ80 V0109 官方固件修改，均为实验固件；目前没有可用于比较两版续航的实测数据。
 
@@ -68,16 +68,16 @@
 
 ## Kryra 控制应用
 
-Kryra 是日常使用的原生 macOS 菜单栏应用，直接通过 IOKit 访问键盘，不依赖 Python 或云服务。运行支持 macOS 13+；**1.3.2 使用 SDK 26.5 / Swift 6.3.3 构建，在 macOS 26+ 使用原生 Liquid Glass**，旧系统使用 Material。
+Kryra 是日常使用的原生 macOS 菜单栏应用，直接通过 IOKit 访问键盘，不依赖 Python 或云服务。运行支持 macOS 13+；**1.3.4 使用 SDK 26.5 / Swift 6.3.3 构建，在 macOS 26+ 使用原生 Liquid Glass**，旧系统使用 Material。
 
 - 菜单栏显示键盘电量，支持 USB 与 2.4G；默认每分钟查询，可设为 30 秒～1 小时，重启保留。
 - 连续渐变的竖向灯带预览；纯色、闪烁、呼吸和彩虹均由固件自行播放，默认亮度 25%、持续 5 秒。编辑只预览，点击发送才下发一次通知。
 - 主面板固定尺寸，设置独立成页；长提示、连接变化和模式切换不会引入滚动条或突然挤窄内容。
 - 本机 API 与 `kryractl` 共用设备控制器，可供自动化程序调用；一键安装 skill 后，可让 Codex 查询电量或发送短时灯光提醒。
 
-<img src="macos/previews/kryra-v1.3.0-light.png" width="310" alt="Kryra 浅色主面板：竖向渐变灯带、电量和四种本地通知灯效"> <img src="macos/previews/kryra-v1.3.0-settings.png" width="310" alt="Kryra 设置页：电量默认每一分钟查询，可配置间隔">
+<img src="macos/previews/kryra-v1.3.4-native-glass.png" width="310" alt="Kryra 1.3.4 在 macOS 27.0.1 的实际玻璃界面，88% 为演示数据"> <img src="macos/previews/kryra-v1.3.0-settings.png" width="310" alt="Kryra 设置页：电量默认每一分钟查询，可配置间隔">
 
-截图为 SDK 26.5 构建在当前 macOS 15.7.4 上的兼容外观，数据来自演示模式；macOS 26 的原生玻璃效果待新系统实测。[深色预览](macos/previews/kryra-v1.3.0-dark.png)。
+左图为 1.3.4 在 macOS 27.0.1 的实际独立窗口，已恢复等宽玻璃胶囊并修复选中文字模糊；右图为 1.3.0 在 macOS 15.7.4 的兼容外观。均为隔离演示数据，紫色标题栏徽标来自系统屏幕共享指示器。[1.3.4 验证记录](macos/VALIDATION-v1.3.4.json)。
 
 安装、构建、API 与 skill 用法见 [Kryra README](macos/README.md)；Windows 版见 [Windows README](windows/README.md)。跨平台行为记录在 [产品与技术设计文档](docs/KRYRA_DESIGN.md)，其中包括 UI、轮询规则、USB/RF 协议、平台 HID 适配与验收清单。
 
@@ -122,20 +122,20 @@ macOS / Linux：`shasum -a 256 battery-bar-v2.bin`。v2 发布文件校验值见
 
 ### v3 · 电量条与 Kryra 控制
 
-在 [v3.1.0 的 Assets](https://github.com/xiaoliu-heng/q101-mq80-battery-bar/releases/tag/v3.1.0) 下载正式版。固件及应用二进制与 `v3.1.0-rc.1` 相同，v2 继续独立提供下载：
+在 [v3.1.0 的 Assets](https://github.com/xiaoliu-heng/q101-mq80-battery-bar/releases/tag/v3.1.0) 下载正式版。macOS 应用已更新为 1.3.4，修复新系统上的玻璃控件渲染；固件与 Windows 包沿用 `v3.1.0-rc.1`，v2 继续独立提供下载：
 
 | 文件 | 用途 |
 | --- | --- |
 | `MQ80-CS836B-V0109-20241220-BatteryBar-SideHID-v3.1.0-USB-RF-EXPERIMENTAL.bin` | 完整刷机镜像，固件 3.1.0、构建 3 |
 | `Kryra-Windows-1.1.0-win-x64.zip` | Windows 10 / 11 x64 原生便携包，附运行时 |
-| [Kryra-1.3.2-universal.dmg](https://github.com/xiaoliu-heng/q101-mq80-battery-bar/releases/download/v3.1.0/Kryra-1.3.2-universal.dmg) | macOS 13+ 安装镜像，Apple Silicon / Intel 通用版 |
-| [Kryra-1.3.2-universal.zip](https://github.com/xiaoliu-heng/q101-mq80-battery-bar/releases/download/v3.1.0/Kryra-1.3.2-universal.zip) | 相同 macOS 应用的 ZIP 归档 |
-| `Kryra-1.3.2-universal-SHA256SUMS.txt` | Mac DMG / ZIP 的 SHA-256 校验清单 |
-| `Kryra-1.3.2-universal-manifest.json` | Mac 版本、架构、源码对应关系与验证信息 |
+| [Kryra-1.3.4-universal.dmg](https://github.com/xiaoliu-heng/q101-mq80-battery-bar/releases/download/v3.1.0/Kryra-1.3.4-universal.dmg) | macOS 13+ 安装镜像，Apple Silicon / Intel 通用版 |
+| [Kryra-1.3.4-universal.zip](https://github.com/xiaoliu-heng/q101-mq80-battery-bar/releases/download/v3.1.0/Kryra-1.3.4-universal.zip) | 相同 macOS 应用的 ZIP 归档 |
+| `Kryra-1.3.4-universal-SHA256SUMS.txt` | Mac DMG / ZIP 的 SHA-256 校验清单 |
+| `Kryra-1.3.4-universal-manifest.json` | Mac 版本、架构、源码对应关系与验证信息 |
 | `SHA256SUMS.txt` | 全部发布附件（清单自身除外）的 SHA-256 校验清单 |
 | `RELEASE-MANIFEST.json` | 固件、Windows、macOS 版本、源码提交与附件校验信息 |
 
-v3.1.0 固件的 **codesize 为 129732，CRC 为 F2979115**，SHA-256 为 `5757c625adf427a4932a9fb9e8e7be0e5a4a88311e4484278d771c5c1b29cf0a`。仓库中的 [`side-hid-rf-v3.1.0.bin`](firmware/experimental/side-hid-rf-v3.1.0.bin) 与上述长文件名镜像内容相同。Mac 安装时将 `Kryra.app` 拖入 `Applications`；软件包采用本地 ad-hoc 签名，未经过 Developer ID 公证。相同应用包此前已通过解压后 61 项应用 / CLI 检查及回下载校验，见 [Mac 预发布核对记录](macos/release-v3.1.0-rc.1.json)；正式版的完整验证范围见[发布说明](docs/RELEASE-v3.1.0.md#验证范围)。
+v3.1.0 固件的 **codesize 为 129732，CRC 为 F2979115**，SHA-256 为 `5757c625adf427a4932a9fb9e8e7be0e5a4a88311e4484278d771c5c1b29cf0a`。仓库中的 [`side-hid-rf-v3.1.0.bin`](firmware/experimental/side-hid-rf-v3.1.0.bin) 与上述长文件名镜像内容相同。Mac 安装时将 `Kryra.app` 拖入 `Applications`；软件包采用本地 ad-hoc 签名，未经过 Developer ID 公证。1.3.4 已通过 310 项核心、布局与 API/CLI 检查，并在 macOS 27.0.1 的实际独立窗口中检查四种选中文字及原生玻璃，见 [Mac 验证记录](macos/VALIDATION-v1.3.4.json)；正式版的完整验证范围见[发布说明](docs/RELEASE-v3.1.0.md#验证范围)。
 
 Kryra 默认每 60 秒查询电量，更新间隔可设为 30～3600 秒；灯光编辑只做本机预览，点击发送后才下发通知。安装、API、CLI、Skill 及各平台验证范围见 [macOS 说明](macos/README.md)、[Windows 说明](windows/README.md)和[发布说明](docs/RELEASE-v3.1.0.md)。
 

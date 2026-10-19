@@ -82,6 +82,21 @@ struct GlassButtonStyle: ButtonStyle {
     }
 }
 
+struct GlassSegmentStyle: ButtonStyle {
+    let selected: Bool
+    @ViewBuilder func makeBody(configuration: Configuration) -> some View {
+        if selected {
+            // Glass belongs to the label itself, so SwiftUI composites its
+            // foreground above the material rather than sampling it as backdrop.
+            configuration.label
+                .foregroundStyle(Color.primary)
+                .modifier(CapsuleSurface(prominent:false))
+        } else {
+            configuration.label.foregroundStyle(Color.secondary)
+        }
+    }
+}
+
 /// Nine firmware samples are interpolated through one diffuser, with no gaps.
 struct LightStripPreview: View {
     let samples: [RGB]

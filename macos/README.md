@@ -1,16 +1,20 @@
 # Kryra
 
-真实键盘的原生 macOS 菜单栏应用。Swift / SwiftUI / AppKit 编写，直接经 IOKit 访问 Q101 / MQ80 的 Raw HID 接口；应用及内附 CLI 都不依赖 Python、网页容器或云端服务。**Kryra v1.3.2 仅支持固件 v3.1.0**，使用其本地通知灯效；连接时检查版本和功能位，3.0.1 及其他版本均提示升级。
+真实键盘的原生 macOS 菜单栏应用。Swift / SwiftUI / AppKit 编写，直接经 IOKit 访问 Q101 / MQ80 的 Raw HID 接口；应用及内附 CLI 都不依赖 Python、网页容器或云端服务。**Kryra v1.3.x 仅支持固件 v3.1.0**，使用其本地通知灯效；连接时检查版本和功能位，3.0.1 及其他版本均提示升级。
 
-1.3.0 使用 **SDK 26.5 / Swift 6.3.3** 构建，在 macOS 26+ 启用原生 Liquid Glass；电量默认每分钟查询，可在设置、API 或 CLI 中配置。使用者已反馈此前版本的真机连接测试正常；[反馈范围](hardware-confirmation-20261017.json)与本次新包的离线检查分开记录。新包的 macOS 26 外观及交互等待新系统验收，未进行功耗测量。
+1.3.x 使用 **SDK 26.5 / Swift 6.3.3** 构建，在 macOS 26+ 启用原生 Liquid Glass；电量默认每分钟查询，可在设置、API 或 CLI 中配置。使用者已反馈此前版本的真机连接测试正常；[反馈范围](hardware-confirmation-20261017.json)与新包的离线检查分开记录。1.3.4 已在 macOS 27.0.1 的实际独立窗口中检查原生玻璃、四种灯效选择和设置页，未进行功耗测量。
 
 产品交互、状态机、协议、调度和 Windows 移植边界见 [Kryra 设计文档](../docs/KRYRA_DESIGN.md)。
 
 1.3.1 修复菜单栏弹窗的双重圆角与描边。1.3.2 补全独立窗口：保留系统标题栏背景，内容从标题栏下方开始，避免透明标题栏让内容上沿呈现直角。两种容器均由系统负责外部圆角；窗口布局检查与正式应用共用同一创建函数。
 
+1.3.4 恢复等宽铺满面板的玻璃胶囊灯效切换。玻璃直接应用在按钮内容上，使文字由系统绘制在材质之上，避免原先独立背景玻璃层模糊选中文字。1.3.3 测试版改用系统分段选择器后出现的窄蓝色选中项不再保留。继续使用 SDK 26.5 和原生 Liquid Glass，面板保持固定尺寸；本次不修改键盘固件。完整验证范围见 [1.3.4 验证记录](VALIDATION-v1.3.4.json)。
+
+1.3.4 已通过 188 项核心检查、61 项布局检查和 61 项 API/CLI 端到端检查，并完成通用包签名、SDK 和归档校验。实际独立窗口使用隔离演示应用检查，四种选中文字均清晰；本次菜单栏弹窗完成固定布局检查，但电脑控制工具未能绑定其原生弹窗，未补做实际弹窗外观验收。隐藏窗口的位图不作为玻璃效果验收依据。
+
 ## 使用
 
-在 [v3.1.0 正式版](https://github.com/xiaoliu-heng/q101-mq80-battery-bar/releases/tag/v3.1.0) 下载 `Kryra-1.3.2-universal.dmg` 或 ZIP；应用包与 `v3.1.0-rc.1` 相同。
+在 [v3.1.0 正式版](https://github.com/xiaoliu-heng/q101-mq80-battery-bar/releases/tag/v3.1.0) 下载 `Kryra-1.3.4-universal.dmg` 或 ZIP。1.3.4 更新 macOS 玻璃控件渲染，继续支持同一固件 3.1.0。
 
 将 `Kryra.app` 放入 `/Applications` 或 `~/Applications` 后打开。首次打开显示控制面板，关闭面板后仍留在菜单栏；菜单栏显示键盘电量，点击即可打开面板。
 
@@ -24,9 +28,13 @@
 
 界面使用原生 `GlassEffectContainer` 与 `glassEffect`，参考 Apple 的 [Liquid Glass 材质设计](https://developer.apple.com/design/human-interface-guidelines/materials)。1.3.0 必须使用 SDK 26+ 构建；在 macOS 26+ 使用原生玻璃，macOS 13～15 使用原生 Material。减弱透明度和减少动态效果遵循系统设置。
 
+<img src="previews/kryra-v1.3.4-native-glass.png" width="310" alt="Kryra 1.3.4 在 macOS 27.0.1 的实际独立窗口：等宽玻璃胶囊与清晰的彩虹选中文字，88% 为演示数据">
+
+上图为 1.3.4 在 macOS 27.0.1 的实际窗口截图，88% 为隔离演示数据。标题栏紫色徽标来自系统屏幕共享指示器。
+
 <img src="previews/kryra-v1.3.0-light.png" width="310" alt="Kryra 浅色主面板：连续竖向渐变灯带、电量与通知控制"> <img src="previews/kryra-v1.3.0-settings.png" width="310" alt="Kryra 设置页：每一分钟更新电量，可配置更新间隔">
 
-截图来自 SDK 26.5 构建在当前 macOS 15.7.4 上的兼容外观，带演示数据；macOS 26 的原生玻璃效果待新系统验收。[深色预览](previews/kryra-v1.3.0-dark.png)。
+这两张旧版兼容外观截图来自 macOS 15.7.4，带演示数据。[旧版深色预览](previews/kryra-v1.3.0-dark.png)。
 
 应用只打开 Vendor `320F`、PID `5055` / `5088`、Usage `FF60:61` 的自定义接口。没有键盘输入捕获或固件刷写功能。
 
@@ -82,6 +90,8 @@ UI、API 和 CLI 共用单个专用 HID 线程、校验器和控灯任务，新�
 ```sh
 python3 macos/build.py --universal
 ```
+
+开发时可用 `--app .release/kryra-1.3.4/Kryra.app` 输出到独立目录，避免覆盖正在运行的旧版。相应测试与打包命令的 `--app` 参数应指向同一应用。
 
 构建脚本优先使用系统已选择的 SDK 26+，也可通过 `KRYRA_TOOLCHAIN_DIR` 指向 Apple CommandLineTools 根目录。本机已独立安装至 `~/Library/Developer/Kryra/CommandLineTools-26.6`，构建脚本可自动发现；包含 SDK 26.5 / Swift 6.3.3，不改动系统的 Xcode/CLT 选择。App 内 `BuildInfo.json` 与 Info.plist 记录实际构建 SDK。
 

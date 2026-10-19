@@ -1,0 +1,97 @@
+{
+  "status": "PASS_AUTOMATED_AND_NATIVE_WINDOW",
+  "date_utc": "2026-10-19T14:04:25.082138+00:00",
+  "app_version": "1.3.4",
+  "app_build": 9,
+  "host_macos": "27.0.1",
+  "physical_hid_access": false,
+  "change": "Restore full-width glass capsule selector; apply native glass directly to selected button content instead of a separate clear background.",
+  "tests": {
+    "core": {
+      "status": "PASS",
+      "count": 188,
+      "report": "core-tests-v1.3.4.json"
+    },
+    "panel": {
+      "status": "PASS",
+      "count": 61,
+      "report": "panel-tests-v1.3.4.json"
+    },
+    "e2e": {
+      "status": "PASS",
+      "count": 61,
+      "report": "e2e-v1.3.4.json"
+    },
+    "total": 310
+  },
+  "ui": {
+    "status": "PASS_NATIVE_WINDOW_VISUAL_POPOVER_LAYOUT",
+    "date_utc": "2026-10-19T14:04:25.082138+00:00",
+    "app_version": "1.3.4",
+    "host_macos": "27.0.1",
+    "change": "Restore full-width glass capsule selector; apply native glass directly to selected button content instead of a separate clear background.",
+    "native_window": {
+      "four_effects_select_correctly": true,
+      "full_width_glass_capsules": true,
+      "selected_label_clear": true,
+      "settings_page_inspected": true,
+      "content_points": {
+        "width": 368,
+        "height": 584
+      }
+    },
+    "native_popover": {
+      "fixed_host_layout": "PASS",
+      "actual_visual_acceptance": "NOT_REPEATED: computer-use tool could not bind the native popover window; app initialization timed out"
+    },
+    "physical_hid_access": false,
+    "lighting_commands_sent": 0,
+    "firmware_modified": false,
+    "screenshots": [
+      "test-results/kryra-native-glass-v1.3.4/window-solid.png",
+      "test-results/kryra-native-glass-v1.3.4/window-blink.png",
+      "test-results/kryra-native-glass-v1.3.4/window-breathe.png",
+      "test-results/kryra-native-glass-v1.3.4/window-rainbow.png",
+      "test-results/kryra-native-glass-v1.3.4/window-settings.png"
+    ],
+    "qa_apps_exited": [
+      "window",
+      "popover"
+    ],
+    "preview": "previews/kryra-v1.3.4-native-glass.png"
+  },
+  "package": {
+    "status": "PASS",
+    "version": "1.3.4",
+    "architectures": [
+      "arm64",
+      "x86_64"
+    ],
+    "build_sdk": "26.5",
+    "native_liquid_glass_compiled": true,
+    "app_executable_sha256": "586f80fe73ccf78edc7583b67d327923667082a18457e6d79596f44b15fb0f4e",
+    "cli_sha256": "9682f03e8f6a8f1003c696dab93e4f61bf1dfcf99bd5fc37d3856801e7a5f3d7",
+    "artifacts": [
+      {
+        "path": "dist/Kryra-1.3.4-universal.zip",
+        "size": 1047181,
+        "sha256": "517cfb9dd70e2db63bd42d2047c95972bdd0c053a12602aa1de157b438a982e0"
+      },
+      {
+        "path": "dist/Kryra-1.3.4-universal.dmg",
+        "size": 1479983,
+        "sha256": "6888a68cf8f4d109a6fac41ef603b0e8afdc0c388c14f377b4841674609a9487"
+      }
+    ],
+    "signing": "local ad-hoc; not Developer ID notarized",
+    "published": false
+  },
+  "zip_matches_tested_executables": true,
+  "zip_uses_production_backend_by_default": true,
+  "limitations": [
+    "Visual inspection used isolated demo data, not a physical keyboard.",
+    "Actual native window inspected on macOS 27.0.1; native popover layout checked offline, but this version's popover visual inspection could not be completed by the computer-use tool.",
+    "Hidden NSHostingView bitmap captures are not used as native glass visual acceptance evidence.",
+    "Intel and older macOS runtime visual checks were not repeated."
+  ]
+}

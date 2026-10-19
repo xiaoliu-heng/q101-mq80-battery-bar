@@ -119,19 +119,20 @@ enum PanelPage { case lighting, settings }
                 Button {
                     draft.select(effect); previewStarted = Date()
                 } label: {
-                    Text(effect.title).font(.system(size:12,weight:draft.effect == effect ? .semibold : .regular))
+                    Text(effect.title)
+                        .font(.system(size:12,weight:draft.effect == effect ? .semibold : .regular))
                         .frame(maxWidth:.infinity).frame(height:32)
                         .contentShape(Capsule())
-                        .background {
-                            if draft.effect == effect { Color.clear.modifier(CapsuleSurface(prominent:false)) }
-                        }
                 }
-                .buttonStyle(.plain)
-                .foregroundStyle(draft.effect == effect ? Color.primary : Color.secondary)
-                .accessibilityLabel("\(effect.title)灯效").accessibilityAddTraits(draft.effect == effect ? .isSelected : [])
+                .buttonStyle(GlassSegmentStyle(selected:draft.effect == effect))
+                .accessibilityLabel("\(effect.title)灯效")
+                .accessibilityAddTraits(draft.effect == effect ? .isSelected : [])
             }
         }
         .padding(3).background(Capsule().fill(.quaternary.opacity(0.5)))
+        .accessibilityElement(children:.contain)
+        .accessibilityLabel("灯效")
+        .accessibilityIdentifier("lighting-effect-picker")
     }
     private var palette: some View {
         HStack(spacing:12) {

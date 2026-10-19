@@ -20,11 +20,12 @@ def run(*args):
 def main():
     parser=argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--universal',action='store_true')
+    parser.add_argument('--app',type=Path,default=DIST/'Kryra.app',help='Output bundle; use a separate path while another build is running')
     args=parser.parse_args()
     BUILD.mkdir(exist_ok=True);DIST.mkdir(exist_ok=True)
     toolchain=Toolchain()
     sdk_version=toolchain.version
-    app=DIST/'Kryra.app';contents=app/'Contents'
+    app=args.app.resolve();contents=app/'Contents'
     if contents.exists():shutil.rmtree(contents)
     (contents/'MacOS').mkdir(parents=True)
     resources=contents/'Resources';resources.mkdir()
@@ -56,7 +57,7 @@ def main():
     run('iconutil','-c','icns',BUILD/'Kryra.iconset','-o',resources/'Kryra.icns')
     info={'CFBundleExecutable':'Kryra','CFBundleIdentifier':'local.xiaoliu.kryra',
           'CFBundleName':'Kryra','CFBundleDisplayName':'Kryra','CFBundlePackageType':'APPL',
-          'CFBundleVersion':'7','CFBundleShortVersionString':'1.3.2','LSMinimumSystemVersion':'13.0',
+          'CFBundleVersion':'9','CFBundleShortVersionString':'1.3.4','LSMinimumSystemVersion':'13.0',
           'LSUIElement':True,'NSHighResolutionCapable':True,'NSSupportsAutomaticTermination':False,'CFBundleIconFile':'Kryra',
           'DTSDKName':'macosx'+sdk_version,'KryraNativeGlassCompiled':True,
           'NSHumanReadableCopyright':'Kryra · Q101 / MQ80 community project'}

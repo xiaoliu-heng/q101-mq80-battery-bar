@@ -1,6 +1,6 @@
 # Kryra 产品与技术设计
 
-版本：macOS Kryra 1.3.2 / Windows Kryra 1.1.0，2026-10-18。本文记录 macOS 行为及跨平台接口约束。Windows 已以 WPF、Win32 HID、托盘、原生 CLI 和 Skill 安装器实现，详见 [Windows 说明](../windows/README.md) 和 [验证范围](../windows/VALIDATION.json)；后文的 Windows 章节保留移植约束，不表示所有 macOS 专有集成均已移植。
+版本：macOS Kryra 1.3.4 / Windows Kryra 1.1.0，2026-10-19。本文记录 macOS 行为及跨平台接口约束。Windows 已以 WPF、Win32 HID、托盘、原生 CLI 和 Skill 安装器实现，详见 [Windows 说明](../windows/README.md) 和 [验证范围](../windows/VALIDATION.json)；后文的 Windows 章节保留移植约束，不表示所有 macOS 专有集成均已移植。
 
 ## 1. 产品目标
 
@@ -52,6 +52,8 @@ Kryra 是 Q101 / MQ80 的常驻桌面控制应用：在菜单栏显示电量，�
 固定内容 `frame`、关闭 `NSHostingView` / `NSHostingController` 的自动尺寸推导、固定窗口内容最小/最大尺寸共同保证布局稳定。不要只隐藏滚动条，也不要让错误文本或设置内容决定窗口高度。
 
 外边缘由系统 `NSWindow` / `NSPopover` 统一裁剪和描边，内容背景铺满容器。1.3.0 内容层还叠加了 24 点圆角和描边，与系统较小的圆角在角部夹出弧形空隙；1.3.1 已移除这套内容外框。独立窗口另有系统标题栏，面板内容从标题栏下方开始；1.3.2 恢复系统标题栏背景，不再把它设为透明并清空窗口背景，避免上部内容看似直角。正式应用与布局检查共用 `fixedPanelWindow` 创建窗口。视觉验收须分别检查实际弹窗和独立窗口，裸 `NSHostingView` 的渲染不能覆盖系统边框及标题栏问题。
+
+1.3.4 的四种灯效使用铺满面板的等宽胶囊按钮，选中按钮通过 `GlassSegmentStyle` 将原生 `glassEffect` 直接应用于已设置字体、颜色与尺寸的标签内容。不要在 `Text.background` 中再放置一个单独的透明玻璃视图：新系统可能把标签采样进玻璃背景，导致选中文字模糊。也不要改为系统默认分段 `Picker`，它会改变胶囊宽度与选中项配色。实际独立窗口已在 macOS 27.0.1 的隔离演示环境检查，菜单栏弹窗本轮仅完成布局检查。
 
 界面参考：[Apple 材质规范](https://developer.apple.com/design/human-interface-guidelines/materials)、[自定义视图应用 Liquid Glass](https://developer.apple.com/documentation/SwiftUI/Applying-Liquid-Glass-to-custom-views)。
 
